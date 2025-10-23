@@ -16,7 +16,10 @@ We follow the [Airbnb React/JavaScript Style Guide](https://airbnb.io/javascript
 ### Setup Instructions
 1. Install dependencies:
    ```bash
-   npm install
-npm run lint
-npm run format
+   npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-react
+2. Run these:
+   ```
+   npm run lint
+   npm run format
+   ```
 
