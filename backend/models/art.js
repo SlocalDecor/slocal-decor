@@ -27,9 +27,9 @@ const ArtSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["sold", "not sold"],
+      enum: ["claimed", "unclaimed"],
       required: true,
-      default: "not sold",
+      default: "unclaimed",
     },
     artType: {
       type: String,
