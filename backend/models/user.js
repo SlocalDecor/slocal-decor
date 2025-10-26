@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Art from "./art.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -22,6 +23,13 @@ const UserSchema = new mongoose.Schema(
     profilePic: {
       type: String,
     },
+    postedArt: {
+      type: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: Art,
+      }],
+      default: []
+    }
   },
   { collection: "users" }
 );
