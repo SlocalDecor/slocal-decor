@@ -37,6 +37,7 @@ app.post("/art", (req, res) => {
   }
   artServices
     .addArt(artToAdd)
+    .deleteArt(artToDelete)
     .then((result) => {
       const newArtId = result._id;
       console.log(newArtId);
@@ -74,6 +75,7 @@ app.post("/users", (req, res) => {
   }
   userServices
     .addUser(userToAdd)
+    .deleteUser(userToDelete)
     .then((result) => res.status(201).send(result))
     .catch((error) => {
       res.status(500).end();
