@@ -15,6 +15,14 @@ function addUser(user) {
   return promise;
 }
 
+function deleteUser(userId) {
+  const deleteArts = artModel.deleteMany({ owner: userId });
+  const deleteUser = User.findByIdAndDelete(userId);
+  const promise = Promise.all([deleteArts, deleteUser]);
+  return promise;
+}
+
 export default {
   addUser,
+  deleteUser,
 };

@@ -14,6 +14,10 @@ function addArt(art) {
   const promise = artToAdd.save();
   return promise;
 }
+function deleteArt(id) {
+  const promise = artModel.findByIdAndDelete(id);
+  return promise;
+}
 
 function getArt(owner, type) {
   let promise;
@@ -37,5 +41,6 @@ function findArtByType(type) {
 
 export default {
   addArt,
+  deleteArt,
   getArt,
 };
