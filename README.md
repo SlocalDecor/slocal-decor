@@ -2,6 +2,9 @@
 
 CSC 307 final project
 
+## Working UI
+[Linked here](https://slocaldecor.my.canva.site/slocal-decor)
+
 ## Contributing
 
 We follow the [Airbnb React/JavaScript Style Guide](https://airbnb.io/javascript/react) using ESLint and Prettier.
