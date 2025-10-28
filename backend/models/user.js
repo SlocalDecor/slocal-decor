@@ -24,12 +24,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     postedArt: {
-      type: [{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: Art,
-      }],
-      default: []
-    }
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Art,
+        },
+      ],
+      default: [],
+    },
   },
   { collection: "users" }
 );
