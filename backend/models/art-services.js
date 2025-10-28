@@ -14,7 +14,12 @@ function addArt(art) {
   const promise = artToAdd.save();
   return promise;
 }
+function deleteArt(id) {
+  const promise = artModel.findByIdAndDelete(id);
+  return promise;
+}
 
 export default {
   addArt,
+  deleteArt,
 };

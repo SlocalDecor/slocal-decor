@@ -16,7 +16,9 @@ function addUser(user) {
 }
 
 function deleteUser(userId) {
-  const promise = User.findByIdAndDelete(userId);
+  const deleteArts = artModel.deleteMany({ owner: userId });
+  const deleteUser = User.findByIdAndDelete(userId);
+  const promise = Promise.all([deleteArts, deleteUser]);
   return promise;
 }
 
