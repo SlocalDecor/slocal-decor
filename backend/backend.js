@@ -12,6 +12,20 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.get("/art", (req, res) => {
+  const owner = req.query["owner"];
+  const artType = req.query["artType"];
+  artServices
+    .getArt(owner, artType)
+    .then((result) => {
+      res.status(200).send({ art_list: result });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(404).send("Art not found");
+    });
+});
+
 app.post("/art", (req, res) => {
   const artToAdd = req.body;
   if (!artToAdd["title"] || artToAdd["title"] === "") {

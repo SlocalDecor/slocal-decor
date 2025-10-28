@@ -15,6 +15,27 @@ function addArt(art) {
   return promise;
 }
 
+function getArt(owner, type) {
+  let promise;
+  if (owner === undefined && type === undefined) {
+    promise = artModel.find();
+  } else if (type === undefined) {
+    promise = findArtByOwner(owner);
+  } else {
+    promise = findArtByType(type);
+  }
+  return promise;
+}
+
+function findArtByOwner(ownerId) {
+  return artModel.find({ owner: ownerId });
+}
+
+function findArtByType(type) {
+  return artModel.find({ artType: type });
+}
+
 export default {
   addArt,
+  getArt,
 };
