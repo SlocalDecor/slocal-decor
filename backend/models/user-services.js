@@ -15,6 +15,12 @@ function addUser(user) {
   return promise;
 }
 
+function deleteUser(userId) {
+  const promise = User.findByIdAndDelete(userId);
+  return promise;
+}
+
 export default {
   addUser,
+  deleteUser,
 };
