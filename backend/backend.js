@@ -50,6 +50,48 @@ app.post("/art", (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+app.delete("/art/:id", (req, res) => {
+  const artId = req.params.id;
+  if (!artId) {
+    console.log("Missing art ID");
+    return res.status(400).send("Missing art ID");
+  }
+  artServices
+    .deleteArt(artId)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).send("Art not found");
+      }
+      console.log(`Deleted art with ID: ${artId}`);
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.error("Error deleting art:", err);
+      res.status(500).send(err);
+    });
+});
+
+app.delete("/user/:id", (req, res) => {
+  const userId = req.params.id;
+  if (!userId) {
+    console.log("Missing user ID");
+    return res.status(400).send("Missing user ID");
+  }
+  userServices
+    .deleteUser(userId)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).send("User not found");
+      }
+      console.log(`Deleted user with ID: ${userId}`);
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.error("Error deleting user:", err);
+      res.status(500).send(err);
+    });
+});
+
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
