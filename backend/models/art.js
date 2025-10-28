@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 const ArtSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     postedTime: {
       type: Date,
       default: Date.now,
