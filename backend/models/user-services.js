@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userModel from "./user.js";
+import artModel from "./art.js";
 dotenv.config();
 
 mongoose.set("debug", true);
@@ -17,12 +18,26 @@ function addUser(user) {
 
 function deleteUser(userId) {
   const deleteArts = artModel.deleteMany({ owner: userId });
-  const deleteUser = User.findByIdAndDelete(userId);
+  const deleteUser = userModel.findByIdAndDelete(userId);
   const promise = Promise.all([deleteArts, deleteUser]);
+  return promise;
+}
+
+function findUserById(userId) {
+  const user = userModel.find({ _id: userId });
+  const promise = Promise.all([user]);
+  return promise;
+}
+
+function getUsers() {
+  const users = userModel.find({});
+  const promise = Promise.all([users]);
   return promise;
 }
 
 export default {
   addUser,
   deleteUser,
+  findUserById,
+  getUsers,
 };
