@@ -85,7 +85,7 @@ app.delete("/art/:id", (req, res) => {
     });
 });
 
-app.delete("/user/:id", (req, res) => {
+app.delete("/users/:id", (req, res) => {
   const userId = req.params.id;
   if (!userId) {
     console.log("Missing user ID");
@@ -102,6 +102,39 @@ app.delete("/user/:id", (req, res) => {
     })
     .catch((err) => {
       console.error("Error deleting user:", err);
+      res.status(500).send(err);
+    });
+});
+
+app.get("/users", (req, res) => {
+  userServices
+    .getUsers()
+    .then((result) => {
+      if (!result) {
+        return res.status(404).send("User not found");
+      }
+      console.log(`Found users`);
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.error("Error finding user:", err);
+      res.status(500).send(err);
+    });
+});
+
+app.get("/users/:id", (req, res) => {
+  const id = req.params["id"];
+  userServices
+    .findUserById(id)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).send("User not found");
+      }
+      console.log(`Found users`);
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.error("Error finding user:", err);
       res.status(500).send(err);
     });
 });
