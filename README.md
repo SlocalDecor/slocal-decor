@@ -2,6 +2,9 @@
 
 CSC 307 final project
 
+## Class Diagram
+https://drive.google.com/file/d/1APZ2Zl_hfeeHJQMYh9hpgpd3iSv8Gs61/view?usp=sharing 
+
 ## Working UI
 
 [Linked here](https://slocaldecor.my.canva.site/slocal-decor)
