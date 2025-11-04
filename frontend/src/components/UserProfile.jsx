@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./style.css";
+import "../style.css";
 
 function UserPage() {
   const [activeTab, setActiveTab] = useState("published");
