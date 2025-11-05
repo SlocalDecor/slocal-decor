@@ -30,6 +30,107 @@ html {
   display: flex;
   flex: 1;
 }
+
+/* Sidebar */
+.sidebar {
+  background-color: #000;
+  color: white;
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.profile-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Main Section */
+.main-content {
+  background-color: #e9dbc0;
+  flex: 1;
+  padding: 40px;
+}
+
+/* Buttons */
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  background-color: #d0c2a5;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn.selected {
+  background-color: #5c3b1e;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* Items */
+.item-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.item-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.item-name,
+.item-owner {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+/* Layout */
+.user-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Top Bar */
+.top-bar {
+  background-color: #c2b59b;
+  padding: 15px 20px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Content Layout */
+.content {
+  display: flex;
+  flex: 1;
+}
 /* Sidebar */
 .sidebar {
   background-color: #000;
