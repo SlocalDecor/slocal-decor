@@ -239,17 +239,16 @@ html {
 }
 
 :root {
-  --login-bg: #000000; /* page background */
-  --panel-bg: #222631; /* dark charcoal inner panel */
-  --panel-border: #1d6a7a; /* teal frame */
+  --login-bg: #000000;
+  --panel-bg: #222631;
+  --panel-border: #1d6a7a;
   --text-light: #e9e7df;
-  --dash: #cfd2d6; /* dashed underline color */
+  --dash: #cfd2d6;
   --button-cream: #f3e3be;
   --button-text: #141414;
-  --orange-shadow: #d2601a; /* orange shadow/accent */
+  --orange-shadow: #d2601a;
 }
 
-/* full page center */
 .login-screen {
   min-height: 100vh;
   background: var(--login-bg);
@@ -258,7 +257,6 @@ html {
   padding: 24px;
 }
 
-/* framed panel */
 .login-panel {
   width: min(1000px, 90vw);
   background: var(--panel-bg);
@@ -267,7 +265,6 @@ html {
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
-/* playful stacked title with orange offset like the screenshot */
 .login-heading {
   position: relative;
   text-align: center;
@@ -285,7 +282,7 @@ html {
 .login-heading-shadow {
   color: var(--orange-shadow);
   position: absolute;
-  transform: translate(8px, 8px); /* shadow offset */
+  transform: translate(8px, 8px);
   inset: 0;
   pointer-events: none;
 }
@@ -294,7 +291,6 @@ html {
   position: relative;
 }
 
-/* form layout: label on left, dashed line input on right */
 .login-form {
   max-width: 900px;
   margin: 0 auto;
@@ -313,7 +309,6 @@ html {
   font-family: "Kalam", system-ui, sans-serif;
 }
 
-/* dashed underline input */
 .login-input {
   background: transparent;
   border: none;
@@ -332,7 +327,6 @@ html {
   border-bottom-color: var(--text-light);
 }
 
-/* cream rounded button with “handwritten” vibe */
 .login-submit {
   margin: 36px auto 0;
   display: block;
@@ -360,7 +354,6 @@ html {
   box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.25);
 }
 
-/* responsive tweak for narrow screens */
 @media (max-width: 720px) {
   .login-panel {
     padding: 40px 28px;
