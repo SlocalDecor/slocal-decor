@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 
-// You can swap this with real data later.
 const MOCK_ITEMS = [
   {
     id: "1",
