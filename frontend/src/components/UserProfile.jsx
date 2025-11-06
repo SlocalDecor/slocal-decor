@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import NavBar from "./NavBar";
 import "../style.css";
 
 function UserPage() {
@@ -17,13 +18,9 @@ function UserPage() {
 
   return (
     <div className="user-page">
-      {/* Placeholder top bar */}
-      <div className="top-bar">
-        <p>TODO: Add nav bar</p>
-      </div>
+      <NavBar />
 
       <div className="content">
-        {/* Sidebar */}
         <div className="sidebar">
           <img
             src="/images/userpfp.jpg"
@@ -34,7 +31,6 @@ function UserPage() {
           <p>bio</p>
         </div>
 
-        {/* Main Section */}
         <div className="main-content">
           <div className="button-container">
             <button

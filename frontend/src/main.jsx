@@ -7,8 +7,8 @@ import "./style.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <SignUp />
-    {/*<UserPage />*/}
+    {/* <SignUp /> */}
+    <UserPage />
     {/* <HomePage /> */}
   </React.StrictMode>
 );
