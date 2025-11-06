@@ -16,19 +16,19 @@ html {
   width: 100vw;
 }
 
-/* ───────── Top Bar (STICKY) ───────── */
 .top-bar {
-  position: sticky; /* <-- sticky instead of fixed */
-  top: 0; /* pin to top */
-  z-index: 1000; /* stay above page content */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  height: 72px; /* pick a consistent height */
+  height: 72px;
   padding: 0 20px;
-  background-color: #c2b59b; /* your beige bar */
+  background-color: #000;
+  color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   font-weight: bold;
   font-size: 1rem;
@@ -64,13 +64,11 @@ html {
   text-decoration: none;
 }
 
-/* Content Layout */
 .content {
   display: flex;
   flex: 1;
 }
 
-/* Sidebar */
 .sidebar {
   background-color: #000;
   color: white;
@@ -89,14 +87,12 @@ html {
   object-fit: cover;
 }
 
-/* Main Section */
 .main-content {
   background-color: #e9dbc0;
   flex: 1;
   padding: 40px;
 }
 
-/* Buttons */
 .button-container {
   display: flex;
   gap: 10px;
@@ -122,7 +118,6 @@ html {
   opacity: 0.9;
 }
 
-/* Items */
 .item-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -148,7 +143,6 @@ html {
   font-size: 1rem;
 }
 
-/* Layout */
 .user-page {
   display: flex;
   flex-direction: column;
@@ -156,15 +150,11 @@ html {
   width: 100vw;
 }
 
-/* (removed the second .top-bar block that caused conflicts) */
-
-/* Content Layout */
 .content {
   display: flex;
   flex: 1;
 }
 
-/* Sidebar */
 .sidebar {
   background-color: #000;
   color: white;
@@ -183,14 +173,12 @@ html {
   object-fit: cover;
 }
 
-/* Main Section */
 .main-content {
   background-color: #e9dbc0;
   flex: 1;
   padding: 40px;
 }
 
-/* Buttons */
 .button-container {
   display: flex;
   gap: 10px;
@@ -241,11 +229,6 @@ html {
   font-size: 1rem;
 }
 
-/* .overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-} */
 .hero {
   background-image: url("/images/homepage.png");
   background-size: cover;
@@ -410,14 +393,12 @@ html {
   }
 }
 
-/* ===== New Arrivals – screenshot style ===== */
 .na-page {
   min-height: 100vh;
   background: #000;
   color: #fff;
 }
 
-/* (you can delete .na-header/.na-left/.na-nav blocks if not used) */
 .na-header {
   display: flex;
   align-items: center;
