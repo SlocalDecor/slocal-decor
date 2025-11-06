@@ -16,17 +16,20 @@ html {
   width: 100vw;
 }
 
-/* Top Bar */
+/* ───────── Top Bar (STICKY) ───────── */
 .top-bar {
-  position: fixed;
-  top: 40px;
-  right: 0;
-  left: 0;
+  position: sticky; /* <-- sticky instead of fixed */
+  top: 0; /* pin to top */
+  z-index: 1000; /* stay above page content */
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: transparent;
-  padding: 15px 20px;
+
+  height: 72px; /* pick a consistent height */
+  padding: 0 20px;
+  background-color: #c2b59b; /* your beige bar */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   font-weight: bold;
   font-size: 1rem;
 }
@@ -153,20 +156,14 @@ html {
   width: 100vw;
 }
 
-/* Top Bar */
-.top-bar {
-  background-color: #c2b59b;
-  padding: 15px 20px;
-  text-align: left;
-  font-weight: bold;
-  font-size: 1rem;
-}
+/* (removed the second .top-bar block that caused conflicts) */
 
 /* Content Layout */
 .content {
   display: flex;
   flex: 1;
 }
+
 /* Sidebar */
 .sidebar {
   background-color: #000;
@@ -243,6 +240,7 @@ html {
   margin: 5px 0;
   font-size: 1rem;
 }
+
 /* .overlay {
   position: absolute;
   inset: 0;
@@ -411,6 +409,7 @@ html {
     margin-bottom: 6px;
   }
 }
+
 /* ===== New Arrivals – screenshot style ===== */
 .na-page {
   min-height: 100vh;
@@ -418,7 +417,7 @@ html {
   color: #fff;
 }
 
-/* Header bar */
+/* (you can delete .na-header/.na-left/.na-nav blocks if not used) */
 .na-header {
   display: flex;
   align-items: center;
@@ -436,7 +435,7 @@ html {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  border: 3px solid #f1dfb6; /* warm cream ring */
+  border: 3px solid #f1dfb6;
   background:
     radial-gradient(ellipse at 40% 35%, #f1dfb6 0 64%, transparent 66%),
     radial-gradient(ellipse at 60% 65%, #e8c98c 0 64%, transparent 66%);

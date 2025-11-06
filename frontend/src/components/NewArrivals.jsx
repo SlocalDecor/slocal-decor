@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import NavBar from "./NavBar";
 
 const MOCK_ITEMS = [
   {
@@ -98,23 +99,8 @@ export default function NewArrivals() {
 
   return (
     <div className="na-page">
-      {/* Top header bar like your screenshot */}
-      <header className="na-header">
-        <div className="na-left">
-          <div className="na-logo" aria-hidden="true" />
-          <div className="na-brand">slocal decor</div>
-        </div>
-
-        <nav className="na-nav">
-          <a className="na-link na-link-active" href="#">
-            New Arrivals
-          </a>
-          <a className="na-link" href="#">
-            Saved Items
-          </a>
-          <div className="na-avatar" aria-hidden="true" />
-        </nav>
-      </header>
+      {/* Reuse your shared nav bar */}
+      <NavBar />
 
       {/* Page title */}
       <h1 className="na-title">New Arrivals</h1>
