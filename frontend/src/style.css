@@ -16,17 +16,20 @@ html {
   width: 100vw;
 }
 
-/* Top Bar */
 .top-bar {
-  position: fixed;
-  top: 40px;
-  right: 0;
-  left: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: transparent;
-  padding: 15px 20px;
+
+  height: 72px;
+  padding: 0 20px;
+  background-color: #000;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   font-weight: bold;
   font-size: 1rem;
 }
@@ -61,13 +64,11 @@ html {
   text-decoration: none;
 }
 
-/* Content Layout */
 .content {
   display: flex;
   flex: 1;
 }
 
-/* Sidebar */
 .sidebar {
   background-color: #000;
   color: white;
@@ -86,14 +87,12 @@ html {
   object-fit: cover;
 }
 
-/* Main Section */
 .main-content {
   background-color: #e9dbc0;
   flex: 1;
   padding: 40px;
 }
 
-/* Buttons */
 .button-container {
   display: flex;
   gap: 10px;
@@ -119,7 +118,6 @@ html {
   opacity: 0.9;
 }
 
-/* Items */
 .item-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -145,7 +143,6 @@ html {
   font-size: 1rem;
 }
 
-/* Layout */
 .user-page {
   display: flex;
   flex-direction: column;
@@ -153,21 +150,11 @@ html {
   width: 100vw;
 }
 
-/* Top Bar */
-.top-bar {
-  background-color: #c2b59b;
-  padding: 15px 20px;
-  text-align: left;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-/* Content Layout */
 .content {
   display: flex;
   flex: 1;
 }
-/* Sidebar */
+
 .sidebar {
   background-color: #000;
   color: white;
@@ -186,14 +173,12 @@ html {
   object-fit: cover;
 }
 
-/* Main Section */
 .main-content {
   background-color: #e9dbc0;
   flex: 1;
   padding: 40px;
 }
 
-/* Buttons */
 .button-container {
   display: flex;
   gap: 10px;
@@ -243,11 +228,7 @@ html {
   margin: 5px 0;
   font-size: 1rem;
 }
-/* .overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-} */
+
 .hero {
   background-image: url("/images/homepage.png");
   background-size: cover;
@@ -409,5 +390,138 @@ html {
   }
   .login-label {
     margin-bottom: 6px;
+  }
+}
+
+.na-page {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+}
+
+.na-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 36px;
+}
+
+.na-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.na-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid #f1dfb6;
+  background:
+    radial-gradient(ellipse at 40% 35%, #f1dfb6 0 64%, transparent 66%),
+    radial-gradient(ellipse at 60% 65%, #e8c98c 0 64%, transparent 66%);
+}
+
+.na-brand {
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.na-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.na-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  opacity: 0.9;
+}
+.na-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.na-link-active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.na-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background:
+    radial-gradient(circle at 50% 35%, #fff 0 26%, transparent 28%),
+    radial-gradient(circle at 50% 70%, #fff 0 26%, transparent 28%);
+}
+
+.na-title {
+  text-align: center;
+  margin: 12px 0 36px;
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.na-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 48px 64px;
+  max-width: 1200px;
+  margin: 0 auto 80px;
+  padding: 0 40px;
+}
+
+.na-item {
+  text-align: center;
+}
+
+.na-img-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.na-item .item-img {
+  width: 210px;
+  height: 210px;
+  object-fit: cover;
+  background: #111;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  transition:
+    outline-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.na-item:hover .item-img {
+  outline: 6px solid #3ee0c4;
+  outline-offset: 4px;
+  transform: translateY(-2px);
+}
+
+.na-name {
+  margin-top: 10px;
+  color: #fff;
+  font-weight: 600;
+}
+.na-owner {
+  color: #e9e7df;
+  opacity: 0.9;
+}
+
+@media (max-width: 720px) {
+  .na-header {
+    padding: 14px 18px;
+  }
+  .na-gallery {
+    gap: 32px 28px;
+    padding: 0 18px;
   }
 }
