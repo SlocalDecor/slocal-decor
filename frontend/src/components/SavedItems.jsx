@@ -100,24 +100,23 @@ export default function SavedItems() {
 
   return (
     <div>
-        
-        <div className="na-page">
-        <NavBar/>
+      <div className="na-page">
+        <NavBar />
         <h1 className="na-title">Saved Items</h1>
 
         <section className="na-gallery item-gallery">
-            {items.map((it) => (
+          {items.map((it) => (
             <article key={it.id} className="item na-item">
-                <div className="na-img-wrap">
+              <div className="na-img-wrap">
                 <span className="si-flag" aria-hidden="true" />
                 <img className="item-img" src={it.imageUrl} alt={it.name} />
-                </div>
-                <div className="item-name na-name">{it.name}</div>
-                <div className="item-owner na-owner">{it.owner}</div>
+              </div>
+              <div className="item-name na-name">{it.name}</div>
+              <div className="item-owner na-owner">{it.owner}</div>
             </article>
-            ))}
+          ))}
         </section>
-        </div>
+      </div>
     </div>
-  );       
+  );
 }
