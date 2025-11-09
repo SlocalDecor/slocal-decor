@@ -6,6 +6,8 @@ import SignUp from "./components/SignUp.jsx";
 import NewArrivals from "./components/NewArrivals.jsx";
 import SavedItems from "./components/SavedItems.jsx";
 import "./style.css";
+import SignUp from "./components/SignUp.jsx";
+import UserLogin from "./components/UserLogin.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
