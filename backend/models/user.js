@@ -32,6 +32,11 @@ const UserSchema = new mongoose.Schema(
       ],
       default: [],
     },
+    passwordHash: {
+      type: String,
+      required: true,
+      select: false,
+    },
   },
   { collection: "users" }
 );
