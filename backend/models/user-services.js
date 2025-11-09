@@ -29,6 +29,12 @@ function findUserById(userId) {
   return promise;
 }
 
+function findUserForLogin(email) {
+  const user = userModel.findOne({ email: email }).select('+passwordHash');;
+  const promise = Promise.all([user]);
+  return promise;
+}
+
 function getUsers() {
   const users = userModel.find({});
   const promise = Promise.all([users]);
@@ -39,5 +45,6 @@ export default {
   addUser,
   deleteUser,
   findUserById,
+  findUserForLogin,
   getUsers,
 };

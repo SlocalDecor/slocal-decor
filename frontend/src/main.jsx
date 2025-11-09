@@ -5,15 +5,15 @@ import HomePage from "./components/HomePage";
 import SignUp from "./components/SignUp.jsx";
 import NewArrivals from "./components/NewArrivals.jsx";
 import SavedItems from "./components/SavedItems.jsx";
+import UserLogin from "./components/UserLogin.jsx";
+import { BrowserRouter } from "react-router-dom";
+import App from "./components/MyApp.jsx";
 import "./style.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <SavedItems />
-    {/* <SignUp /> */}
-    {/*<UserPage />*/}
-    {/* <HomePage /> */}
-    {/* <UserPage /> */}
-    {/* <NewArrivals/> */}
-  </React.StrictMode>
+    <React.StrictMode>
+    <BrowserRouter>
+      <App /> 
+    </BrowserRouter>
+    </React.StrictMode>
 );
