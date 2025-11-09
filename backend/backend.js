@@ -146,12 +146,12 @@ function isValidEmail(email) {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  let newUser = {}
+  let newUser = {};
   if (!userToAdd["name"] || userToAdd["name"] === "") {
     console.log("Invalid or missing name");
     return res.status(400).send("Invalid or missing name");
   }
-  newUser["name"] = userToAdd["name"] ;
+  newUser["name"] = userToAdd["name"];
   if (
     !userToAdd["email"] ||
     userToAdd["email"] === "" ||
@@ -171,18 +171,18 @@ app.post("/users", (req, res) => {
     return res.status(400).send("Password should be at least 8 characters");
   }
   bcrypt
-      .genSalt(10)
-      .then((salt) => bcrypt.hash(userToAdd["password"], salt))
-      .then((hashedPassword) => {
-        newUser["passwordHash"] = hashedPassword
-        console.log(newUser) ;
-        return userServices.addUser(newUser)})
-      .then((result) => res.status(201).send(result))
-      .catch((error) => {
-          console.log(error);
-          res.status(500).end();
-      }); 
-    
+    .genSalt(10)
+    .then((salt) => bcrypt.hash(userToAdd["password"], salt))
+    .then((hashedPassword) => {
+      newUser["passwordHash"] = hashedPassword;
+      console.log(newUser);
+      return userServices.addUser(newUser);
+    })
+    .then((result) => res.status(201).send(result))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).end();
+    });
 });
 
 app.listen(port, () => {
