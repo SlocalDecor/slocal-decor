@@ -14,5 +14,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     {/* <UserLogin /> */}
     {/* <HomePage /> */}
     {/* <UserPage /> */}
+    {/* <NewArrivals/> */}
   </React.StrictMode>
 );
