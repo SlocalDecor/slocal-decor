@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import React, { useState } from "react";
 import "../style.css";
 
 export default function SignUp() {
@@ -19,16 +20,12 @@ export default function SignUp() {
 
   const submitSignUp = (e) => {
     e.preventDefault();
-
-    const { name, phone, email, password } = formData;
-    const payload = { name, phone, email };
-    console.log(payload);
     fetch("http://localhost:8000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(formData),
     })
       .then((response) => {
         if (!response.ok) {
@@ -58,7 +55,7 @@ export default function SignUp() {
             <label> Name: </label>
             <input
               type="text"
-              placeholder="Enter your first name"
+              placeholder="Enter your full name"
               name="name"
               value={formData.name}
               onChange={handleChange}
