@@ -145,7 +145,7 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-app.post("/users", (req, res) => {
+app.post("/signup", (req, res) => {
   console.log("hit the endpoint");
   const userToAdd = req.body;
   let newUser = {};

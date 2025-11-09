@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import React, { useState } from "react";
 import "../style.css";
 
 export default function SignUp() {
@@ -20,7 +19,7 @@ export default function SignUp() {
 
   const submitSignUp = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8000/users", {
+    fetch("http://localhost:8000/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
