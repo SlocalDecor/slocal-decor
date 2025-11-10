@@ -10,7 +10,7 @@ import UserLogin from "./components/UserLogin.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <SignUp />
+    <NewItem />
     {/*<UserPage />*/}
     {/* <HomePage /> */}
     {/* <UserPage /> */}
