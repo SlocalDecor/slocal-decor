@@ -8,7 +8,6 @@ import cors from "cors";
 
 const app = express();
 const port = 8000;
-
 app.use(cors());
 app.use(express.json());
 
@@ -147,8 +146,8 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// for log in
 app.post("/signup", (req, res) => {
+  console.log("hit the endpoint");
   const userToAdd = req.body;
   let newUser = {};
   if (!userToAdd["name"] || userToAdd["name"] === "") {
