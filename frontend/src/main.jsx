@@ -6,12 +6,12 @@ import NewItem from "./components/NewItem.jsx";
 //import UserPage from "./components/UserProfile.jsx";
 //import HomePage from "./components/HomePage";
 import "./style.css";
+import UserLogin from "./components/UserLogin.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <NewItem />
-    {/* <NewArrivals /> */}
-    {/* <UserLogin /> */}
+    <SignUp />
+    {/*<UserPage />*/}
     {/* <HomePage /> */}
     {/* <UserPage /> */}
     {/* <NewArrivals/> */}
