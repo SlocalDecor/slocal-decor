@@ -1,11 +1,13 @@
 import express from "express";
+import bcrypt from "bcrypt";
 import artServices from "./models/art-services.js";
 import userServices from "./models/user-services.js";
 import User from "./models/user.js";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
-
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -143,12 +145,15 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-app.post("/users", (req, res) => {
+app.post("/signup", (req, res) => {
+  console.log("hit the endpoint");
   const userToAdd = req.body;
+  let newUser = {};
   if (!userToAdd["name"] || userToAdd["name"] === "") {
     console.log("Invalid or missing name");
     return res.status(400).send("Invalid or missing name");
   }
+  newUser["name"] = userToAdd["name"];
   if (
     !userToAdd["email"] ||
     userToAdd["email"] === "" ||
@@ -157,14 +162,27 @@ app.post("/users", (req, res) => {
     console.log("Invalid or missing email");
     return res.status(400).send("Invalid or missing email");
   }
+  newUser["email"] = userToAdd["email"];
   if (!userToAdd["phone"]) {
     console.log("Missing phone number");
     return res.status(400).send("Missing phone number");
   }
-  userServices
-    .addUser(userToAdd)
+  newUser["phone"] = userToAdd["phone"];
+  if (!userToAdd["password"] || userToAdd["password"].length < 8) {
+    console.log("Missing password");
+    return res.status(400).send("Password should be at least 8 characters");
+  }
+  bcrypt
+    .genSalt(10)
+    .then((salt) => bcrypt.hash(userToAdd["password"], salt))
+    .then((hashedPassword) => {
+      newUser["passwordHash"] = hashedPassword;
+      console.log(newUser);
+      return userServices.addUser(newUser);
+    })
     .then((result) => res.status(201).send(result))
     .catch((error) => {
+      console.log(error);
       res.status(500).end();
     });
 });

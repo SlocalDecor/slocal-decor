@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import NavBar from "./NavBar";
+import "../style.css";
 
 const MOCK_ITEMS = [
   {
@@ -88,7 +89,7 @@ const MOCK_ITEMS = [
   },
 ];
 
-export default function NewArrivals() {
+export default function SavedItems() {
   const items = useMemo(
     () =>
       [...MOCK_ITEMS].sort(
@@ -99,26 +100,24 @@ export default function NewArrivals() {
   );
 
   return (
-    <div className="na-page">
-      {/* Reuse your shared nav bar */}
-      <NavBar />
+    <div>
+      <div className="na-page">
+        <NavBar />
+        <h1 className="na-title">Saved Items</h1>
 
-      {/* Page title */}
-      <h1 className="na-title">New Arrivals</h1>
-
-      {/* Gallery */}
-      <section className="na-gallery item-gallery">
-        {items.map((it) => (
-          <article key={it.id} className="item na-item">
-            <div className="na-img-wrap">
-              <span className="na-flag" aria-hidden="true" />
-              <img className="item-img" src={it.picture} alt={it.title} />
-            </div>
-            <div className="item-name na-name">{it.title}</div>
-            <div className="item-owner na-owner">{it.owner}</div>
-          </article>
-        ))}
-      </section>
+        <section className="na-gallery item-gallery">
+          {items.map((it) => (
+            <article key={it.id} className="item na-item">
+              <div className="na-img-wrap">
+                <span className="si-flag" aria-hidden="true" />
+                <img className="item-img" src={it.picture} alt={it.title} />
+              </div>
+              <div className="item-name na-name">{it.title}</div>
+              <div className="item-owner na-owner">{it.owner}</div>
+            </article>
+          ))}
+        </section>
+      </div>
     </div>
   );
 }
