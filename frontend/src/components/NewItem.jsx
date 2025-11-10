@@ -1,4 +1,3 @@
-// NewItem.jsx
 import React from "react";
 import NavBar from "./NavBar";
 
@@ -15,7 +14,26 @@ export default function NewItem() {
     artType: "painting",
   };
 
-  const ownerName = "John Doe";
+  const [ownerName, setOwnerName] = React.useState("");
+
+  React.useEffect(() => {
+    async function fetchOwner() {
+      try {
+        const res = await fetch(`/users/${art.owner}`);
+        if (!res.ok) throw new Error("Failed to fetch owner");
+        const data = await res.json();
+
+        const user =
+          Array.isArray(data) && Array.isArray(data[0]) ? data[0][0] : null;
+
+        setOwnerName(user?.name || "Unknown artist");
+      } catch (err) {
+        console.error(err);
+        setOwnerName("Unknown artist");
+      }
+    }
+    fetchOwner();
+  }, [art.owner]);
 
   const formatDims = (h, w, unit = "inches") => `${h} × ${w} ${unit}`;
   const formatDate = (d) =>
@@ -30,7 +48,6 @@ export default function NewItem() {
   return (
     <div className="na-page">
       <NavBar />
-
       <section className="item-section">
         <div className="item-left">
           <div className="item-frame">
@@ -42,7 +59,7 @@ export default function NewItem() {
           <h1 className="item-title-large">
             {art.title}
             <br />
-            <span className="item-owner-large">by {ownerName}</span>
+            <span className="item-owner-large">by {ownerName || "…"}</span>
           </h1>
 
           <div className="item-meta-large">
