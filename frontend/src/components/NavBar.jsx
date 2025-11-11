@@ -5,7 +5,7 @@ function NavBar() {
   return (
     <nav className="top-bar">
       <div className="left-logo">
-        <a href="/home">
+        <a href="/">
           <img src="/images/logo.png" alt="Logo" />
         </a>
       </div>
