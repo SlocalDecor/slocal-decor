@@ -5,7 +5,7 @@ import "../style.css";
 function HomePage() {
   return (
     <div className="home">
-      <NavBar /> {/* MOVED: out of .hero */}
+      <NavBar /> {}
       <div className="hero">
         <div className="overlay" />
         <h1 className="main-text">slocal decor</h1>
