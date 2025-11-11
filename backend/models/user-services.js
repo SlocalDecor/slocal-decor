@@ -30,7 +30,7 @@ function findUserById(userId) {
 }
 
 function findUserForLogin(email) {
-  const user = userModel.findOne({ email: email }).select('+passwordHash');;
+  const user = userModel.findOne({ email: email }).select("+passwordHash");
   const promise = Promise.all([user]);
   return promise;
 }

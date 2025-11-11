@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../style.css";
 
-export default function UserLogin({onLoginSuccess}) {
+export default function UserLogin({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [pwd, setPwd] = useState("");
   const navigate = useNavigate();
@@ -12,7 +12,6 @@ export default function UserLogin({onLoginSuccess}) {
     // TODO: hook to your auth
     console.log({ username, pwd });
   };
-
   const submitLogIn = (e) => {
     e.preventDefault();
     fetch("http://localhost:8000/login", {
@@ -20,7 +19,7 @@ export default function UserLogin({onLoginSuccess}) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({email: username, password: pwd}),
+      body: JSON.stringify({ email: username, password: pwd }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -28,16 +27,16 @@ export default function UserLogin({onLoginSuccess}) {
             throw new Error(err.error || "Username or password is invalid");
           });
         }
-        return response.json()
+        return response.json();
       })
       .then((res) => {
         onLoginSuccess(res.token);
         navigate("/", { replace: true });
       })
-      .catch((err)=>console.log(err));
-    
+      .catch((err) => console.log(err));
+
     return;
-  }
+  };
   return (
     <div className="login-screen">
       <div className="login-panel">
