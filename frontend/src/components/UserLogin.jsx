@@ -12,7 +12,6 @@ export default function UserLogin({ onLoginSuccess }) {
     // TODO: hook to your auth
     console.log({ username, pwd });
   };
-
   const submitLogIn = (e) => {
     e.preventDefault();
     fetch("http://localhost:8000/login", {
