@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/backend.js",
+    "build": "cd frontend && npm run build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
@@ -24,6 +25,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.5"
   }
 }
