@@ -12,22 +12,35 @@ import UserPage from "./UserProfile.jsx";
 const INVALID_TOKEN = "INVALID_TOKEN";
 
 export default function App() {
-  const [token, setToken] = useState(() => sessionStorage.getItem("token"));
+  const [token, setToken] = useState(() => {
+    const booted = sessionStorage.getItem("booted");
+    if (!booted) {
+      sessionStorage.setItem("booted", "1");
+      sessionStorage.removeItem("token");
+      return null; // start NOT logged in
+    }
+    return sessionStorage.getItem("token");
+  });
 
   useEffect(() => {
-    if (token && token !== INVALID_TOKEN)
+    if (token && token !== INVALID_TOKEN) {
       sessionStorage.setItem("token", token);
-    else sessionStorage.removeItem("token");
+    } else {
+      sessionStorage.removeItem("token");
+    }
   }, [token]);
 
   const isLoggedIn = token && token !== INVALID_TOKEN;
 
   const handleLoginSuccess = (validToken) => {
-    if (validToken && validToken !== INVALID_TOKEN) setToken(validToken);
+    if (validToken && validToken !== INVALID_TOKEN) {
+      setToken(validToken);
+    }
   };
 
   return (
     <Routes>
+      {/* Always accessible login route */}
       <Route
         path="/login"
         element={
@@ -40,6 +53,7 @@ export default function App() {
       />
 
       {isLoggedIn ? (
+        // All logged-in pages under Layout (navbar + content)
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="new_arrivals" element={<NewArrivals />} />
