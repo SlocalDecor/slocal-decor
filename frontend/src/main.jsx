@@ -17,7 +17,7 @@ import UserLogin from "./components/UserLogin.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <NewItem />
+    <HomePage />
     {/* <UserLogin /> */}
     {/* <HomePage /> */}
     {/* <UserPage /> */}
