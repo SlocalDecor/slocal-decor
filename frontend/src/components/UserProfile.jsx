@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../style.css";
 
-function UserPage() {
+function UserProfile() {
   const [activeTab, setActiveTab] = useState("published");
 
   const publishedItems = [
@@ -59,4 +59,4 @@ function UserPage() {
   );
 }
 
-export default UserPage;
+export default UserProfile;
