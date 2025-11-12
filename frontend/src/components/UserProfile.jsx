@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import NavBar from "./NavBar";
 import "../style.css";
 
 function UserPage() {
@@ -18,8 +17,6 @@ function UserPage() {
 
   return (
     <div className="user-page">
-      <NavBar />
-
       <div className="content">
         <div className="sidebar">
           <img

@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import NavBar from "./NavBar";
 import "../style.css";
 
 const MOCK_ITEMS = [
@@ -102,7 +101,6 @@ export default function SavedItems() {
   return (
     <div>
       <div className="na-page">
-        <NavBar />
         <h1 className="na-title">Saved Items</h1>
 
         <section className="na-gallery item-gallery">

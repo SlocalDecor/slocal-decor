@@ -1,29 +1,29 @@
 import React from "react";
+import { NavLink } from "react-router-dom"; // <-- use NavLink
 import "../style.css";
 
 function NavBar() {
   return (
     <nav className="top-bar">
       <div className="left-logo">
-        <a href="/">
+        <NavLink to="/" end>
           <img src="/images/logo.png" alt="Logo" />
-        </a>
+        </NavLink>
       </div>
+
       <ul className="nav-links">
         <li>
-          <a href="/new_arrivals">New Arrivals</a>
+          <NavLink to="/new_arrivals">New Arrivals</NavLink>
         </li>
         <li>
-          <a href="/saved_items">Saved Items</a>
+          <NavLink to="/saved_items">Saved Items</NavLink>
         </li>
         <li>
-          <a href="/profile">
+          <NavLink to="/profile">
             <div className="profile-icon">
-              <div className="profile-icon">
-                <img src="/images/defaultprofile.png" alt="Profile" />
-              </div>
+              <img src="/images/defaultprofile.png" alt="Profile" />
             </div>
-          </a>
+          </NavLink>
         </li>
       </ul>
     </nav>

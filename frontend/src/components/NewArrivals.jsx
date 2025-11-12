@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import NavBar from "./NavBar";
 
 const MOCK_ITEMS = [
   {
@@ -100,9 +99,6 @@ export default function NewArrivals() {
 
   return (
     <div className="na-page">
-      {/* Reuse your shared nav bar */}
-      <NavBar />
-
       {/* Page title */}
       <h1 className="na-title">New Arrivals</h1>
 
