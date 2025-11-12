@@ -5,6 +5,13 @@ import NewItem from "./components/NewItem.jsx";
 //import UserLogin from "./components/UserLogin.jsx";
 //import UserPage from "./components/UserProfile.jsx";
 //import HomePage from "./components/HomePage";
+import UserPage from "./components/UserProfile.jsx";
+import HomePage from "./components/HomePage";
+import SignUp from "./components/SignUp.jsx";
+import NewArrivals from "./components/NewArrivals.jsx";
+import SavedItems from "./components/SavedItems.jsx";
+import { BrowserRouter } from "react-router-dom";
+import App from "./components/MyApp.jsx";
 import "./style.css";
 import UserLogin from "./components/UserLogin.jsx";
 
