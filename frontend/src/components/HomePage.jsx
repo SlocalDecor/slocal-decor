@@ -5,7 +5,7 @@ import "../style.css";
 function HomePage() {
   return (
     <div className="home">
-      <NavBar /> {}
+      <NavBar />
       <div className="hero">
         <div className="overlay" />
         <h1 className="main-text">slocal decor</h1>
