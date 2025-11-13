@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import NavBar from "./NavBar";
+import { Link } from "react-router-dom";
 import "../style.css";
 
 const MOCK_ITEMS = [
@@ -108,12 +109,14 @@ export default function SavedItems({ token }) {
         <section className="na-gallery item-gallery">
           {items.map((it) => (
             <article key={it.id} className="item na-item">
-              <div className="na-img-wrap">
-                <span className="si-flag" aria-hidden="true" />
-                <img className="item-img" src={it.picture} alt={it.title} />
-              </div>
-              <div className="item-name na-name">{it.title}</div>
-              <div className="item-owner na-owner">{it.owner}</div>
+              <Link to={`/item/${it._id || it.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                <div className="na-img-wrap">
+                  <span className="si-flag" aria-hidden="true" />
+                  <img className="item-img" src={it.picture} alt={it.title} />
+                </div>
+                <div className="item-name na-name">{it.title}</div>
+                <div className="item-owner na-owner">{it.owner}</div>
+              </Link>
             </article>
           ))}
         </section>

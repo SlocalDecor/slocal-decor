@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
 import "../style.css";
@@ -109,9 +110,11 @@ function UserProfile({ token }) {
           <div className="item-gallery">
             {displayedItems.map((item, index) => (
               <div key={index} className="item">
-                <img src={item.img} alt={item.title} className="item-img" />
-                <p className="item-name">{item.title}</p>
-                <p className="item-owner">{item.author}</p>
+                <Link to={`/item/${item._id || item.id || item.artId || index}`} style={{ textDecoration: "none", color: "inherit" }}>
+                  <img src={item.picture || item.img} alt={item.title} className="item-img" />
+                  <p className="item-name">{item.title}</p>
+                  <p className="item-owner">{item.owner || item.author}</p>
+                </Link>
               </div>
             ))}
           </div>
