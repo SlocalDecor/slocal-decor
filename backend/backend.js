@@ -18,8 +18,8 @@ app.get("/", (req, res) => {
 
 app.get("/art", authenticateUser, (req, res) => {
   let owner;
-  if (req.query.userSpecific==="true") {
-    owner = req.user.id; 
+  if (req.query.userSpecific === "true") {
+    owner = req.user.id;
   }
   const artType = req.query["artType"];
 
@@ -33,7 +33,6 @@ app.get("/art", authenticateUser, (req, res) => {
       res.status(404).send("Art not found");
     });
 });
-
 
 app.post("/art", authenticateUser, (req, res) => {
   const artToAdd = req.body;

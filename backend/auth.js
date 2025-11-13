@@ -32,7 +32,7 @@ export function authenticateUser(req, res, next) {
   } else {
     jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
       if (decoded) {
-        console.log(decoded)
+        console.log(decoded);
         req.user = decoded;
         next();
       } else {
@@ -58,16 +58,16 @@ export function loginUser(req, res) {
       console.log("says it doesnt exist");
       res.status(401).send("Unauthorized");
     } else {
-        id = retrievedUser._id.toString()
+      id = retrievedUser._id.toString();
       bcrypt
         .compare(user["password"], retrievedUser.passwordHash)
         .then((matched) => {
-          console.log("matched",matched);
+          console.log("matched", matched);
           if (matched) {
             const payload = {
-                id: id,
-                email: email,
-              };
+              id: id,
+              email: email,
+            };
             generateAccessToken(payload).then((token) => {
               res.status(200).send({ token: token });
             });
