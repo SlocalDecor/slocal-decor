@@ -17,6 +17,10 @@ https://drive.google.com/file/d/1yIBoLST5h3lNR25slULfy3L7wyctEjFv/view?usp=shari
 
 [Linked here](https://slocaldecor.my.canva.site/slocal-decor)
 
+## User T&C
+[Terms & Conditions - SlocalDecor.pdf](https://github.com/user-attachments/files/23517947/Terms.Conditions.-.SlocalDecor.pdf)
+
+
 ## Contributing
 
 1. After getting your mongo uri add it to a .env file in the backend folder in the following format:
