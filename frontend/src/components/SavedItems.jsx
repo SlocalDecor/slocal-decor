@@ -109,7 +109,10 @@ export default function SavedItems({ token }) {
         <section className="na-gallery item-gallery">
           {items.map((it) => (
             <article key={it.id} className="item na-item">
-              <Link to={`/item/${it._id || it.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+              <Link
+                to={`/item/${it._id || it.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 <div className="na-img-wrap">
                   <span className="si-flag" aria-hidden="true" />
                   <img className="item-img" src={it.picture} alt={it.title} />

@@ -110,8 +110,15 @@ function UserProfile({ token }) {
           <div className="item-gallery">
             {displayedItems.map((item, index) => (
               <div key={index} className="item">
-                <Link to={`/item/${item._id || item.id || item.artId || index}`} style={{ textDecoration: "none", color: "inherit" }}>
-                  <img src={item.picture || item.img} alt={item.title} className="item-img" />
+                <Link
+                  to={`/item/${item._id || item.id || item.artId || index}`}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <img
+                    src={item.picture || item.img}
+                    alt={item.title}
+                    className="item-img"
+                  />
                   <p className="item-name">{item.title}</p>
                   <p className="item-owner">{item.owner || item.author}</p>
                 </Link>

@@ -127,35 +127,54 @@ export default function NewItem({ token }) {
             <p className="item-description">{art.description}</p>
           )}
 
-            <div className="item-btns-large">
-              <button className="btn btn-pill">Add to Saved Art</button>
-              <button
-                className="btn btn-pill"
-                disabled={art.status === "claimed"}
-                onClick={() => setShowContact(true)}
-              >
-                Contact artist
-              </button>
-            </div>
+          <div className="item-btns-large">
+            <button className="btn btn-pill">Add to Saved Art</button>
+            <button
+              className="btn btn-pill"
+              disabled={art.status === "claimed"}
+              onClick={() => setShowContact(true)}
+            >
+              Contact artist
+            </button>
+          </div>
         </div>
       </section>
 
       {showContact && (
         <div className="modal-overlay" onClick={() => setShowContact(false)}>
-          <div className="modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="modal-header">
               <h3>{ownerName || "Artist"}</h3>
-              <button className="modal-close" onClick={() => setShowContact(false)} aria-label="Close">×</button>
+              <button
+                className="modal-close"
+                onClick={() => setShowContact(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
             </div>
 
             <div className="modal-body">
               {ownerEmail ? (
                 <div style={{ display: "grid", gap: 12 }}>
-                  <p>
-                    You can contact the publisher at:
-                  </p>
-                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                    <code style={{ background: "#f4f4f4", padding: "6px 10px", borderRadius: 6 }}>{ownerEmail}</code>
+                  <p>You can contact the publisher at:</p>
+                  <div
+                    style={{ display: "flex", gap: 8, alignItems: "center" }}
+                  >
+                    <code
+                      style={{
+                        background: "#f4f4f4",
+                        padding: "6px 10px",
+                        borderRadius: 6,
+                      }}
+                    >
+                      {ownerEmail}
+                    </code>
                     <button
                       className="btn btn-pill"
                       onClick={async () => {
@@ -178,7 +197,8 @@ export default function NewItem({ token }) {
                     </button>
                   </div>
                   <p style={{ marginTop: 8, color: "#666" }}>
-                    We do not handle messaging on your behalf — please use your email client to reach out.
+                    We do not handle messaging on your behalf — please use your
+                    email client to reach out.
                   </p>
                 </div>
               ) : (
