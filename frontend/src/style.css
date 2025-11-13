@@ -483,7 +483,14 @@ html {
 
 .na-img-wrap {
   position: relative;
-  display: inline-block;
+  display: inline-flex; /* easier centering */
+  justify-content: center; /* center horizontally */
+  align-items: center; /* center vertically */
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  background-color: #f5f5f5; /* visible box for small images */
+  overflow: visible; /* optional: hide overflow for large images */
 }
 
 .na-item .item-img {
