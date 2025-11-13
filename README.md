@@ -10,6 +10,7 @@ https://drive.google.com/file/d/1APZ2Zl_hfeeHJQMYh9hpgpd3iSv8Gs61/view?usp=shari
 https://drive.google.com/file/d/1yIBoLST5h3lNR25slULfy3L7wyctEjFv/view?usp=sharing 
 
 ## Sprints
+
 1. Sprint 1 : https://github.com/users/pihujha/projects/2
 2. Sprint 2 : https://github.com/users/pihujha/projects/5
 
@@ -24,6 +25,7 @@ https://drive.google.com/file/d/1yIBoLST5h3lNR25slULfy3L7wyctEjFv/view?usp=shari
 ```
 MONGO_URI = <connection string>
 ```
+
 2. Linter:
 
 We follow the [Airbnb React/JavaScript Style Guide](https://airbnb.io/javascript/react) using ESLint and Prettier.
