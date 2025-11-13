@@ -57,7 +57,7 @@ function App() {
 
       <Route path="/login" element={<UserLogin onLoginSuccess={setToken} />} />
 
-  <Route path="/signup" element={<SignUp />} />
+      <Route path="/signup" element={<SignUp />} />
 
       <Route
         path="/new_arrivals"
