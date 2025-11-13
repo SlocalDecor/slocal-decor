@@ -605,6 +605,7 @@ html {
 .signup-btn:hover {
   background-color: #d6622d;
   color: white;
+}
 .item-section {
   display: grid;
   grid-template-columns: clamp(320px, 40vw, 560px) 1fr;
