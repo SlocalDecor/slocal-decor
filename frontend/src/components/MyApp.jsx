@@ -58,17 +58,17 @@ function App() {
 
       <Route
         path="/new_arrivals"
-        element={token ? <NewArrivals /> : <Navigate to="/login" />}
+        element={token ? <NewArrivals token={token}/> : <Navigate to="/login" />}
       />
 
       <Route
         path="/saved_items"
-        element={token ? <SavedItems /> : <Navigate to="/login" />}
+        element={token ? <SavedItems token={token}/> : <Navigate to="/login" />}
       />
 
       <Route
         path="/profile"
-        element={token ? <UserProfile /> : <Navigate to="/login" />}
+        element={token ? <UserProfile token={token}/> : <Navigate to="/login" />}
       />
 
       <Route

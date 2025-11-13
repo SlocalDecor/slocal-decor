@@ -59,7 +59,7 @@ export default function NewItem() {
           <h1 className="item-title-large">
             {art.title}
             <br />
-            <span className="item-owner-large">by {ownerName || "…"}</span>
+            <span className="item-owner-large">Owner: {ownerName || "…"}</span>
           </h1>
 
           <div className="item-meta-large">

@@ -1,17 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import "../style.css";
 
-function UserProfile() {
+function UserProfile({token}) {
   const [activeTab, setActiveTab] = useState("published");
 
-  const publishedItems = [
-    { title: "Lemons", author: "John Doe", img: "/images/userpfp.jpg" },
-  ];
+  const [items, setItems] = useState([])
+  const [publishedItems, setPublishedItems] = useState([])
+  const [claimedItems, setClaimedItems] = useState([])
 
-  const claimedItems = [
-    { title: "Sunset Vase", author: "Jane Smith", img: "/images/userpfp.jpg" },
-  ];
+  const fetchArt = () => {
+    console.log("here")
+    fetch("http://localhost:8000/art?userSpecific=true", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log(response)
+      if (!response.ok) {
+        throw new Error("Failed to fetch art");
+      }
+      return response.json();
+    }).then((data) => {
+      console.log(data)
+      setItems(data.art_list);
+      setClaimedItems(data.art_list.filter(art => art.status === "claimed"))
+      setPublishedItems(data.art_list.filter(art => art.status === "unclaimed"))
+    })
+    .catch((err) => {
+      console.error("Error fetching art:", err);
+    });
+  }
+  
+  useEffect(() => {
+    if (token) fetchArt();
+  }, [token]);
 
   const displayedItems =
     activeTab === "published" ? publishedItems : claimedItems;

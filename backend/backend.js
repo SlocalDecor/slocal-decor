@@ -16,9 +16,13 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/art", (req, res) => {
-  const owner = req.query["owner"];
+app.get("/art", authenticateUser, (req, res) => {
+  let owner;
+  if (req.query.userSpecific==="true") {
+    owner = req.user.id; 
+  }
   const artType = req.query["artType"];
+
   artServices
     .getArt(owner, artType)
     .then((result) => {
@@ -29,6 +33,7 @@ app.get("/art", (req, res) => {
       res.status(404).send("Art not found");
     });
 });
+
 
 app.post("/art", authenticateUser, (req, res) => {
   const artToAdd = req.body;

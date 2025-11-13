@@ -88,7 +88,8 @@ const MOCK_ITEMS = [
   },
 ];
 
-export default function NewArrivals() {
+export default function NewArrivals({token}) {
+
   const items = useMemo(
     () =>
       [...MOCK_ITEMS].sort(
