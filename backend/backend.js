@@ -16,9 +16,13 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/art", (req, res) => {
-  const owner = req.query["owner"];
+app.get("/art", authenticateUser, (req, res) => {
+  let owner;
+  if (req.query.userSpecific === "true") {
+    owner = req.user.id;
+  }
   const artType = req.query["artType"];
+
   artServices
     .getArt(owner, artType)
     .then((result) => {
@@ -135,7 +139,7 @@ app.get("/users/:id", authenticateUser, (req, res) => {
         return res.status(404).send("User not found");
       }
       console.log(`Found users`);
-      res.status(200).send(result);
+      res.status(200).send(result[0]);
     })
     .catch((err) => {
       console.error("Error finding user:", err);
