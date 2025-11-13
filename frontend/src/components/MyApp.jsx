@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import UserLogin from "./UserLogin";
+import SignUp from "./SignUp";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./HomePage";
 import NavBar from "./NavBar";
@@ -55,6 +56,8 @@ function App() {
       />
 
       <Route path="/login" element={<UserLogin onLoginSuccess={setToken} />} />
+
+  <Route path="/signup" element={<SignUp />} />
 
       <Route
         path="/new_arrivals"
