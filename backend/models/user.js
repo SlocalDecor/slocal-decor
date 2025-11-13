@@ -32,6 +32,15 @@ const UserSchema = new mongoose.Schema(
       ],
       default: [],
     },
+    savedArt: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Art,
+        },
+      ],
+      default: [],
+    },
     passwordHash: {
       type: String,
       required: true,
