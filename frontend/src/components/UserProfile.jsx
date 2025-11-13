@@ -1,16 +1,41 @@
 import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
 import "../style.css";
 
 function UserProfile({ token }) {
   const [activeTab, setActiveTab] = useState("published");
-
+  const decoded = jwtDecode(token);
   const [items, setItems] = useState([]);
   const [publishedItems, setPublishedItems] = useState([]);
   const [claimedItems, setClaimedItems] = useState([]);
+  const [name, setName] = useState("Name not found");
+  const [bio, setBio] = useState("");
+
+  const fetchUser = () => {
+    fetch(`http://localhost:8000/users/${decoded.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setName(data[0].name);
+        setBio(data[0].bio);
+      })
+      .catch((err) => {
+        console.error("Error fetching user:", err);
+      });
+  };
 
   const fetchArt = () => {
-    console.log("here");
     fetch("http://localhost:8000/art?userSpecific=true", {
       method: "GET",
       headers: {
@@ -41,7 +66,10 @@ function UserProfile({ token }) {
   };
 
   useEffect(() => {
-    if (token) fetchArt();
+    if (token) {
+      fetchArt();
+      fetchUser();
+    }
   }, [token]);
 
   const displayedItems =
@@ -58,8 +86,8 @@ function UserProfile({ token }) {
             alt="profile"
             className="profile-img"
           />
-          <h2>Your Name</h2>
-          <p>bio</p>
+          <h2>{name}</h2>
+          <p>{bio}</p>
         </div>
 
         <div className="main-content">
