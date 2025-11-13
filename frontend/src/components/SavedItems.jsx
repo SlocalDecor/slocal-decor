@@ -89,7 +89,7 @@ const MOCK_ITEMS = [
   },
 ];
 
-export default function SavedItems() {
+export default function SavedItems({ token }) {
   const items = useMemo(
     () =>
       [...MOCK_ITEMS].sort(

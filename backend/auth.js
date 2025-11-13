@@ -3,10 +3,11 @@ import jwt from "jsonwebtoken";
 import userServices from "./models/user-services.js";
 import User from "./models/user.js";
 
-function generateAccessToken(email) {
+function generateAccessToken(payload) {
   return new Promise((resolve, reject) => {
+    console.log(payload);
     jwt.sign(
-      { email: email },
+      { email: payload.email, id: payload.id },
       process.env.TOKEN_SECRET,
       { expiresIn: "1d" },
       (error, token) => {
@@ -31,6 +32,8 @@ export function authenticateUser(req, res, next) {
   } else {
     jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
       if (decoded) {
+        console.log(decoded);
+        req.user = decoded;
         next();
       } else {
         console.log("JWT error:", error);
@@ -45,6 +48,7 @@ export function loginUser(req, res) {
   console.log(user);
   console.log(user["email"]);
   const email = user["email"];
+  let id;
   userServices.findUserForLogin(user["email"]).then((users) => {
     console.log(users);
     const retrievedUser = users[0];
@@ -54,12 +58,17 @@ export function loginUser(req, res) {
       console.log("says it doesnt exist");
       res.status(401).send("Unauthorized");
     } else {
+      id = retrievedUser._id.toString();
       bcrypt
         .compare(user["password"], retrievedUser.passwordHash)
         .then((matched) => {
-          console.log(matched);
+          console.log("matched", matched);
           if (matched) {
-            generateAccessToken(email).then((token) => {
+            const payload = {
+              id: id,
+              email: email,
+            };
+            generateAccessToken(payload).then((token) => {
               res.status(200).send({ token: token });
             });
           } else {
