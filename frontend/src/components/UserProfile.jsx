@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
 import "../style.css";
@@ -11,6 +12,18 @@ function UserProfile({ token }) {
   const [claimedItems, setClaimedItems] = useState([]);
   const [name, setName] = useState("Name not found");
   const [bio, setBio] = useState("");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+
+    fetch("/logout", {
+      method: "POST",
+      credentials: "include"
+    }).catch(() => {});
+
+    window.location.href = "/login";
+
+  };
 
   const fetchUser = () => {
     fetch(`http://localhost:8000/users/${decoded.id}`, {
@@ -88,6 +101,11 @@ function UserProfile({ token }) {
           />
           <h2>{name}</h2>
           <p>{bio}</p>
+          <div className="logout">
+          <button className="btn" onClick={handleLogout}>
+            Logout
+          </button>
+          </div>
         </div>
 
         <div className="main-content">

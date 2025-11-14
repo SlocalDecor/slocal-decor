@@ -195,6 +195,10 @@ app.post("/signup", (req, res) => {
 
 app.post("/login", loginUser);
 
+app.post("/logout", (req, res) => {
+  return res.sendStatus(200);
+});
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
