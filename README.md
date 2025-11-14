@@ -11,13 +11,16 @@ https://drive.google.com/file/d/1APZ2Zl_hfeeHJQMYh9hpgpd3iSv8Gs61/view?usp=shari
 https://drive.google.com/file/d/1yIBoLST5h3lNR25slULfy3L7wyctEjFv/view?usp=sharing
 
 ## Sprints
-
-1. Sprint 1 : https://github.com/users/pihujha/projects/2
-2. Sprint 2 : https://github.com/users/pihujha/projects/5
+1. Sprint 1 : https://github.com/users/pihujha/projects/2; review : https://docs.google.com/presentation/d/18lTTzYz0-P9m4Uj7qvVStkkwZPzBWfS8KKvMeLjEdFw/edit?usp=sharing
+2. Sprint 2 : https://github.com/users/pihujha/projects/5; review : https://www.canva.com/design/DAG4b47p1g8/N2UXPbpEnzFZXpmXhXPRsQ/view?utm_content=DAG4b47p1g8&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h601c39c4cb
 
 ## Working UI
 
 [Linked here](https://slocaldecor.my.canva.site/slocal-decor)
+
+## User T&C
+[Terms & Conditions - SlocalDecor.pdf](https://github.com/user-attachments/files/23517947/Terms.Conditions.-.SlocalDecor.pdf)
+
 
 ## Contributing
 
