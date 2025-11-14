@@ -139,7 +139,6 @@ app.get("/users/:id", authenticateUser, (req, res) => {
         return res.status(404).send("User not found");
       }
       console.log(`Found users`);
-      console.log(result[0]);
       res.status(200).send(result[0]);
     })
     .catch((err) => {
