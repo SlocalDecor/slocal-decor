@@ -26,17 +26,56 @@ export default function SavedItems({ token }) {
       .then((data) => {
         let artPieces = [];
         for (let i = 0; i < data.art_list.length; i++) {
-          if (savedIds.includes(data.art_list[i]._id)) {
-            artPieces.push(data.art_list[i]);
+          let art = data.art_list[i];
+          if (savedIds.includes(art._id)) {
+            if (!art.owner) {
+              artPieces.push({
+                ...art,
+                ownerName: "",
+              });
+              continue;
+            }
+
+            fetch(`http://localhost:8000/users/${art.owner}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((response) => {
+                console.log(response);
+                if (!response.ok) {
+                  throw new Error("Failed to fetch art");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                console.log("data", data);
+                console.log("name", data[0].name);
+                artPieces.push({
+                  ...art,
+                  ownerName: data[0]?.name || "",
+                });
+                setArtItems(artPieces);
+              })
+              .catch((err) => {
+                console.error(`Failed to fetch owner for art ${art._id}:`, err);
+                artPieces.push({
+                  ...art,
+                  ownerName: "",
+                });
+              });
           }
+
+          console.log("artItems", artItems);
         }
         console.log("artPieces", artPieces);
-        setArtItems(artPieces);
-        console.log("artItems", artItems);
       })
       .catch((err) => {
         console.error("Error fetching art:", err);
       });
+    console.log("artItems", artItems);
   };
 
   const getSaved = () => {
@@ -97,7 +136,7 @@ export default function SavedItems({ token }) {
                 <img className="item-img" src={it.picture} alt={it.title} />
               </div>
               <div className="item-name na-name">{it.title}</div>
-              <div className="item-owner na-owner">{it.owner}</div>
+              <div className="item-owner na-owner">{it.ownerName}</div>
             </article>
           ))}
         </section>
