@@ -44,15 +44,12 @@ export default function SavedItems({ token }) {
               },
             })
               .then((response) => {
-                console.log(response);
                 if (!response.ok) {
                   throw new Error("Failed to fetch art");
                 }
                 return response.json();
               })
               .then((data) => {
-                console.log("data", data);
-                console.log("name", data[0].name);
                 artPieces.push({
                   ...art,
                   ownerName: data[0]?.name || "",
@@ -67,15 +64,11 @@ export default function SavedItems({ token }) {
                 });
               });
           }
-
-          console.log("artItems", artItems);
         }
-        console.log("artPieces", artPieces);
       })
       .catch((err) => {
         console.error("Error fetching art:", err);
       });
-    console.log("artItems", artItems);
   };
 
   const getSaved = () => {
