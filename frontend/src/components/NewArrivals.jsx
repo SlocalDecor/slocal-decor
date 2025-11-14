@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
+import useOwners from "../helpers/useOwner";
 
 const MOCK_ITEMS = [
   {
@@ -99,6 +100,9 @@ export default function NewArrivals({ token }) {
     []
   );
 
+  const ownerIds = items.map((it) => it.owner).filter(Boolean);
+  const ownerNames = useOwners(ownerIds, token);
+
   return (
     <div className="na-page">
       {/* Reuse your shared nav bar */}
@@ -120,7 +124,7 @@ export default function NewArrivals({ token }) {
                 <img className="item-img" src={it.picture} alt={it.title} />
               </div>
               <div className="item-name na-name">{it.title}</div>
-              <div className="item-owner na-owner">{it.owner}</div>
+              <div className="item-owner na-owner">{ownerNames[it.owner] || it.owner}</div>
             </Link>
           </article>
         ))}

@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
 import "../style.css";
+import useOwners from "../helpers/useOwner";
 
 export default function SavedItems({ token }) {
   const [artItems, setArtItems] = useState([]);
@@ -84,6 +85,9 @@ export default function SavedItems({ token }) {
     [artItems]
   );
 
+  const ownerIds = items.map((it) => it.owner).filter(Boolean);
+  const ownerNames = useOwners(ownerIds, token);
+
   return (
     <div>
       <div className="na-page">
@@ -102,7 +106,7 @@ export default function SavedItems({ token }) {
                   <img className="item-img" src={it.picture} alt={it.title} />
                 </div>
                 <div className="item-name na-name">{it.title}</div>
-                <div className="item-owner na-owner">{it.owner}</div>
+                <div className="item-owner na-owner">{ownerNames[it.owner] || it.owner}</div>
               </Link>
             </article>
           ))}

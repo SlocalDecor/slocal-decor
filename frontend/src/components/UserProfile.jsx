@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
 import "../style.css";
+import useOwners from "../helpers/useOwner";
 
 function UserProfile({ token }) {
   const [activeTab, setActiveTab] = useState("published");
@@ -76,6 +77,10 @@ function UserProfile({ token }) {
   const displayedItems =
     activeTab === "published" ? publishedItems : claimedItems;
 
+  // resolve owner ids to display names for items
+  const ownerIds = displayedItems.map((it) => it.owner).filter(Boolean);
+  const ownerNames = useOwners(ownerIds, token);
+
   return (
     <div className="user-page">
       <NavBar />
@@ -120,7 +125,7 @@ function UserProfile({ token }) {
                     className="item-img"
                   />
                   <p className="item-name">{item.title}</p>
-                  <p className="item-owner">{item.owner || item.author}</p>
+                  <p className="item-owner">{ownerNames[item.owner] || item.owner || item.author}</p>
                 </Link>
               </div>
             ))}
