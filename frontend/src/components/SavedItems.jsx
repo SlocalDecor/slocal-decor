@@ -63,6 +63,7 @@ export default function SavedItems({ token }) {
                   ...art,
                   ownerName: "",
                 });
+                setArtItems(artPieces);
               });
           }
         }
