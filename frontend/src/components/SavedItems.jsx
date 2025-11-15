@@ -1,7 +1,9 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
+import { Link } from "react-router-dom";
 import "../style.css";
+import useOwners from "../helpers/useOwner";
 
 export default function SavedItems({ token }) {
   const [artItems, setArtItems] = useState([]);
@@ -26,13 +28,47 @@ export default function SavedItems({ token }) {
       .then((data) => {
         let artPieces = [];
         for (let i = 0; i < data.art_list.length; i++) {
-          if (savedIds.includes(data.art_list[i]._id)) {
-            artPieces.push(data.art_list[i]);
+          let art = data.art_list[i];
+          if (savedIds.includes(art._id)) {
+            if (!art.owner) {
+              artPieces.push({
+                ...art,
+                ownerName: "",
+              });
+              setArtItems(artPieces);
+              continue;
+            }
+
+            fetch(`http://localhost:8000/users/${art.owner}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Failed to fetch art");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                artPieces.push({
+                  ...art,
+                  ownerName: data[0]?.name || "",
+                });
+                setArtItems(artPieces);
+              })
+              .catch((err) => {
+                console.error(`Failed to fetch owner for art ${art._id}:`, err);
+                artPieces.push({
+                  ...art,
+                  ownerName: "",
+                });
+                setArtItems(artPieces);
+              });
           }
         }
-        console.log("artPieces", artPieces);
-        setArtItems(artPieces);
-        console.log("artItems", artItems);
       })
       .catch((err) => {
         console.error("Error fetching art:", err);
@@ -83,6 +119,9 @@ export default function SavedItems({ token }) {
     [artItems]
   );
 
+  const ownerIds = items.map((it) => it.owner).filter(Boolean);
+  const ownerNames = useOwners(ownerIds, token);
+
   return (
     <div>
       <div className="na-page">
@@ -92,12 +131,17 @@ export default function SavedItems({ token }) {
         <section className="na-gallery item-gallery">
           {items.map((it) => (
             <article key={it.id} className="item na-item">
-              <div className="na-img-wrap">
-                <span className="si-flag" aria-hidden="true" />
-                <img className="item-img" src={it.picture} alt={it.title} />
-              </div>
-              <div className="item-name na-name">{it.title}</div>
-              <div className="item-owner na-owner">{it.owner}</div>
+              <Link
+                to={`/item/${it._id || it.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <div className="na-img-wrap">
+                  <span className="si-flag" aria-hidden="true" />
+                  <img className="item-img" src={it.picture} alt={it.title} />
+                </div>
+                <div className="item-name na-name">{it.title}</div>
+                <div className="item-owner na-owner">{ownerNames[it.owner] || it.owner}</div>
+              </Link>
             </article>
           ))}
         </section>
