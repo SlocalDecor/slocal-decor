@@ -55,7 +55,10 @@ function App() {
         element={token ? <HomePage /> : <Navigate to="/login" replace />}
       />
 
-      <Route path="/login" element={<UserLogin onLoginSuccess={setToken} />} />
+      <Route
+        path="/login"
+        element={token ? <HomePage /> : <UserLogin onLoginSuccess={setToken} />}
+      />
 
       <Route
         path="/new_arrivals"

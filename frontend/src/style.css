@@ -690,3 +690,9 @@ html {
   color: #074; /* green-ish */
   border: 1px solid #d7f1e7;
 }
+
+.logout{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}

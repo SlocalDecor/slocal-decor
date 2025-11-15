@@ -28,13 +28,47 @@ export default function SavedItems({ token }) {
       .then((data) => {
         let artPieces = [];
         for (let i = 0; i < data.art_list.length; i++) {
-          if (savedIds.includes(data.art_list[i]._id)) {
-            artPieces.push(data.art_list[i]);
+          let art = data.art_list[i];
+          if (savedIds.includes(art._id)) {
+            if (!art.owner) {
+              artPieces.push({
+                ...art,
+                ownerName: "",
+              });
+              setArtItems(artPieces);
+              continue;
+            }
+
+            fetch(`http://localhost:8000/users/${art.owner}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Failed to fetch art");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                artPieces.push({
+                  ...art,
+                  ownerName: data[0]?.name || "",
+                });
+                setArtItems(artPieces);
+              })
+              .catch((err) => {
+                console.error(`Failed to fetch owner for art ${art._id}:`, err);
+                artPieces.push({
+                  ...art,
+                  ownerName: "",
+                });
+                setArtItems(artPieces);
+              });
           }
         }
-        console.log("artPieces", artPieces);
-        setArtItems(artPieces);
-        console.log("artItems", artItems);
       })
       .catch((err) => {
         console.error("Error fetching art:", err);
