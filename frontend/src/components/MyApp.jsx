@@ -7,6 +7,7 @@ import NewArrivals from "./NewArrivals";
 import UserProfile from "./UserProfile";
 import SavedItems from "./SavedItems";
 import NewItem from "./NewItem";
+import SignUp from "./SignUp";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const INVALID_TOKEN = "INVALID_TOKEN";
@@ -65,6 +66,10 @@ function App() {
         element={
           token ? <NewArrivals token={token} /> : <Navigate to="/login" />
         }
+      />
+      <Route
+        path="/signup"
+        element={token ? <Navigate to="/" replace /> : <SignUp />}
       />
 
       <Route
