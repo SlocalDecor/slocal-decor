@@ -140,7 +140,9 @@ export default function SavedItems({ token }) {
                   <img className="item-img" src={it.picture} alt={it.title} />
                 </div>
                 <div className="item-name na-name">{it.title}</div>
-                <div className="item-owner na-owner">{ownerNames[it.owner] || it.owner}</div>
+                <div className="item-owner na-owner">
+                  {ownerNames[it.owner] || it.owner}
+                </div>
               </Link>
             </article>
           ))}
