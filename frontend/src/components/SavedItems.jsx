@@ -1,7 +1,9 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
+import { Link } from "react-router-dom";
 import "../style.css";
+import useOwners from "../helpers/useOwner";
 
 export default function SavedItems({ token }) {
   const [artItems, setArtItems] = useState([]);
@@ -117,6 +119,9 @@ export default function SavedItems({ token }) {
     [artItems]
   );
 
+  const ownerIds = items.map((it) => it.owner).filter(Boolean);
+  const ownerNames = useOwners(ownerIds, token);
+
   return (
     <div>
       <div className="na-page">
@@ -126,12 +131,17 @@ export default function SavedItems({ token }) {
         <section className="na-gallery item-gallery">
           {items.map((it) => (
             <article key={it.id} className="item na-item">
-              <div className="na-img-wrap">
-                <span className="si-flag" aria-hidden="true" />
-                <img className="item-img" src={it.picture} alt={it.title} />
-              </div>
-              <div className="item-name na-name">{it.title}</div>
-              <div className="item-owner na-owner">{it.ownerName}</div>
+              <Link
+                to={`/item/${it._id || it.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <div className="na-img-wrap">
+                  <span className="si-flag" aria-hidden="true" />
+                  <img className="item-img" src={it.picture} alt={it.title} />
+                </div>
+                <div className="item-name na-name">{it.title}</div>
+                <div className="item-owner na-owner">{ownerNames[it.owner] || it.owner}</div>
+              </Link>
             </article>
           ))}
         </section>

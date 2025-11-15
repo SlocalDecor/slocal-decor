@@ -35,6 +35,10 @@ function findArtByOwner(ownerId) {
   return artModel.find({ owner: ownerId });
 }
 
+function findArtById(id) {
+  return artModel.findById(id);
+}
+
 function findArtByType(type) {
   return artModel.find({ artType: type });
 }
@@ -43,4 +47,5 @@ export default {
   addArt,
   deleteArt,
   getArt,
+  findArtById,
 };

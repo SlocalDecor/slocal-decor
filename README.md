@@ -31,6 +31,7 @@ CSC 307 final project
 ```
 MONGO_URI = <connection string>
 ```
+
 2. Linter:
 
 We follow the [Airbnb React/JavaScript Style Guide](https://airbnb.io/javascript/react) using ESLint and Prettier.

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
 import "../style.css";
+import useOwners from "../helpers/useOwner";
 
 function UserProfile({ token }) {
   const [activeTab, setActiveTab] = useState("published");
@@ -88,6 +90,10 @@ function UserProfile({ token }) {
   const displayedItems =
     activeTab === "published" ? publishedItems : claimedItems;
 
+  // resolve owner ids to display names for items
+  const ownerIds = displayedItems.map((it) => it.owner).filter(Boolean);
+  const ownerNames = useOwners(ownerIds, token);
+
   return (
     <div className="user-page">
       <NavBar />
@@ -127,9 +133,18 @@ function UserProfile({ token }) {
           <div className="item-gallery">
             {displayedItems.map((item, index) => (
               <div key={index} className="item">
-                <img src={item.img} alt={item.title} className="item-img" />
-                <p className="item-name">{item.title}</p>
-                <p className="item-owner">{item.author}</p>
+                <Link
+                  to={`/item/${item._id || item.id || item.artId || index}`}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <img
+                    src={item.picture || item.img}
+                    alt={item.title}
+                    className="item-img"
+                  />
+                  <p className="item-name">{item.title}</p>
+                  <p className="item-owner">{ownerNames[item.owner] || item.owner || item.author}</p>
+                </Link>
               </div>
             ))}
           </div>

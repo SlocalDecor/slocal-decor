@@ -34,6 +34,21 @@ app.get("/art", authenticateUser, (req, res) => {
     });
 });
 
+app.get("/art/:id", authenticateUser, (req, res) => {
+  const artId = req.params.id;
+  if (!artId) return res.status(400).send("Missing art ID");
+  artServices
+    .findArtById(artId)
+    .then((result) => {
+      if (!result) return res.status(404).send("Art not found");
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send(err);
+    });
+});
+
 app.post("/art", authenticateUser, (req, res) => {
   const artToAdd = req.body;
   if (!artToAdd["title"] || artToAdd["title"] === "") {
