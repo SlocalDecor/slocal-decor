@@ -48,7 +48,6 @@ export default function SignUp() {
     <div className="signup-page">
       <div className="signup-box">
         <h1 className="signup-title">sign up</h1>
-
         <form className="signup-form">
           <div className="form-row">
             <label> Name: </label>
