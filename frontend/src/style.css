@@ -485,12 +485,12 @@ html {
   position: relative;
   display: inline-flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   width: 200px;
   height: 200px;
   border-radius: 12px;
   background-color: #f5f5f5;
-  overflow: visible; 
+  overflow: visible;
 }
 
 .na-item .item-img {
@@ -721,6 +721,7 @@ html {
   .item-btns-large {
     width: 100%;
   }
+}
 /* Modal / Contact Artist styles */
 .modal-overlay {
   position: fixed;
@@ -800,7 +801,7 @@ html {
   border: 1px solid #d7f1e7;
 }
 
-.logout{
+.logout {
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
