@@ -56,7 +56,7 @@ export function loginUser(req, res) {
     if (!retrievedUser) {
       // invalid username
       console.log("says it doesnt exist");
-      res.status(401).send("Unauthorized");
+      res.status(401).send("User and password don't match");
     } else {
       id = retrievedUser._id.toString();
       bcrypt
@@ -73,11 +73,11 @@ export function loginUser(req, res) {
             });
           } else {
             // invalid password
-            res.status(401).send("Unauthorized");
+            res.status(401).send("User and password don't match");
           }
         })
         .catch(() => {
-          res.status(401).send("Unauthorized");
+          res.status(401).send("User and password don't match");
         });
     }
   });
