@@ -11,7 +11,7 @@ export default function SavedItems({ token }) {
   const decoded = jwtDecode(token);
 
   const getArt = () => {
-    fetch(`http://localhost:8000/art?userSpecific=false`, {
+    fetch(`/api/art?userSpecific=false`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export default function SavedItems({ token }) {
               continue;
             }
 
-            fetch(`http://localhost:8000/users/${art.owner}`, {
+            fetch(`/api/users/${art.owner}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -140,7 +140,9 @@ export default function SavedItems({ token }) {
                   <img className="item-img" src={it.picture} alt={it.title} />
                 </div>
                 <div className="item-name na-name">{it.title}</div>
-                <div className="item-owner na-owner">{ownerNames[it.owner] || it.owner}</div>
+                <div className="item-owner na-owner">
+                  {it.ownerName || it.owner}
+                </div>
               </Link>
             </article>
           ))}

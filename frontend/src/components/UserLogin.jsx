@@ -14,7 +14,7 @@ export default function UserLogin({ onLoginSuccess }) {
   };
   const submitLogIn = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8000/login", {
+    fetch(`/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

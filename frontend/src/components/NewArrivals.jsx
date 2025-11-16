@@ -105,13 +105,10 @@ export default function NewArrivals({ token }) {
 
   return (
     <div className="na-page">
-      {/* Reuse your shared nav bar */}
       <NavBar />
 
-      {/* Page title */}
       <h1 className="na-title">New Arrivals</h1>
 
-      {/* Gallery */}
       <section className="na-gallery item-gallery">
         {items.map((it) => (
           <article key={it.id} className="item na-item">
@@ -124,7 +121,9 @@ export default function NewArrivals({ token }) {
                 <img className="item-img" src={it.picture} alt={it.title} />
               </div>
               <div className="item-name na-name">{it.title}</div>
-              <div className="item-owner na-owner">{ownerNames[it.owner] || it.owner}</div>
+              <div className="item-owner na-owner">
+                {ownerNames[it.owner] || it.owner}
+              </div>
             </Link>
           </article>
         ))}

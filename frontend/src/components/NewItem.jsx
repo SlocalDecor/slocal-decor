@@ -19,7 +19,7 @@ export default function NewItem({ token }) {
     async function fetchArt() {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:8000/art/${id}`, {
+        const res = await fetch(`/api/art/${id}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         if (!res.ok) throw new Error("Failed to fetch art");
@@ -40,7 +40,7 @@ export default function NewItem({ token }) {
 
     async function fetchOwner() {
       try {
-        const res = await fetch(`http://localhost:8000/users/${art.owner}`, {
+        const res = await fetch(`api/users/${art.owner}`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         if (!res.ok) throw new Error("Failed to fetch owner");

@@ -1,13 +1,13 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import artServices from "./models/art-services.js";
+import serverless from "serverless-http";
 import userServices from "./models/user-services.js";
 import User from "./models/user.js";
 import { authenticateUser, loginUser } from "./auth.js";
 import cors from "cors";
 
 const app = express();
-const port = 8000;
 
 app.use(cors());
 app.use(express.json());
@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/art", authenticateUser, (req, res) => {
+app.get("/api/art", authenticateUser, (req, res) => {
   let owner;
   if (req.query.userSpecific === "true") {
     owner = req.user.id;
@@ -34,7 +34,7 @@ app.get("/art", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/art/:id", authenticateUser, (req, res) => {
+app.get("/api/art/:id", authenticateUser, (req, res) => {
   const artId = req.params.id;
   if (!artId) return res.status(400).send("Missing art ID");
   artServices
@@ -49,7 +49,7 @@ app.get("/art/:id", authenticateUser, (req, res) => {
     });
 });
 
-app.post("/art", authenticateUser, (req, res) => {
+app.post("/api/art", authenticateUser, (req, res) => {
   const artToAdd = req.body;
   if (!artToAdd["title"] || artToAdd["title"] === "") {
     console.log("Missing title");
@@ -87,7 +87,7 @@ app.post("/art", authenticateUser, (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
-app.delete("/art/:id", authenticateUser, (req, res) => {
+app.delete("/api/art/:id", authenticateUser, (req, res) => {
   const artId = req.params.id;
   if (!artId) {
     console.log("Missing art ID");
@@ -108,7 +108,7 @@ app.delete("/art/:id", authenticateUser, (req, res) => {
     });
 });
 
-app.delete("/users/:id", authenticateUser, (req, res) => {
+app.delete("/api/users/:id", authenticateUser, (req, res) => {
   const userId = req.params.id;
   if (!userId) {
     console.log("Missing user ID");
@@ -129,7 +129,7 @@ app.delete("/users/:id", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/users", authenticateUser, (req, res) => {
+app.get("/api/users", authenticateUser, (req, res) => {
   userServices
     .getUsers()
     .then((result) => {
@@ -145,7 +145,7 @@ app.get("/users", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/users/:id", authenticateUser, (req, res) => {
+app.get("/api/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   userServices
     .findUserById(id)
@@ -167,7 +167,7 @@ function isValidEmail(email) {
 }
 
 // for log in
-app.post("/signup", (req, res) => {
+app.post("/api/signup", (req, res) => {
   const userToAdd = req.body;
   let newUser = {};
   if (!userToAdd["name"] || userToAdd["name"] === "") {
@@ -208,12 +208,17 @@ app.post("/signup", (req, res) => {
     });
 });
 
-app.post("/login", loginUser);
+app.post("/api/login", loginUser);
 
-app.post("/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {
   return res.sendStatus(200);
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  const port = 8000;
+  app.listen(port, () => {
+    console.log(`Local API server running on http://localhost:${port}`);
+  });
+}
+
+export const handler = serverless(app);

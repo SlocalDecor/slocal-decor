@@ -19,7 +19,7 @@ export default function SignUp() {
 
   const submitSignUp = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8000/signup", {
+    fetch(`/api/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
