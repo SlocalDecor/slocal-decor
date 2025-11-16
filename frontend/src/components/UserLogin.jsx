@@ -25,7 +25,7 @@ export default function UserLogin({ onLoginSuccess }) {
     })
       .then((response) => {
         if (!response.ok) {
-          setError(response.text())
+          setError(response.text());
           return response.json().then((err) => {
             throw new Error(err.error || "Username or password is invalid");
           });
@@ -48,10 +48,7 @@ export default function UserLogin({ onLoginSuccess }) {
           <span className="login-heading-fill">log in</span>
         </h1>
 
-        <ErrorPopup 
-          message={error}
-          onClose={() => setError("")}
-        />
+        <ErrorPopup message={error} onClose={() => setError("")} />
 
         <form className="login-form" onSubmit={onSubmit}>
           <div className="login-row">

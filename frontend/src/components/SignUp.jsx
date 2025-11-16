@@ -30,7 +30,7 @@ export default function SignUp() {
     })
       .then((response) => {
         if (!response.ok) {
-          setError(response.text())
+          setError(response.text());
           return response.json().then((err) => {
             throw new Error(err.error || "Failed to create user");
           });
@@ -49,10 +49,7 @@ export default function SignUp() {
   };
   return (
     <div className="signup-page">
-      <ErrorPopup 
-          message={error}
-          onClose={() => setError("")}
-        />
+      <ErrorPopup message={error} onClose={() => setError("")} />
       <div className="signup-box">
         <h1 className="signup-title">sign up</h1>
 
