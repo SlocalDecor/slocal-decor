@@ -9,7 +9,5 @@
       "src": "frontend/package.json",
       "use": "@vercel/static-build"
     }
-  ],
-
-  "rewrites": [{ "source": "/(.*)", "destination": "frontend/dist/index.html" }]
+  ]
 }
