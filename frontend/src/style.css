@@ -696,3 +696,31 @@ html {
   gap: 10px;
   margin-bottom: 30px;
 }
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup {
+  background: #1d6a7a;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 250px;
+  color:white;
+}
+
+.popup.error {
+  border-left: 6px solid white;
+}
+
+.error-button{
+  padding: 5px;
+  border-radius: 4px;
+  background: #f3e3be;
+  color:#222631;
+}

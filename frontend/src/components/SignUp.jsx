@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import ErrorPopup from "./ErrorPopup";
 import "../style.css";
 
 export default function SignUp() {
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,6 +30,7 @@ export default function SignUp() {
     })
       .then((response) => {
         if (!response.ok) {
+          setError(response.text())
           return response.json().then((err) => {
             throw new Error(err.error || "Failed to create user");
           });
@@ -46,6 +49,10 @@ export default function SignUp() {
   };
   return (
     <div className="signup-page">
+      <ErrorPopup 
+          message={error}
+          onClose={() => setError("")}
+        />
       <div className="signup-box">
         <h1 className="signup-title">sign up</h1>
 
@@ -76,7 +83,7 @@ export default function SignUp() {
             <label>Email: </label>
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Enter your email (must be valid email)"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -87,7 +94,7 @@ export default function SignUp() {
             <label>Password: </label>
             <input
               type="password"
-              placeholder="Enter your password"
+              placeholder="Enter your password (at least 8 characters)"
               name="password"
               value={formData.password}
               onChange={handleChange}
