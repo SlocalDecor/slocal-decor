@@ -35,11 +35,27 @@ html {
   z-index: 10;
 }
 
-.left-logo img {
-  height: 50px;
+.left-logo img,
+.logo-img {
+  height: 48px;
   cursor: pointer;
-  margin-top: 10px;
-  margin-left: 20px;
+  margin: 0;
+  display: block;
+}
+
+.left-logo .logo-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.4px;
 }
 
 .nav-links {
