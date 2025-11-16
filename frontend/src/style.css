@@ -1,3 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap');
+
+/* Marker-like heading font (calm, blobby marker feel) */
+:root {
+  --heading-font: 'Patrick Hand', 'Permanent Marker', system-ui, cursive;
+}
+
+/* Apply the marker font to headings and major titles */
+h1, h2, h3, h4, h5, h6,
+.main-text, .sub-text, .item-name, .item-owner,
+.login-heading-fill, .login-heading-shadow,
+.nav-links a {
+  font-family: var(--heading-font);
+  letter-spacing: 0.4px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
 /* Reset */
 body,
 html {
