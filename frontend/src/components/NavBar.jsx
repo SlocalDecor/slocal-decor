@@ -5,8 +5,9 @@ function NavBar() {
   return (
     <nav className="top-bar">
       <div className="left-logo">
-        <a href="/">
-          <img src="/images/logo.png" alt="Logo" />
+        <a href="/" className="logo-link">
+          <img src="/images/logo.png" alt="Logo" className="logo-img" />
+          <span className="logo-text">Slocal Decor</span>
         </a>
       </div>
       <ul className="nav-links">
