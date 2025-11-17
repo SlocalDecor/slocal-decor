@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CSC 307 final project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node backend/backend.js",
     "build": "cd frontend && npm run build",
