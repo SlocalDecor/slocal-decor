@@ -213,7 +213,7 @@ app.post("/api/logout", (req, res) => {
   return res.sendStatus(200);
 });
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.VERCEL_ENV === undefined) {
   const port = 8000;
   app.listen(port, () => {
     console.log(`Local API server running on http://localhost:${port}`);
