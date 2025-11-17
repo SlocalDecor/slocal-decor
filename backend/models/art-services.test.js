@@ -11,14 +11,12 @@ jest.unstable_mockModule("./art.js", () => {
   mArt.findById = jest
     .fn()
     .mockResolvedValue({ _id: "123", name: "Mocked User" });
-  mArt.find = jest
-    .fn()
-    .mockResolvedValue({
-      _id: "123",
-      name: "Mocked User",
-      owner: "yo",
-      type: "painting",
-    });
+  mArt.find = jest.fn().mockResolvedValue({
+    _id: "123",
+    name: "Mocked User",
+    owner: "yo",
+    type: "painting",
+  });
   mArt.findByIdAndDelete = jest.fn();
 
   return {
@@ -26,9 +24,14 @@ jest.unstable_mockModule("./art.js", () => {
     default: mArt,
   };
 });
-const artServices = await import("./art-services.js"); // this is causing a lint error but we need it for the tests to actually run
-const addArt = artServices.default.addArt;
-const getArt = artServices.default.getArt;
+let addArt;
+let getArt;
+
+beforeAll(async () => {
+  const artServices = await import("./art-services.js");
+  addArt = artServices.default.addArt;
+  getArt = artServices.default.getArt;
+});
 
 describe("artServe tests", () => {
   beforeEach(() => {
