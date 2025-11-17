@@ -703,7 +703,7 @@ html {
   display: block;
   padding: 0px 7px;
   border: none;
-  border-radius: 24px;
+  border-radius: 30px;
   background: var(--button-cream);
   color: var(--button-text);
   font-size: clamp(6px, 1.4vw, 9px);
@@ -800,9 +800,9 @@ html {
 .signup-btn {
   display: block;
   margin: 10px auto 0;
-  padding: 2px 8px; /* smaller padding */
+  padding: 12px 36px; /* smaller padding */
   border: none;
-  border-radius: 4px; /* smaller corners */
+  border-radius: 20px; /* smaller corners */
   background: var(--button-cream, #f5deb3);
   color: var(--button-text, #000);
   font-size: clamp(14px, 1.5vw, 18px); /* smaller text */
