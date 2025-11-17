@@ -699,16 +699,16 @@ html {
 
 /*sign up btn */
 .login-signup-btn {
-  margin: 28px auto 0;
+  margin: 0px auto 0;
   display: block;
   padding: 0px 7px;
   border: none;
   border-radius: 30px;
-  background: var(--button-cream);
-  color: var(--button-text);
+  background: none;
+  color: #ffae42;
   font-size: clamp(6px, 1.4vw, 9px);
   font-family: "Kalam", system-ui, sans-serif;
-  text-decoration: underline;
+  text-decoration: none;
   text-underline-offset: 3px;
   cursor: pointer;
   box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.25);
@@ -719,12 +719,13 @@ html {
 }
 
 .login-signup-btn:hover {
-  filter: brightness(1.03);
+  color: #074;
 }
 
 .login-signup-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.25);
+  color: #074;
+  filter: none;
+  transform: none;
 }
 
 /* Sign Up */
