@@ -88,7 +88,6 @@ export default function UserLogin({ onLoginSuccess }) {
               onClick={() => navigate("/SignUp")}
             >
               <p className="sub-text">new account: click here</p>
-              sign up
             </button>
           </div>
         </form>

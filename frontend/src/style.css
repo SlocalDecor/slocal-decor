@@ -699,14 +699,14 @@ html {
 
 /*sign up btn */
 .login-signup-btn {
-  margin: 36px auto 0;
+  margin: 28px auto 0;
   display: block;
-  padding: 14px 36px;
+  padding: 0px 7px;
   border: none;
-  border-radius: 16px;
+  border-radius: 24px;
   background: var(--button-cream);
   color: var(--button-text);
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(6px, 1.4vw, 9px);
   font-family: "Kalam", system-ui, sans-serif;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -797,21 +797,20 @@ html {
 .form-row input::placeholder {
   color: transparent;
 }
-
 .signup-btn {
   display: block;
-  margin: 40px auto 0;
-  padding: 14px 36px;
+  margin: 10px auto 0;
+  padding: 2px 8px; /* smaller padding */
   border: none;
-  border-radius: 16px;
+  border-radius: 4px; /* smaller corners */
   background: var(--button-cream, #f5deb3);
   color: var(--button-text, #000);
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(14px, 1.5vw, 18px); /* smaller text */
   font-family: "Kalam", system-ui, sans-serif;
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
-  box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2.5px 0 0 rgba(0, 0, 0, 0.25); /* smaller shadow */
   transition:
     transform 0.06s ease,
     box-shadow 0.06s ease,
@@ -819,9 +818,10 @@ html {
 }
 
 .signup-btn:hover {
-  filter: brightness(1.03);
+  filter: brightness(1.05);
 }
+
 .signup-btn:active {
   transform: translateY(2px);
-  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1.5px 0 0 rgba(0, 0, 0, 0.25);
 }
