@@ -50,7 +50,10 @@ function App() {
   }
   return (
     <Routes>
-      <Route path="/" element={token ? <HomePage /> : <HomePage />} />
+      <Route
+        path="/"
+        element={token ? <HomePage /> : <Navigate to="/login" replace />}
+      />
 
       <Route
         path="/login"
