@@ -1,7 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import artServices from "./models/art-services.js";
-import serverless from "serverless-http";
 import userServices from "./models/user-services.js";
 import User from "./models/user.js";
 import { authenticateUser, loginUser } from "./auth.js";
@@ -221,4 +220,4 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-export const handler = serverless(app);
+export default app;
