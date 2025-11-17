@@ -39,6 +39,10 @@ function findArtById(id) {
   return artModel.findById(id);
 }
 
+function updateOwner(id, newOwner) {
+  return artModel.findByIdAndUpdate(id, { owner: newOwner }, { new: true });
+}
+
 function findArtByType(type) {
   return artModel.find({ artType: type });
 }
@@ -48,4 +52,5 @@ export default {
   deleteArt,
   getArt,
   findArtById,
+  updateOwner,
 };
