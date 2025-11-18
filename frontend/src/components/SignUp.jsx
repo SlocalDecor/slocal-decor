@@ -10,7 +10,7 @@ export default function SignUp() {
     phone: "",
     password: "",
   });
-
+  //update
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
