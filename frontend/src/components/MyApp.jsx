@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./HomePage";
 import NavBar from "./NavBar";
 import NewArrivals from "./NewArrivals";
+import SignUp from "./SignUp";
 import UserProfile from "./UserProfile";
 import SavedItems from "./SavedItems";
 import NewItem from "./NewItem";
@@ -58,6 +59,11 @@ function App() {
       <Route
         path="/login"
         element={token ? <HomePage /> : <UserLogin onLoginSuccess={setToken} />}
+      />
+
+      <Route
+        path="/signup"
+        element={token ? <Navigate to="/" replace /> : <SignUp />}
       />
 
       <Route
