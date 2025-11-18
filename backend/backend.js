@@ -11,17 +11,13 @@ import { connectDB } from "./db.js";
 await connectDB();
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Catch-all route for React Router
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
 });
 
 app.get("/api/art", authenticateUser, (req, res) => {
