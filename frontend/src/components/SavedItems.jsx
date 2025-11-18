@@ -51,11 +51,12 @@ export default function SavedItems({ token }) {
               .then((response) => {
                 console.log("getting owner for saved art");
                 if (!response.ok) {
-                  throw new Error("Failed to fetch art");
+                  throw new Error("Failed to fetch owner");
                 }
                 return response.json();
               })
               .then((data) => {
+                console.log("retrieved owner data", data);
                 artPieces.push({
                   ...art,
                   ownerName: data[0]?.name || "",
