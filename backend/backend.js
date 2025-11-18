@@ -6,7 +6,9 @@ import User from "./models/user.js";
 import { authenticateUser, loginUser } from "./auth.js";
 import cors from "cors";
 import { connectDB } from "./db.js";
-await connectDB();
+if (process.env.VERCEL_ENV === undefined) {
+  await connectDB();
+}
 
 const app = express();
 
@@ -209,7 +211,19 @@ app.post("/api/signup", (req, res) => {
     });
 });
 
-app.post("/api/login", loginUser);
+app.post("/api/login", async (req, res) => {
+  const startTime = Date.now();
+  console.log(`[${startTime}] Login request received`);
+
+  try {
+    console.log(`[${Date.now()}] Calling loginUser`);
+    await loginUser(req, res);
+    console.log(`[${Date.now()}] loginUser finished`);
+  } catch (err) {
+    console.error(`[${Date.now()}] Error in /api/login route:`, err);
+    res.status(500).send("Internal server error");
+  }
+});
 
 app.post("/api/logout", (req, res) => {
   return res.sendStatus(200);
