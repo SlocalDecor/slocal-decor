@@ -49,6 +49,7 @@ export default function SavedItems({ token }) {
               },
             })
               .then((response) => {
+                console.log("getting owner for saved art");
                 if (!response.ok) {
                   throw new Error("Failed to fetch art");
                 }
@@ -68,6 +69,7 @@ export default function SavedItems({ token }) {
                   ownerName: "",
                 });
                 setArtItems(artPieces);
+                console.log(artItems);
               });
           }
         }
