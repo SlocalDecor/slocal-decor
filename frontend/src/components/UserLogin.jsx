@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SignUp from "./SignUp";
 import ErrorPopup from "./ErrorPopup";
 import "../style.css";
 
@@ -78,10 +79,22 @@ export default function UserLogin({ onLoginSuccess }) {
               aria-label="Password"
             />
           </div>
-
-          <button className="login-submit" type="submit" onClick={submitLogIn}>
-            submit
-          </button>
+          <div className="login-buttons">
+            <button
+              className="login-submit"
+              type="submit"
+              onClick={submitLogIn}
+            >
+              submit
+            </button>
+            <button
+              type="button"
+              className="login-signup-btn"
+              onClick={() => navigate("/SignUp")}
+            >
+              <p className="sub-text">new account: click here</p>
+            </button>
+          </div>
         </form>
       </div>
     </div>
