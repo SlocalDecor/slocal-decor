@@ -77,7 +77,7 @@ export default function SavedItems({ token }) {
 
   const getSaved = () => {
     console.log(decoded.id);
-    fetch(`/api/users/${decoded.id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
