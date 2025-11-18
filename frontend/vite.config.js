@@ -10,6 +10,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "../backend/public", // Put build files in backend's public folder
+    outDir: "dist",
   },
 });

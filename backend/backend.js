@@ -5,17 +5,18 @@ import userServices from "./models/user-services.js";
 import User from "./models/user.js";
 import { authenticateUser, loginUser } from "./auth.js";
 import cors from "cors";
-import { fileURLToPath } from "url";
-import path from "path";
 import { connectDB } from "./db.js";
 
 await connectDB();
 
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 app.get("/api/art", authenticateUser, (req, res) => {
   let owner;
@@ -213,10 +214,6 @@ app.post("/api/login", loginUser);
 
 app.post("/api/logout", (req, res) => {
   return res.sendStatus(200);
-});
-
-app.get("/:catchAll(.*)", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 if (process.env.VERCEL_ENV === undefined) {
