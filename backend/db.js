@@ -6,8 +6,6 @@ let isConnected = false;
 
 export async function connectDB() {
   if (isConnected) return;
-  console.log("IM HERE");
-  console.log(process.env.MONGO_URI);
 
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
