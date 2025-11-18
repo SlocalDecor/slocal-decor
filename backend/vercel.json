@@ -4,11 +4,7 @@
     {
       "src": "backend.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "src/**/*",
-      "use": "@vercel/static"
     }
   ],
-  "routes": [{ "source": "/(.*)", "destination": "/" }]
+  "routes": [{ "src": "/(.*)", "destination": "/" }]
 }
