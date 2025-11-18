@@ -14,7 +14,8 @@ export default function UserLogin({ onLoginSuccess }) {
   };
   const submitLogIn = (e) => {
     e.preventDefault();
-    fetch(`${import.meta.env.API_URL}/api/login`, {
+    console.log(import.meta.env.VITE_API_URL);
+    fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
