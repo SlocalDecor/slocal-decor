@@ -2,6 +2,6 @@
   "version": 2,
   "routes": [
     { "src": "/api/(.*)", "dest": "/server/api/$1.js" },
-    { "src": "/(.*)", "dest": "/client/build/index.html" }
+    { "src": "/(.*)", "dest": "/frontend/dist/index.html" }
   ]
 }
