@@ -21,34 +21,29 @@ export default function SignUp() {
 
   const submitSignUp = (e) => {
     e.preventDefault();
-    if (!termsCheckbox.checked) {
-      e.preventDefault();
-      setError("You must agree to the Terms and Conditions to sign up.");
-    } else {
-      fetch("http://localhost:8000/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+    fetch("http://localhost:8000/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          setError(response.text());
+          return response.json().then((err) => {
+            throw new Error(err.error || "Failed to create user");
+          });
+        }
+        console.log(response.json());
       })
-        .then((response) => {
-          if (!response.ok) {
-            setError(response.text());
-            return response.json().then((err) => {
-              throw new Error(err.error || "Failed to create user");
-            });
-          }
-          console.log(response.json());
-        })
-        .then((data) => {
-          console.log("User created:", data);
-          setFormData({ name: "", phone: "", email: "", password: "" });
-        })
-        .catch((error) => {
-          console.error("Error:", error.message);
-        });
-    }
+      .then((data) => {
+        console.log("User created:", data);
+        setFormData({ name: "", phone: "", email: "", password: "" });
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+      });
 
     // add auth & route to home
   };
@@ -101,17 +96,6 @@ export default function SignUp() {
               onChange={handleChange}
             />
           </div>
-
-          <label className="terms-label">
-            <input type="checkbox" id="termsCheckbox" required />
-            By signing up, you agree to the
-            <a
-              href="https://github.com/user-attachments/files/23517947/Terms.Conditions.-.SlocalDecor.pdf"
-              download="SlocalDecor-terms-and-conditions.pdf"
-            >
-              Terms and Conditions
-            </a>
-          </label>
 
           <button type="submit" className="signup-btn" onClick={submitSignUp}>
             submit
