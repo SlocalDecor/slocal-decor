@@ -1,8 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@100..900&display=swap');
 
-/* Marker-like heading font (calm, blobby marker feel) */
+
+.sour-gummy {
+  font-family: "Sour Gummy", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* pick whatever weight you want */
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
 :root {
-  --heading-font: "Patrick Hand", "Permanent Marker", system-ui, cursive;
+  --heading-font: "Sour Gummy", sans-serif;
 }
 
 /* Apply the marker font to headings and major titles */
