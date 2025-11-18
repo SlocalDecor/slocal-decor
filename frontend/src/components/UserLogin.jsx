@@ -42,6 +42,11 @@ export default function UserLogin({ onLoginSuccess }) {
   };
   return (
     <div className="login-screen">
+      <div className="auth-header">
+        <img src="/images/logo.png" alt="logo" className="auth-logo" />
+        <div className="auth-brand">Slocal Decor</div>
+      </div>
+
       <div className="login-panel">
         <h1 className="login-heading">
           <span className="login-heading-shadow">log in</span>

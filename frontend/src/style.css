@@ -850,3 +850,29 @@ html {
   background: #f3e3be;
   color: #222631;
 }
+
+.auth-header {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  z-index: 20; /* keeps it above background but below modal */
+}
+
+.auth-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.auth-brand {
+  font-family: var(--heading-font);
+  font-size: 22px;       /* slightly smaller */
+  font-weight: 800;
+  color: var(--text-light);
+  text-shadow: 0 2px 0 rgba(0,0,0,0.35);
+}
