@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@100..900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@100..900&display=swap");
 
 .sour-gummy {
   font-family: "Sour Gummy", sans-serif;
@@ -858,6 +857,26 @@ html {
   margin-bottom: 30px;
 }
 
+.terms-label {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+  font-family: "Kalam", system-ui, sans-serif;
+  font-size: clamp(18px, 2vw, 10px);
+  color: #f2e9da;
+}
+
+.terms-label a {
+  display: inline;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.terms-label a:hover {
+  text-decoration: underline;
+}
+
 /*sign up btn */
 .login-signup-btn {
   margin: 0px auto 0;
@@ -993,6 +1012,15 @@ html {
     align-items: center;
     justify-content: center;
   }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .popup {
