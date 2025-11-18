@@ -14,7 +14,7 @@ export default function UserLogin({ onLoginSuccess }) {
   };
   const submitLogIn = (e) => {
     e.preventDefault();
-    fetch(`/api/login`, {
+    fetch(`${import.meta.env.API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
