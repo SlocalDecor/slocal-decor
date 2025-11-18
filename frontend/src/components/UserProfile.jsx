@@ -20,11 +20,10 @@ function UserProfile({ token }) {
 
     fetch("/logout", {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
     }).catch(() => {});
 
     window.location.href = "/login";
-
   };
 
   const fetchUser = () => {
@@ -108,9 +107,9 @@ function UserProfile({ token }) {
           <h2>{name}</h2>
           <p>{bio}</p>
           <div className="logout">
-          <button className="btn" onClick={handleLogout}>
-            Logout
-          </button>
+            <button className="btn" onClick={handleLogout}>
+              Logout
+            </button>
           </div>
         </div>
 
@@ -143,7 +142,9 @@ function UserProfile({ token }) {
                     className="item-img"
                   />
                   <p className="item-name">{item.title}</p>
-                  <p className="item-owner">{ownerNames[item.owner] || item.owner || item.author}</p>
+                  <p className="item-owner">
+                    {ownerNames[item.owner] || item.owner || item.author}
+                  </p>
                 </Link>
               </div>
             ))}
