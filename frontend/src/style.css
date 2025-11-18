@@ -1,3 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:wght@100..900&display=swap');
+
+
+.sour-gummy {
+  font-family: "Sour Gummy", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* pick whatever weight you want */
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+:root {
+  --heading-font: "Sour Gummy", sans-serif;
+}
+
+/* Apply the marker font to headings and major titles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.main-text,
+.sub-text,
+.item-name,
+.item-owner,
+.login-heading-fill,
+.login-heading-shadow,
+.nav-links a {
+  font-family: var(--heading-font);
+  letter-spacing: 0.4px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
 /* Reset */
 body,
 html {
