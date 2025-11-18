@@ -51,10 +51,9 @@ export default function SignUp() {
     <div className="signup-page">
       <ErrorPopup message={error} onClose={() => setError("")} />
       <div className="signup-box">
-
         <div className="auth-header">
-            <img src="/images/logo.png" alt="logo" className="auth-logo" />
-            <div className="auth-brand">Slocal Decor</div>
+          <img src="/images/logo.png" alt="logo" className="auth-logo" />
+          <div className="auth-brand">Slocal Decor</div>
         </div>
 
         <h1 className="signup-title">sign up</h1>

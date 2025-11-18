@@ -871,8 +871,8 @@ html {
 
 .auth-brand {
   font-family: var(--heading-font);
-  font-size: 22px;       /* slightly smaller */
+  font-size: 22px; /* slightly smaller */
   font-weight: 800;
   color: var(--text-light);
-  text-shadow: 0 2px 0 rgba(0,0,0,0.35);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
 }
