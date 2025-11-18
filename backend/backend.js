@@ -5,6 +5,8 @@ import userServices from "./models/user-services.js";
 import User from "./models/user.js";
 import { authenticateUser, loginUser } from "./auth.js";
 import cors from "cors";
+import { connectDB } from "./db.js";
+await connectDB();
 
 const app = express();
 

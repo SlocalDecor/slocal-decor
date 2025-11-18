@@ -43,42 +43,94 @@ export function authenticateUser(req, res, next) {
   }
 }
 
-export function loginUser(req, res) {
-  const user = req.body; // from form
-  console.log(user);
-  console.log(user["email"]);
-  const email = user["email"];
-  let id;
-  userServices.findUserForLogin(user["email"]).then((users) => {
-    console.log(users);
-    const retrievedUser = users[0];
-    console.log(retrievedUser);
+// export function loginUser(req, res) {
+//   const user = req.body; // from form
+//   console.log(user);
+//   console.log(user["email"]);
+//   const email = user["email"];
+//   let id;
+//   userServices.findUserForLogin(user["email"]).then((users) => {
+//     console.log(users);
+//     const retrievedUser = users[0];
+//     console.log(retrievedUser);
+//     if (!retrievedUser) {
+//       // invalid username
+//       console.log("says it doesnt exist");
+//       res.status(401).send("Unauthorized");
+//     } else {
+//       id = retrievedUser._id.toString();
+//       bcrypt
+//         .compare(user["password"], retrievedUser.passwordHash)
+//         .then((matched) => {
+//           console.log("matched", matched);
+//           if (matched) {
+//             const payload = {
+//               id: id,
+//               email: email,
+//             };
+//             generateAccessToken(payload).then((token) => {
+//               res.status(200).send({ token: token });
+//             });
+//           } else {
+//             // invalid password
+//             res.status(401).send("Unauthorized");
+//           }
+//         })
+//         .catch(() => {
+//           res.status(401).send("Unauthorized");
+//         });
+//     }
+//   });
+// }
+
+export async function loginUser(req, res) {
+  const startTime = Date.now();
+  console.log(`[${startTime}] loginUser started`);
+
+  const user = req.body;
+  console.log(`[${Date.now()}] Request body:`, user);
+
+  const email = user?.email;
+  if (!email) {
+    console.log(`[${Date.now()}] Missing email`);
+    return res.status(400).send("Missing email");
+  }
+
+  try {
+    console.log(`[${Date.now()}] Finding user in DB...`);
+    const users = await userServices.findUserForLogin(email);
+    console.log(`[${Date.now()}] User query returned:`, users);
+
+    const retrievedUser = users?.[0];
     if (!retrievedUser) {
-      // invalid username
-      console.log("says it doesnt exist");
-      res.status(401).send("Unauthorized");
-    } else {
-      id = retrievedUser._id.toString();
-      bcrypt
-        .compare(user["password"], retrievedUser.passwordHash)
-        .then((matched) => {
-          console.log("matched", matched);
-          if (matched) {
-            const payload = {
-              id: id,
-              email: email,
-            };
-            generateAccessToken(payload).then((token) => {
-              res.status(200).send({ token: token });
-            });
-          } else {
-            // invalid password
-            res.status(401).send("Unauthorized");
-          }
-        })
-        .catch(() => {
-          res.status(401).send("Unauthorized");
-        });
+      console.log(`[${Date.now()}] User not found`);
+      return res.status(401).send("Unauthorized");
     }
-  });
+
+    console.log(`[${Date.now()}] Comparing password...`);
+    const matched = await bcrypt.compare(
+      user.password,
+      retrievedUser.passwordHash
+    );
+    console.log(`[${Date.now()}] Password match result:`, matched);
+
+    if (!matched) {
+      console.log(`[${Date.now()}] Invalid password`);
+      return res.status(401).send("Unauthorized");
+    }
+
+    console.log(`[${Date.now()}] Generating JWT...`);
+    const payload = {
+      id: retrievedUser._id.toString(),
+      email: retrievedUser.email,
+    };
+    const token = await generateAccessToken(payload);
+    console.log(`[${Date.now()}] JWT generated`);
+
+    res.status(200).send({ token });
+    console.log(`[${Date.now()}] Response sent successfully`);
+  } catch (err) {
+    console.error(`[${Date.now()}] Error in loginUser:`, err);
+    res.status(500).send("Internal server error");
+  }
 }
