@@ -4,9 +4,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./HomePage";
 import NavBar from "./NavBar";
 import NewArrivals from "./NewArrivals";
+import SignUp from "./SignUp";
 import UserProfile from "./UserProfile";
 import SavedItems from "./SavedItems";
 import NewItem from "./NewItem";
+import SignUp from "./SignUp";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const INVALID_TOKEN = "INVALID_TOKEN";
@@ -61,10 +63,19 @@ function App() {
       />
 
       <Route
+        path="/signup"
+        element={token ? <Navigate to="/" replace /> : <SignUp />}
+      />
+
+      <Route
         path="/new_arrivals"
         element={
           token ? <NewArrivals token={token} /> : <Navigate to="/login" />
         }
+      />
+      <Route
+        path="/signup"
+        element={token ? <Navigate to="/" replace /> : <SignUp />}
       />
 
       <Route
