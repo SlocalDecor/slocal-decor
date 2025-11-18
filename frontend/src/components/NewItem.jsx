@@ -19,9 +19,12 @@ export default function NewItem({ token }) {
     async function fetchArt() {
       try {
         setLoading(true);
-        const res = await fetch(`/api/art/${id}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/art/${id}`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
         if (!res.ok) throw new Error("Failed to fetch art");
         const data = await res.json();
         setArt(data);
@@ -40,9 +43,12 @@ export default function NewItem({ token }) {
 
     async function fetchOwner() {
       try {
-        const res = await fetch(`api/users/${art.owner}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/users/${art.owner}`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
         if (!res.ok) throw new Error("Failed to fetch owner");
         const data = await res.json();
         const user = data && (Array.isArray(data) ? data[0] : data);

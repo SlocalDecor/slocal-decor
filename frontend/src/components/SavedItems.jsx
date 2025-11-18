@@ -11,7 +11,7 @@ export default function SavedItems({ token }) {
   const decoded = jwtDecode(token);
 
   const getArt = () => {
-    fetch(`/api/art?userSpecific=false`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export default function SavedItems({ token }) {
               continue;
             }
 
-            fetch(`/api/users/${art.owner}`, {
+            fetch(`${import.meta.env.VITE_API_URL}/api/users/${art.owner}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",

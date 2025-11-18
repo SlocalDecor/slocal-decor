@@ -9,7 +9,6 @@ export default function UserLogin({ onLoginSuccess }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // TODO: hook to your auth
     console.log({ username, pwd });
   };
   const submitLogIn = (e) => {
