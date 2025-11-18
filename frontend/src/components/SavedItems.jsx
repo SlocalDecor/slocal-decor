@@ -11,6 +11,7 @@ export default function SavedItems({ token }) {
   const decoded = jwtDecode(token);
 
   const getArt = () => {
+    console.log(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`);
     fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`, {
       method: "GET",
       headers: {
@@ -19,6 +20,7 @@ export default function SavedItems({ token }) {
       },
     })
       .then((response) => {
+        console.log("made first request to get art");
         console.log(response);
         if (!response.ok) {
           throw new Error("Failed to fetch art");
