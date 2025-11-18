@@ -6,12 +6,22 @@ import User from "./models/user.js";
 import { authenticateUser, loginUser } from "./auth.js";
 import cors from "cors";
 import { connectDB } from "./db.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 await connectDB();
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// Use CORS middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/", (req, res) => {
