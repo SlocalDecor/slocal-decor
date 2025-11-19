@@ -1,5 +1,6 @@
 import React from "react";
 import NavBar from "./NavBar";
+import { jwtDecode } from "jwt-decode";
 import { useParams } from "react-router-dom";
 
 export default function NewItem({ token }) {
@@ -9,6 +10,7 @@ export default function NewItem({ token }) {
   const [showContact, setShowContact] = React.useState(false);
   const [ownerEmail, setOwnerEmail] = React.useState("");
   const [loading, setLoading] = React.useState(true);
+  const decoded = token ? jwtDecode(token) : null;
 
   React.useEffect(() => {
     if (!id) {
@@ -136,6 +138,67 @@ export default function NewItem({ token }) {
             >
               Contact artist
             </button>
+            {/* transfer ownership button - visible only to current owner */}
+            {decoded && art && String(art.owner) === String(decoded.id) && (
+            <button
+              className="btn btn-pill"
+              onClick={async () => {
+                const newOwnerEmail = window.prompt(
+                  "Enter the email of the new owner:"
+                );
+                if (!newOwnerEmail) return;
+
+                try {
+                  // fetch the user by email
+                  const userRes = await fetch(
+                    `http://localhost:8000/users/email/${encodeURIComponent(newOwnerEmail)}`,
+                    {
+                      headers: token ? { Authorization: `Bearer ${token}` } : {},
+                    }
+                  );
+                  if (!userRes.ok) {
+                    throw new Error("User not found with that email");
+                  }
+
+                  const userData = await userRes.json();
+                  const newOwnerId =
+                    userData?.id || userData?._id || (Array.isArray(userData) && userData[0]?._id);
+
+                  if (!newOwnerId) {
+                    alert("Invalid user information");
+                    return;
+                  }
+
+                  // Call the transfer endpoint
+                  const res = await fetch(
+                    `http://localhost:8000/art/${art._id}/transfer`,
+                    {
+                      method: "PATCH",
+                      headers: {
+                        "Content-Type": "application/json",
+                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                      },
+                      body: JSON.stringify({ newOwner: newOwnerId }),
+                    }
+                  );
+
+                  if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text || "Failed to transfer owner");
+                  }
+
+                  const updated = await res.json();
+                  setArt(updated);
+                  alert("Ownership transferred successfully");
+                } catch (err) {
+                  console.error(err);
+                  alert("Unable to transfer ownership: " + err.message);
+                }
+              }}
+            >
+              Transfer ownership
+            </button>
+          )}
           </div>
         </div>
       </section>
