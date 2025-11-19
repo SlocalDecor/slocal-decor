@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ErrorPopup from "./ErrorPopup";
+import { useNavigate } from "react-router-dom";
 import "../style.css";
 
 export default function SignUp() {
@@ -10,6 +11,7 @@ export default function SignUp() {
     phone: "",
     password: "",
   });
+const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,6 +46,8 @@ export default function SignUp() {
         .then((data) => {
           console.log("User created:", data);
           setFormData({ name: "", phone: "", email: "", password: "" });
+          navigate("/login");
+
         })
         .catch((error) => {
           console.error("Error:", error.message);
