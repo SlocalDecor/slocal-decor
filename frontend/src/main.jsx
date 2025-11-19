@@ -5,10 +5,21 @@ import HomePage from "./components/HomePage";
 import SignUp from "./components/SignUp.jsx";
 import NewArrivals from "./components/NewArrivals.jsx";
 import SavedItems from "./components/SavedItems.jsx";
+import NewItem from "./components/NewItem.jsx";
 import { BrowserRouter } from "react-router-dom";
 import App from "./components/MyApp.jsx";
 import "./style.css";
 import UserLogin from "./components/UserLogin.jsx";
+
+
+// ReactDOM.createRoot(document.getElementById("root")).render(
+//   <React.StrictMode>
+//     <NewItem />
+//     {/* <UserLogin /> */}
+//     {/* <HomePage /> */}
+//     {/* <UserPage /> */}
+//   </React.StrictMode>
+// );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

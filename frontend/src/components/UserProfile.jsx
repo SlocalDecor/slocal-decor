@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
+import PostArt from "./PostArt.jsx";
 import "../style.css";
 import useOwners from "../helpers/useOwner";
 
 function UserProfile({ token }) {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("published");
   const decoded = jwtDecode(token);
   const [items, setItems] = useState([]);
@@ -25,6 +27,7 @@ function UserProfile({ token }) {
 
     window.location.href = "/login";
   };
+  
 
   const fetchUser = () => {
     fetch(`http://localhost:8000/users/${decoded.id}`, {
@@ -109,6 +112,9 @@ function UserProfile({ token }) {
           <div className="logout">
             <button className="btn" onClick={handleLogout}>
               Logout
+            </button>
+             <button className="postart" onClick={() => navigate("/postart")}>
+              Post Art
             </button>
           </div>
         </div>
