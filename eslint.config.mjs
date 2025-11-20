@@ -11,7 +11,7 @@ export default defineConfig([
   {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
-      ecmaVersion: 2021,
+      ecmaVersion: 2022,
       sourceType: "module",
       parserOptions: {
         ecmaFeatures: {
