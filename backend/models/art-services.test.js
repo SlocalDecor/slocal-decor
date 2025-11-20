@@ -17,7 +17,7 @@ jest.unstable_mockModule("./art.js", () => {
     owner: "yo",
     type: "painting",
   });
-  mArt.findByIdAndDelete = jest.fn();
+  mArt.findByIdAndDelete = jest.fn().mockResolvedValue({success: true});
 
   return {
     __esModule: true,
@@ -26,14 +26,18 @@ jest.unstable_mockModule("./art.js", () => {
 });
 let addArt;
 let getArt;
+let deleteArt;
+let findArtById;
 
 beforeAll(async () => {
   const artServices = await import("./art-services.js");
   addArt = artServices.default.addArt;
   getArt = artServices.default.getArt;
+  deleteArt = artServices.default.deleteArt;
+  findArtById = artServices.default.findArtById;
 });
 
-describe("artServe tests", () => {
+describe("artService tests", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -108,5 +112,41 @@ describe("artServe tests", () => {
       const type = "poster";
       await expect(getArt(owner, type)).resolves.toBeDefined();
     });
+
+    test("Valid owner should succeed", async () => {
+        const owner = "sally";
+        let type;
+        await expect(getArt(owner, type)).resolves.toBeDefined();
+    });
+
+    test("Valid type should succeed", async () => {
+        let owner;
+        const type = "poster";
+        await expect(getArt(owner, type)).resolves.toBeDefined();
+      });
+  });
+
+  describe("deleteArt tests", () => {
+    test("deletingArt call goes through with empty id", async () => {
+      let id;
+      await expect(deleteArt(id)).resolves.toBeDefined();
+    });
+
+    test("deletingArt call goes through with  id", async () => {
+        let id = "tester";
+        await expect(deleteArt(id)).resolves.toBeDefined();
+      });
+  });
+
+  describe("findArtById tests", () => {
+    test("findArt call goes through with empty id", async () => {
+      let id;
+      await expect(findArtById(id)).resolves.toBeDefined();
+    });
+
+    test("findArt call goes through with id", async () => {
+        let id = "tester";
+        await expect(findArtById(id)).resolves.toBeDefined();
+      });
   });
 });
