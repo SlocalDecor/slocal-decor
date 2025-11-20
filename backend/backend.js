@@ -121,7 +121,7 @@ app.delete("/api/art/:id", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/users/email/:email", authenticateUser, async (req, res) => {
+app.get("/api/users/email/:email", authenticateUser, async (req, res) => {
   try {
     const user = await User.findOne({ email: req.params.email });
     if (!user) {
@@ -134,7 +134,7 @@ app.get("/users/email/:email", authenticateUser, async (req, res) => {
   }
 });
 
-app.delete("/users/:id", authenticateUser, (req, res) => {
+app.delete("/api/users/:id", authenticateUser, (req, res) => {
   const userId = req.params.id;
   if (!userId) {
     console.log("Missing user ID");
@@ -189,7 +189,7 @@ app.get("/api/users/:id", authenticateUser, (req, res) => {
 });
 
 // transfer ownership of an art piece to another user
-app.patch("/art/:id/transfer", authenticateUser, async (req, res) => {
+app.patch("/api/art/:id/transfer", authenticateUser, async (req, res) => {
   const artId = req.params.id;
   const { newOwner } = req.body;
 

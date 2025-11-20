@@ -50,7 +50,7 @@ function UserProfile({ token }) {
   };
 
   const fetchArt = () => {
-    fetch(`/api/art?userSpecific=true`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=true`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

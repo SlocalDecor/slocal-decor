@@ -25,7 +25,7 @@ export default function SignUp() {
       e.preventDefault();
       setError("You must agree to the Terms and Conditions to sign up.");
     } else {
-      fetch(`/api/signup`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
