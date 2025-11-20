@@ -133,21 +133,6 @@ app.get("/users/email/:email", authenticateUser, async (req, res) => {
     return res.status(500).send({ error: "Server error occurred" });
   }
 });
-
-app.get("/users/email/:email", authenticateUser, async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.params.email });
-    if (!user) {
-      return res.status(404).send({ error: "User not found" });
-    }
-    return res.status(200).send(user);
-  } catch (err) {
-    console.error("Error fetching user by email:", err);
-    return res.status(500).send({ error: "Server error occurred" });
-  }
-});
-
-app.delete("/api/users/:id", authenticateUser, (req, res) => {
   const userId = req.params.id;
   if (!userId) {
     console.log("Missing user ID");
@@ -216,9 +201,7 @@ app.patch("/art/:id/transfer", authenticateUser, async (req, res) => {
     // ensure only current owner can transfer
     const currentOwnerId = art.owner && art.owner.toString();
     if (currentOwnerId !== req.user.id) {
-      return res
-        .status(403)
-        .send("Only the current owner can transfer ownership");
+      return res.status(403).send("Only the current owner can transfer ownership");
     }
 
     // resolve newOwner: accept ObjectId string, email, or display name
@@ -230,9 +213,7 @@ app.patch("/art/:id/transfer", authenticateUser, async (req, res) => {
         userDoc = await User.findOne({ name: String(newOwner) });
       }
       if (!userDoc) {
-        return res
-          .status(404)
-          .send("New owner not found by id, email, or name");
+        return res.status(404).send("New owner not found by id, email, or name");
       }
       newOwnerId = userDoc._id.toString();
     }
@@ -241,9 +222,7 @@ app.patch("/art/:id/transfer", authenticateUser, async (req, res) => {
     const updatedArt = await artServices.updateOwner(artId, newOwnerId);
 
     // remove art from previous owner's postedArt and add to new owner's postedArt
-    await User.findByIdAndUpdate(currentOwnerId, {
-      $pull: { postedArt: artId },
-    });
+    await User.findByIdAndUpdate(currentOwnerId, { $pull: { postedArt: artId } });
     await User.findByIdAndUpdate(newOwnerId, { $push: { postedArt: artId } });
 
     res.status(200).send(updatedArt);
