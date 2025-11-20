@@ -1,13 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import artModel from "./art.js";
-dotenv.config();
-
-mongoose.set("debug", true);
-
-mongoose
-  .connect(process.env.MONGO_URI, {})
-  .catch((error) => console.log(error));
 
 function addArt(art) {
   if (!art["title"] || art["title"] === "") {
@@ -60,6 +53,10 @@ function findArtById(id) {
   return artModel.findById(id);
 }
 
+function updateOwner(id, newOwner) {
+  return artModel.findByIdAndUpdate(id, { owner: newOwner }, { new: true });
+}
+
 function findArtByType(type) {
   const validTypes = [
     "poster",
@@ -80,4 +77,5 @@ export default {
   deleteArt,
   getArt,
   findArtById,
+  updateOwner,
 };

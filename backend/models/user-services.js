@@ -1,14 +1,6 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import userModel from "./user.js";
 import artModel from "./art.js";
-dotenv.config();
-
-mongoose.set("debug", true);
-
-mongoose
-  .connect(process.env.MONGO_URI, {})
-  .catch((error) => console.log(error));
 
 function addUser(user) {
   const userToAdd = new userModel(user);

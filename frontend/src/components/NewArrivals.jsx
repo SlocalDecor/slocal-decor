@@ -105,13 +105,10 @@ export default function NewArrivals({ token }) {
 
   return (
     <div className="na-page">
-      {/* Reuse your shared nav bar */}
       <NavBar />
 
-      {/* Page title */}
       <h1 className="na-title">New Arrivals</h1>
 
-      {/* Gallery */}
       <section className="na-gallery item-gallery">
         {items.map((it) => (
           <article key={it.id} className="item na-item">

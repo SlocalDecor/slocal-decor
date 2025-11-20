@@ -11,7 +11,8 @@ export default function SavedItems({ token }) {
   const decoded = jwtDecode(token);
 
   const getArt = () => {
-    fetch(`http://localhost:8000/art?userSpecific=false`, {
+    console.log(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`);
+    fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -19,6 +20,7 @@ export default function SavedItems({ token }) {
       },
     })
       .then((response) => {
+        console.log("made first request to get art");
         console.log(response);
         if (!response.ok) {
           throw new Error("Failed to fetch art");
@@ -39,7 +41,7 @@ export default function SavedItems({ token }) {
               continue;
             }
 
-            fetch(`http://localhost:8000/users/${art.owner}`, {
+            fetch(`${import.meta.env.VITE_API_URL}/api/users/${art.owner}`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -47,12 +49,14 @@ export default function SavedItems({ token }) {
               },
             })
               .then((response) => {
+                console.log("getting owner for saved art");
                 if (!response.ok) {
-                  throw new Error("Failed to fetch art");
+                  throw new Error("Failed to fetch owner");
                 }
                 return response.json();
               })
               .then((data) => {
+                console.log("retrieved owner data", data);
                 artPieces.push({
                   ...art,
                   ownerName: data[0]?.name || "",
@@ -66,6 +70,7 @@ export default function SavedItems({ token }) {
                   ownerName: "",
                 });
                 setArtItems(artPieces);
+                console.log(artItems);
               });
           }
         }
@@ -77,7 +82,7 @@ export default function SavedItems({ token }) {
 
   const getSaved = () => {
     console.log(decoded.id);
-    fetch(`http://localhost:8000/users/${decoded.id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

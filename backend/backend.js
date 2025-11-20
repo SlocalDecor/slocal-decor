@@ -5,10 +5,23 @@ import userServices from "./models/user-services.js";
 import User from "./models/user.js";
 import { authenticateUser, loginUser } from "./auth.js";
 import cors from "cors";
+import { connectDB } from "./db.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+await connectDB();
 
 const app = express();
-const port = 8000;
 
+// const corsOptions = {
+//   origin: process.env.FRONTEND_URL,
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// };
+
+// // Use CORS middleware
+// app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.json());
 
@@ -16,7 +29,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/art", authenticateUser, (req, res) => {
+app.get("/api/art", authenticateUser, (req, res) => {
   let owner;
   if (req.query.userSpecific === "true") {
     owner = req.user.id;
@@ -34,7 +47,7 @@ app.get("/art", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/art/:id", authenticateUser, (req, res) => {
+app.get("/api/art/:id", authenticateUser, (req, res) => {
   const artId = req.params.id;
   if (!artId) return res.status(400).send("Missing art ID");
   artServices
@@ -49,7 +62,7 @@ app.get("/art/:id", authenticateUser, (req, res) => {
     });
 });
 
-app.post("/art", authenticateUser, (req, res) => {
+app.post("/api/art", authenticateUser, (req, res) => {
   const artToAdd = req.body;
   if (!artToAdd["title"] || artToAdd["title"] === "") {
     console.log("Missing title");
@@ -87,7 +100,7 @@ app.post("/art", authenticateUser, (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
-app.delete("/art/:id", authenticateUser, (req, res) => {
+app.delete("/api/art/:id", authenticateUser, (req, res) => {
   const artId = req.params.id;
   if (!artId) {
     console.log("Missing art ID");
@@ -108,7 +121,20 @@ app.delete("/art/:id", authenticateUser, (req, res) => {
     });
 });
 
-app.delete("/users/:id", authenticateUser, (req, res) => {
+app.get("/api/users/email/:email", authenticateUser, async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+    return res.status(200).send(user);
+  } catch (err) {
+    console.error("Error fetching user by email:", err);
+    return res.status(500).send({ error: "Server error occurred" });
+  }
+});
+
+app.delete("/api/users/:id", authenticateUser, (req, res) => {
   const userId = req.params.id;
   if (!userId) {
     console.log("Missing user ID");
@@ -129,7 +155,7 @@ app.delete("/users/:id", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/users", authenticateUser, (req, res) => {
+app.get("/api/users", authenticateUser, (req, res) => {
   userServices
     .getUsers()
     .then((result) => {
@@ -145,7 +171,7 @@ app.get("/users", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/users/:id", authenticateUser, (req, res) => {
+app.get("/api/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   userServices
     .findUserById(id)
@@ -162,12 +188,64 @@ app.get("/users/:id", authenticateUser, (req, res) => {
     });
 });
 
+// transfer ownership of an art piece to another user
+app.patch("/api/art/:id/transfer", authenticateUser, async (req, res) => {
+  const artId = req.params.id;
+  const { newOwner } = req.body;
+
+  if (!artId) return res.status(400).send("Missing art ID");
+  if (!newOwner) return res.status(400).send("Missing newOwner in body");
+
+  try {
+    const art = await artServices.findArtById(artId);
+    if (!art) return res.status(404).send("Art not found");
+
+    // ensure only current owner can transfer
+    const currentOwnerId = art.owner && art.owner.toString();
+    if (currentOwnerId !== req.user.id) {
+      return res
+        .status(403)
+        .send("Only the current owner can transfer ownership");
+    }
+
+    // resolve newOwner: accept ObjectId string, email, or display name
+    let newOwnerId = newOwner;
+    // if not a 24-hex ObjectId, try to resolve by email, then by name
+    if (!/^[0-9a-fA-F]{24}$/.test(String(newOwner))) {
+      let userDoc = await User.findOne({ email: String(newOwner) });
+      if (!userDoc) {
+        userDoc = await User.findOne({ name: String(newOwner) });
+      }
+      if (!userDoc) {
+        return res
+          .status(404)
+          .send("New owner not found by id, email, or name");
+      }
+      newOwnerId = userDoc._id.toString();
+    }
+
+    // update art owner
+    const updatedArt = await artServices.updateOwner(artId, newOwnerId);
+
+    // remove art from previous owner's postedArt and add to new owner's postedArt
+    await User.findByIdAndUpdate(currentOwnerId, {
+      $pull: { postedArt: artId },
+    });
+    await User.findByIdAndUpdate(newOwnerId, { $push: { postedArt: artId } });
+
+    res.status(200).send(updatedArt);
+  } catch (err) {
+    console.error("Error transferring ownership:", err);
+    res.status(500).send(err);
+  }
+});
+
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 // for log in
-app.post("/signup", (req, res) => {
+app.post("/api/signup", (req, res) => {
   const userToAdd = req.body;
   let newUser = {};
   if (!userToAdd["name"] || userToAdd["name"] === "") {
@@ -208,12 +286,17 @@ app.post("/signup", (req, res) => {
     });
 });
 
-app.post("/login", loginUser);
+app.post("/api/login", loginUser);
 
-app.post("/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {
   return res.sendStatus(200);
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+if (process.env.VERCEL_ENV === undefined) {
+  const port = 8000;
+  app.listen(port, () => {
+    console.log(`Local API server running on http://localhost:${port}`);
+  });
+}
+
+export default app;
