@@ -18,17 +18,16 @@ function UserProfile({ token }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
 
-    fetch("/logout", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
     }).catch(() => {});
 
     window.location.href = "/login";
-
   };
 
   const fetchUser = () => {
-    fetch(`http://localhost:8000/users/${decoded.id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +50,7 @@ function UserProfile({ token }) {
   };
 
   const fetchArt = () => {
-    fetch("http://localhost:8000/art?userSpecific=true", {
+    fetch(`/api/art?userSpecific=true`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -108,9 +107,9 @@ function UserProfile({ token }) {
           <h2>{name}</h2>
           <p>{bio}</p>
           <div className="logout">
-          <button className="btn" onClick={handleLogout}>
-            Logout
-          </button>
+            <button className="btn" onClick={handleLogout}>
+              Logout
+            </button>
           </div>
         </div>
 
@@ -143,7 +142,9 @@ function UserProfile({ token }) {
                     className="item-img"
                   />
                   <p className="item-name">{item.title}</p>
-                  <p className="item-owner">{ownerNames[item.owner] || item.owner || item.author}</p>
+                  <p className="item-owner">
+                    {ownerNames[item.owner] || item.owner || item.author}
+                  </p>
                 </Link>
               </div>
             ))}

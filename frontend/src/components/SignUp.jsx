@@ -25,7 +25,7 @@ export default function SignUp() {
       e.preventDefault();
       setError("You must agree to the Terms and Conditions to sign up.");
     } else {
-      fetch("http://localhost:8000/signup", {
+      fetch(`/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
