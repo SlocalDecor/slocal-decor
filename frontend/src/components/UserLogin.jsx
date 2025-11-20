@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SignUp from "./SignUp";
+import ErrorPopup from "./ErrorPopup";
 import "../style.css";
 
 export default function UserLogin({ onLoginSuccess }) {
+  const [error, setError] = useState("");
   const [username, setUsername] = useState("");
   const [pwd, setPwd] = useState("");
   const navigate = useNavigate();
@@ -23,6 +26,7 @@ export default function UserLogin({ onLoginSuccess }) {
     })
       .then((response) => {
         if (!response.ok) {
+          setError(response.text());
           return response.json().then((err) => {
             throw new Error(err.error || "Username or password is invalid");
           });
@@ -33,7 +37,7 @@ export default function UserLogin({ onLoginSuccess }) {
         onLoginSuccess(res.token);
         navigate("/", { replace: true });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err.message));
 
     return;
   };
@@ -44,6 +48,8 @@ export default function UserLogin({ onLoginSuccess }) {
           <span className="login-heading-shadow">log in</span>
           <span className="login-heading-fill">log in</span>
         </h1>
+
+        <ErrorPopup message={error} onClose={() => setError("")} />
 
         <form className="login-form" onSubmit={onSubmit}>
           <div className="login-row">
@@ -73,10 +79,22 @@ export default function UserLogin({ onLoginSuccess }) {
               aria-label="Password"
             />
           </div>
-
-          <button className="login-submit" type="submit" onClick={submitLogIn}>
-            submit
-          </button>
+          <div className="login-buttons">
+            <button
+              className="login-submit"
+              type="submit"
+              onClick={submitLogIn}
+            >
+              submit
+            </button>
+            <button
+              type="button"
+              className="login-signup-btn"
+              onClick={() => navigate("/SignUp")}
+            >
+              <p className="sub-text">new account: click here</p>
+            </button>
+          </div>
         </form>
       </div>
     </div>

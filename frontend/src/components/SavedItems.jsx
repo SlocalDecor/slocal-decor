@@ -146,7 +146,7 @@ export default function SavedItems({ token }) {
                 </div>
                 <div className="item-name na-name">{it.title}</div>
                 <div className="item-owner na-owner">
-                  {it.ownerName || it.owner}
+                  {ownerNames[it.owner] || it.owner}
                 </div>
               </Link>
             </article>
