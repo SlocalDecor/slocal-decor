@@ -17,7 +17,7 @@ jest.unstable_mockModule("./art.js", () => {
     owner: "yo",
     type: "painting",
   });
-  mArt.findByIdAndDelete = jest.fn().mockResolvedValue({success: true});
+  mArt.findByIdAndDelete = jest.fn().mockResolvedValue({ success: true });
 
   return {
     __esModule: true,
@@ -114,16 +114,16 @@ describe("artService tests", () => {
     });
 
     test("Valid owner should succeed", async () => {
-        const owner = "sally";
-        let type;
-        await expect(getArt(owner, type)).resolves.toBeDefined();
+      const owner = "sally";
+      let type;
+      await expect(getArt(owner, type)).resolves.toBeDefined();
     });
 
     test("Valid type should succeed", async () => {
-        let owner;
-        const type = "poster";
-        await expect(getArt(owner, type)).resolves.toBeDefined();
-      });
+      let owner;
+      const type = "poster";
+      await expect(getArt(owner, type)).resolves.toBeDefined();
+    });
   });
 
   describe("deleteArt tests", () => {
@@ -133,9 +133,9 @@ describe("artService tests", () => {
     });
 
     test("deletingArt call goes through with  id", async () => {
-        let id = "tester";
-        await expect(deleteArt(id)).resolves.toBeDefined();
-      });
+      let id = "tester";
+      await expect(deleteArt(id)).resolves.toBeDefined();
+    });
   });
 
   describe("findArtById tests", () => {
@@ -145,8 +145,8 @@ describe("artService tests", () => {
     });
 
     test("findArt call goes through with id", async () => {
-        let id = "tester";
-        await expect(findArtById(id)).resolves.toBeDefined();
-      });
+      let id = "tester";
+      await expect(findArtById(id)).resolves.toBeDefined();
+    });
   });
 });
