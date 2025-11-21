@@ -5,6 +5,7 @@ import HomePage from "./components/HomePage";
 import SignUp from "./components/SignUp.jsx";
 import NewArrivals from "./components/NewArrivals.jsx";
 import SavedItems from "./components/SavedItems.jsx";
+import NewItem from "./components/NewItem.jsx";
 import { BrowserRouter } from "react-router-dom";
 import App from "./components/MyApp.jsx";
 import "./style.css";

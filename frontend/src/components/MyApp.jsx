@@ -8,6 +8,7 @@ import UserProfile from "./UserProfile";
 import SavedItems from "./SavedItems";
 import NewItem from "./NewItem";
 import SignUp from "./SignUp";
+import PostArt from "./PostArt.jsx";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const INVALID_TOKEN = "INVALID_TOKEN";
@@ -67,6 +68,11 @@ function App() {
           token ? <NewArrivals token={token} /> : <Navigate to="/login" />
         }
       />
+     <Route 
+        path="/postart" 
+        element={<PostArt />} 
+       />
+
       <Route
         path="/signup"
         element={token ? <Navigate to="/" replace /> : <SignUp />}
