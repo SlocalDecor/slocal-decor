@@ -1127,3 +1127,48 @@ html {
 }
 .post-art-form button:hover { filter: brightness(1.1); }
 
+.auth-header {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  z-index: 20; /* keeps it above background but below modal */
+}
+
+.auth-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.auth-brand {
+  font-family: var(--heading-font);
+  font-size: 22px; /* slightly smaller */
+  font-weight: 800;
+  color: var(--text-light);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.terms-label {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+  font-family: "Kalam", system-ui, sans-serif;
+  font-size: clamp(18px, 2vw, 10px);
+  color: #f2e9da;
+}
+
+.terms-label a {
+  display: inline;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.terms-label a:hover {
+  text-decoration: underline;
+}

@@ -21,9 +21,12 @@ export default function NewItem({ token }) {
     async function fetchArt() {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:8000/art/${id}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/art/${id}`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
         if (!res.ok) throw new Error("Failed to fetch art");
         const data = await res.json();
         setArt(data);
@@ -42,9 +45,12 @@ export default function NewItem({ token }) {
 
     async function fetchOwner() {
       try {
-        const res = await fetch(`http://localhost:8000/users/${art.owner}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/users/${art.owner}`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
         if (!res.ok) throw new Error("Failed to fetch owner");
         const data = await res.json();
         const user = data && (Array.isArray(data) ? data[0] : data);
@@ -140,65 +146,71 @@ export default function NewItem({ token }) {
             </button>
             {/* transfer ownership button - visible only to current owner */}
             {decoded && art && String(art.owner) === String(decoded.id) && (
-            <button
-              className="btn btn-pill"
-              onClick={async () => {
-                const newOwnerEmail = window.prompt(
-                  "Enter the email of the new owner:"
-                );
-                if (!newOwnerEmail) return;
-
-                try {
-                  // fetch the user by email
-                  const userRes = await fetch(
-                    `http://localhost:8000/users/email/${encodeURIComponent(newOwnerEmail)}`,
-                    {
-                      headers: token ? { Authorization: `Bearer ${token}` } : {},
-                    }
+              <button
+                className="btn btn-pill"
+                onClick={async () => {
+                  const newOwnerEmail = window.prompt(
+                    "Enter the email of the new owner:"
                   );
-                  if (!userRes.ok) {
-                    throw new Error("User not found with that email");
-                  }
+                  if (!newOwnerEmail) return;
 
-                  const userData = await userRes.json();
-                  const newOwnerId =
-                    userData?.id || userData?._id || (Array.isArray(userData) && userData[0]?._id);
-
-                  if (!newOwnerId) {
-                    alert("Invalid user information");
-                    return;
-                  }
-
-                  // Call the transfer endpoint
-                  const res = await fetch(
-                    `http://localhost:8000/art/${art._id}/transfer`,
-                    {
-                      method: "PATCH",
-                      headers: {
-                        "Content-Type": "application/json",
-                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-                      },
-                      body: JSON.stringify({ newOwner: newOwnerId }),
+                  try {
+                    // fetch the user by email
+                    const userRes = await fetch(
+                      `${import.meta.env.VITE_API_URL}/api/users/email/${encodeURIComponent(newOwnerEmail)}`,
+                      {
+                        headers: token
+                          ? { Authorization: `Bearer ${token}` }
+                          : {},
+                      }
+                    );
+                    if (!userRes.ok) {
+                      throw new Error("User not found with that email");
                     }
-                  );
 
-                  if (!res.ok) {
-                    const text = await res.text();
-                    throw new Error(text || "Failed to transfer owner");
+                    const userData = await userRes.json();
+                    const newOwnerId =
+                      userData?.id ||
+                      userData?._id ||
+                      (Array.isArray(userData) && userData[0]?._id);
+
+                    if (!newOwnerId) {
+                      alert("Invalid user information");
+                      return;
+                    }
+
+                    // Call the transfer endpoint
+                    const res = await fetch(
+                      `${import.meta.env.VITE_API_URL}/api/art/${art._id}/transfer`,
+                      {
+                        method: "PATCH",
+                        headers: {
+                          "Content-Type": "application/json",
+                          ...(token
+                            ? { Authorization: `Bearer ${token}` }
+                            : {}),
+                        },
+                        body: JSON.stringify({ newOwner: newOwnerId }),
+                      }
+                    );
+
+                    if (!res.ok) {
+                      const text = await res.text();
+                      throw new Error(text || "Failed to transfer owner");
+                    }
+
+                    const updated = await res.json();
+                    setArt(updated);
+                    alert("Ownership transferred successfully");
+                  } catch (err) {
+                    console.error(err);
+                    alert("Unable to transfer ownership: " + err.message);
                   }
-
-                  const updated = await res.json();
-                  setArt(updated);
-                  alert("Ownership transferred successfully");
-                } catch (err) {
-                  console.error(err);
-                  alert("Unable to transfer ownership: " + err.message);
-                }
-              }}
-            >
-              Transfer ownership
-            </button>
-          )}
+                }}
+              >
+                Transfer ownership
+              </button>
+            )}
           </div>
         </div>
       </section>

@@ -12,12 +12,12 @@ export default function UserLogin({ onLoginSuccess }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // TODO: hook to your auth
     console.log({ username, pwd });
   };
   const submitLogIn = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8000/login", {
+    console.log(import.meta.env.VITE_API_URL);
+    fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,6 +43,11 @@ export default function UserLogin({ onLoginSuccess }) {
   };
   return (
     <div className="login-screen">
+      <div className="auth-header">
+        <img src="/images/logo.png" alt="logo" className="auth-logo" />
+        <div className="auth-brand">Slocal Decor</div>
+      </div>
+
       <div className="login-panel">
         <h1 className="login-heading">
           <span className="login-heading-shadow">log in</span>

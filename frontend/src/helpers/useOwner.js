@@ -18,9 +18,12 @@ export default function useOwners(ownerIds = [], token) {
       await Promise.all(
         ids.map(async (id) => {
           try {
-            const res = await fetch(`http://localhost:8000/users/${id}`, {
-              headers: token ? { Authorization: `Bearer ${token}` } : {},
-            });
+            const res = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/users/${id}`,
+              {
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+              }
+            );
             if (!res.ok) {
               map[id] = id;
               return;

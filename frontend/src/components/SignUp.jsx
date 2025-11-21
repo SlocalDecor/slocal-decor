@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ErrorPopup from "./ErrorPopup";
+import { useNavigate } from "react-router-dom";
 import "../style.css";
 
 export default function SignUp() {
@@ -10,6 +11,7 @@ export default function SignUp() {
     phone: "",
     password: "",
   });
+const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,7 +27,7 @@ export default function SignUp() {
       e.preventDefault();
       setError("You must agree to the Terms and Conditions to sign up.");
     } else {
-      fetch("http://localhost:8000/signup", {
+      fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,6 +46,8 @@ export default function SignUp() {
         .then((data) => {
           console.log("User created:", data);
           setFormData({ name: "", phone: "", email: "", password: "" });
+          navigate("/login");
+
         })
         .catch((error) => {
           console.error("Error:", error.message);
@@ -56,6 +60,11 @@ export default function SignUp() {
     <div className="signup-page">
       <ErrorPopup message={error} onClose={() => setError("")} />
       <div className="signup-box">
+        <div className="auth-header">
+          <img src="/images/logo.png" alt="logo" className="auth-logo" />
+          <div className="auth-brand">Slocal Decor</div>
+        </div>
+
         <h1 className="signup-title">sign up</h1>
         <form className="signup-form">
           <div className="form-row">
