@@ -1053,3 +1053,76 @@ html {
   background: #f3e3be;
   color: #222631;
 }
+
+.post-art-page {
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-art-main {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: center;     
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.post-art-container {
+  width: min(820px, 92vw);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.post-art-title {
+  font-family: var(--heading-font);
+  font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
+  margin: 0 0 2rem 0;
+}
+
+.post-art-form {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+.post-art-form label {
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.post-art-form input,
+.post-art-form select,
+.post-art-form textarea {
+  width: 100%;
+  max-width: 680px;
+  padding: 12px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: 1px solid #3a3a3a;
+  background: #111;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.post-art-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.post-art-form button {
+  margin-top: 8px;
+  font-size: 1.2rem;
+  padding: 14px 40px;
+  border: none;
+  border-radius: 999px;
+  background: #6a8ea1;
+  color: #000;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter .15s ease;
+}
+.post-art-form button:hover { filter: brightness(1.1); }
