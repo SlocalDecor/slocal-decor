@@ -4,6 +4,9 @@ node_modules/
 # Environment files
 .env
 
+# coverage report
+coverage/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*

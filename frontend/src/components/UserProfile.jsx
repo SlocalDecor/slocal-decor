@@ -20,7 +20,7 @@ function UserProfile({ token }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
 
-    fetch("/logout", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
       method: "POST",
       credentials: "include",
     }).catch(() => {});
@@ -30,7 +30,7 @@ function UserProfile({ token }) {
   
 
   const fetchUser = () => {
-    fetch(`http://localhost:8000/users/${decoded.id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ function UserProfile({ token }) {
   };
 
   const fetchArt = () => {
-    fetch("http://localhost:8000/art?userSpecific=true", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=true`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
