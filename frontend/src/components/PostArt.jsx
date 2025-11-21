@@ -153,7 +153,7 @@ export default function PostArt({ token }) {
                 src={imgOk === false ? "/images/placeholder.png" : form.picture}
                 alt={form.title || "Artwork preview"}
               />
-              {imgOk === false && <p>We couldn't load that URL. It will still be saved, but please double-check the link.</p>}
+              {imgOk === false && <p>We could not load that URL. It will still be saved, but please double-check the link.</p>}
             </section>
           ) : null}
         </div>
