@@ -1,107 +1,101 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
-import useOwners from "../helpers/useOwner";
-
-const MOCK_ITEMS = [
-  {
-    id: "1",
-    title: "Hills n Sky",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-10-29",
-  },
-  {
-    id: "2",
-    title: "Untitled",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-11-01",
-  },
-  {
-    id: "3",
-    title: "Lemons",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-11-02",
-  },
-  {
-    id: "4",
-    title: "Yellow and Red",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-10-22",
-  },
-  {
-    id: "5",
-    title: "Chaos",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-10-28",
-  },
-  {
-    id: "6",
-    title: "Woman",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-11-03",
-  },
-  {
-    id: "7",
-    title: "Colors",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-10-30",
-  },
-  {
-    id: "8",
-    title: "Tomatoes",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-10-31",
-  },
-  {
-    id: "9",
-    title: "Abstract",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-10-21",
-  },
-  {
-    id: "10",
-    title: "Chair",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-10-25",
-  },
-  {
-    id: "11",
-    title: "Hills n Sky",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-11-04",
-  },
-  {
-    id: "12",
-    title: "Waves",
-    owner: "John Doe",
-    picture: "/images/userpfp.jpg",
-    postedTime: "2025-11-04",
-  },
-];
 
 export default function NewArrivals({ token }) {
+  const [artItems, setArtItems] = useState([]);
+
+  const getArt = () => {
+    console.log(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`);
+    fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        console.log("made first request to get art");
+        console.log(response);
+        if (!response.ok) {
+          throw new Error("Failed to fetch art");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        for (let i = 0; i < data.art_list.length; i++) {
+          let art = data.art_list[i];
+          if (!art.owner) {
+            setArtItems((prev) =>
+              prev.some((p) => p._id === art._id)
+                ? prev
+                : [...prev, { ...art, ownerName: "" }]
+            );
+            continue;
+          }
+
+          fetch(`${import.meta.env.VITE_API_URL}/api/users/${art.owner}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((response) => {
+              console.log("getting owner for new arrivals");
+              if (!response.ok) {
+                throw new Error("Failed to fetch owner");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("retrieved owner data", data);
+              const ownerName = data?.[0]?.name || "";
+              setArtItems((prev) =>
+                prev.some((p) => p._id === art._id)
+                  ? prev
+                  : [
+                      ...prev,
+                      {
+                        ...art,
+                        ownerName: ownerName,
+                      },
+                    ]
+              );
+            })
+            .catch((err) => {
+              console.error(`Failed to fetch owner for art ${art._id}:`, err);
+              setArtItems((prev) =>
+                prev.some((p) => p._id === art._id)
+                  ? prev
+                  : [
+                      ...prev,
+                      {
+                        ...art,
+                        ownerName: "",
+                      },
+                    ]
+              );
+            });
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching art:", err);
+      });
+  };
+
+  useEffect(() => {
+    if (token) getArt();
+  }, [token]);
+
   const items = useMemo(
     () =>
-      [...MOCK_ITEMS].sort(
+      [...artItems].sort(
         (a, b) =>
           new Date(b.postedTime).getTime() - new Date(a.postedTime).getTime()
       ),
-    []
+    [artItems]
   );
-
-  const ownerIds = items.map((it) => it.owner).filter(Boolean);
-  const ownerNames = useOwners(ownerIds, token);
 
   return (
     <div className="na-page">
@@ -121,9 +115,7 @@ export default function NewArrivals({ token }) {
                 <img className="item-img" src={it.picture} alt={it.title} />
               </div>
               <div className="item-name na-name">{it.title}</div>
-              <div className="item-owner na-owner">
-                {ownerNames[it.owner] || it.owner}
-              </div>
+              <div className="item-owner na-owner">{it.ownerName}</div>
             </Link>
           </article>
         ))}
