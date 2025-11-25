@@ -6,7 +6,9 @@ import User from "./models/user.js";
 import { authenticateUser, loginUser } from "./auth.js";
 import cors from "cors";
 import { connectDB } from "./db.js";
+import cloudinary from "./cloudinary.js";
 import dotenv from "dotenv";
+import multer from "multer";
 dotenv.config();
 
 await connectDB();
@@ -62,7 +64,9 @@ app.get("/api/art/:id", authenticateUser, (req, res) => {
     });
 });
 
-app.post("/api/art", authenticateUser, (req, res) => {
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.post("/api/art", upload.single("picture"), async (req, res) => {
   const artToAdd = req.body;
   if (!artToAdd["title"] || artToAdd["title"] === "") {
     console.log("Missing title");
@@ -73,18 +77,39 @@ app.post("/api/art", authenticateUser, (req, res) => {
     return res.status(400).send("Missing owner field");
   }
   const owner = artToAdd["owner"];
-  if (!artToAdd["picture"] || artToAdd["picture"] === "") {
-    console.log("Missing picture");
-    return res.status(400).send("Missing picture");
-  }
-  if (
-    !artToAdd["measurements"] ||
-    !artToAdd["measurements"]["height"] ||
-    !artToAdd["measurements"]["width"]
-  ) {
+
+  if (!artToAdd["measurements"]) {
     console.log("Missing measurements");
     return res.status(400).send("Missing measurements");
   }
+  artToAdd["measurements"] = JSON.parse(artToAdd["measurements"]);
+  if (
+    !artToAdd["measurements"]["height"] ||
+    !artToAdd["measurements"]["width"]
+  ) {
+    console.log("Missing height and/or width");
+    return res.status(400).send("Missing height and/or width");
+  }
+
+  function uploadImage(buffer) {
+    return new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "images" },
+        (error, result) => {
+          if (error) return reject(error);
+          return resolve(result);
+        }
+      );
+      stream.end(buffer);
+    });
+  }
+
+  if (!req.file) {
+    console.log("Missing picture file");
+    return res.status(400).send("Missing picture file");
+  }
+  const uploaded = await uploadImage(req.file.buffer);
+  artToAdd.picture = uploaded.secure_url;
   artServices
     .addArt(artToAdd)
     .then((result) => {
