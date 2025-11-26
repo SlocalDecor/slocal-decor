@@ -28,3 +28,4 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run lint # runs linter for both frontend and backend
+      - run: npm run test
