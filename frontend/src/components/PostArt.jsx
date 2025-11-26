@@ -11,10 +11,13 @@ export default function PostArt({ token }) {
   const authedHeaders = token ? { Authorization: `Bearer ${token}` } : {};
   const [creating, setCreating] = React.useState(false);
   const [imgOk, setImgOk] = React.useState(null);
+
+  const [imageFile, setImageFile] = React.useState(null); 
+
   const [form, setForm] = React.useState({
     title: "",
     description: "",
-    picture: "",
+    picture: "", 
     artType: "",
     height: "",
     width: "",
@@ -37,29 +40,59 @@ export default function PostArt({ token }) {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
+  const onFileChange = (e) => { 
+    const file = e.target.files && e.target.files[0];
+    if (!file) {
+      setImageFile(null);
+      setForm((f) => ({ ...f, picture: "" }));
+      return;
+    }
+
+    setImageFile(file);
+    const objectUrl = URL.createObjectURL(file);
+    setForm((f) => ({ ...f, picture: objectUrl })); 
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const h = parseFloat(form.height || "");
     const w = parseFloat(form.width || "");
+
     if (!form.title.trim()) return alert("Title is required");
-    if (!form.picture.trim()) return alert("Image URL is required");
-    if (form.description.length > 250) return alert("Description must be 250 characters or less");
-    if (Number.isNaN(h) || Number.isNaN(w) || h <= 0 || w <= 0) return alert("Enter valid positive numbers for height and width");
-    if (form.artType && !["poster", "painting", "sculpture", "furniture", "wall art", "other"].includes(form.artType)) return alert("Invalid art type");
+
+    if (!imageFile) return alert("Image file is required"); 
+
+    if (form.description.length > 250)
+      return alert("Description must be 250 characters or less");
+
+    if (Number.isNaN(h) || Number.isNaN(w) || h <= 0 || w <= 0)
+      return alert("Enter valid positive numbers for height and width");
+
+    if (
+      form.artType &&
+      !["poster", "painting", "sculpture", "furniture", "wall art", "other"].includes(form.artType)
+    )
+      return alert("Invalid art type");
+
     try {
       setCreating(true);
-      const payload = {
-        title: form.title.trim(),
-        description: form.description.trim(),
-        picture: form.picture.trim(),
-        artType: form.artType || undefined,
-        measurements: { height: h, width: w },
-      };
+
+      const formData = new FormData(); 
+      formData.append("title", form.title.trim());
+      formData.append("description", form.description.trim());
+      formData.append("artType", form.artType || "");
+      formData.append(
+        "measurements",
+        JSON.stringify({ height: h, width: w })
+      );
+      formData.append("picture", imageFile); 
+
       const res = await fetch(`${API_BASE}/art`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", ...authedHeaders },
-        body: JSON.stringify(payload),
+        headers: { ...authedHeaders }, 
+        body: formData, 
       });
+
       if (!res.ok) throw new Error((await res.text()) || "Failed to create art");
       const created = await res.json();
       alert("Art posted!");
@@ -82,17 +115,35 @@ export default function PostArt({ token }) {
           <form className="post-art-form" onSubmit={onSubmit}>
             <div>
               <label htmlFor="title">Art Title</label>
-              <input id="title" name="title" value={form.title} onChange={onChange} required />
+              <input
+                id="title"
+                name="title"
+                value={form.title}
+                onChange={onChange}
+                required
+              />
             </div>
 
             <div>
-              <label htmlFor="picture">Image URL</label>
-              <input id="picture" name="picture" value={form.picture} onChange={onChange} required />
+              <label htmlFor="picture">Image File</label> 
+              <input
+                id="picture"
+                name="picture"
+                type="file"           
+                accept="image/*"      
+                onChange={onFileChange} 
+                required              
+              />
             </div>
 
             <div>
               <label htmlFor="artType">Type</label>
-              <select id="artType" name="artType" value={form.artType} onChange={onChange}>
+              <select
+                id="artType"
+                name="artType"
+                value={form.artType}
+                onChange={onChange}
+              >
                 <option value="">Select type…</option>
                 <option value="poster">poster</option>
                 <option value="painting">painting</option>
@@ -153,7 +204,12 @@ export default function PostArt({ token }) {
                 src={imgOk === false ? "/images/placeholder.png" : form.picture}
                 alt={form.title || "Artwork preview"}
               />
-              {imgOk === false && <p>We could not load that URL. It will still be saved, but please double-check the link.</p>}
+              {imgOk === false && (
+                <p>
+                  We could not load that image. It will still be saved, but please
+                  double-check the file or try another image.
+                </p>
+              )}
             </section>
           ) : null}
         </div>
