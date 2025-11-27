@@ -2,6 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
+import { jwtDecode } from "jwt-decode";
 import "../style.css";
 
 const API_BASE = import.meta?.env?.VITE_API_BASE || "http://localhost:8000";
@@ -11,19 +12,44 @@ export default function PostArt({ token }) {
   const authedHeaders = token ? { Authorization: `Bearer ${token}` } : {};
   const [creating, setCreating] = React.useState(false);
   const [imgOk, setImgOk] = React.useState(null);
+  const decoded = jwtDecode(token);
 
-  const [imageFile, setImageFile] = React.useState(null); 
+  const [imageFile, setImageFile] = React.useState(null);
+  const [owner, setOwner] = React.useState(null);
 
   const [form, setForm] = React.useState({
     title: "",
     description: "",
-    picture: "", 
+    picture: "",
     artType: "",
     height: "",
     width: "",
   });
 
+  const fetchUser = () => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setOwner(data[0]._id);
+      })
+      .catch((err) => {
+        console.error("Error fetching user:", err);
+      });
+  };
+
   React.useEffect(() => {
+    fetchUser();
     if (!form.picture) return setImgOk(null);
     let active = true;
     const img = new Image();
@@ -40,7 +66,7 @@ export default function PostArt({ token }) {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  const onFileChange = (e) => { 
+  const onFileChange = (e) => {
     const file = e.target.files && e.target.files[0];
     if (!file) {
       setImageFile(null);
@@ -50,7 +76,7 @@ export default function PostArt({ token }) {
 
     setImageFile(file);
     const objectUrl = URL.createObjectURL(file);
-    setForm((f) => ({ ...f, picture: objectUrl })); 
+    setForm((f) => ({ ...f, picture: objectUrl }));
   };
 
   const onSubmit = async (e) => {
@@ -60,7 +86,7 @@ export default function PostArt({ token }) {
 
     if (!form.title.trim()) return alert("Title is required");
 
-    if (!imageFile) return alert("Image file is required"); 
+    if (!imageFile) return alert("Image file is required");
 
     if (form.description.length > 250)
       return alert("Description must be 250 characters or less");
@@ -70,36 +96,42 @@ export default function PostArt({ token }) {
 
     if (
       form.artType &&
-      !["poster", "painting", "sculpture", "furniture", "wall art", "other"].includes(form.artType)
+      ![
+        "poster",
+        "painting",
+        "sculpture",
+        "furniture",
+        "wall art",
+        "other",
+      ].includes(form.artType)
     )
       return alert("Invalid art type");
 
     try {
       setCreating(true);
 
-      const formData = new FormData(); 
+      const formData = new FormData();
       formData.append("title", form.title.trim());
       formData.append("description", form.description.trim());
       formData.append("artType", form.artType || "");
-      formData.append(
-        "measurements",
-        JSON.stringify({ height: h, width: w })
-      );
-      formData.append("picture", imageFile); 
+      formData.append("measurements", JSON.stringify({ height: h, width: w }));
+      formData.append("picture", imageFile);
+      formData.append("owner", owner);
 
-      const res = await fetch(`${API_BASE}/art`, {
+      const res = await fetch(`${API_BASE}/api/art`, {
         method: "POST",
-        headers: { ...authedHeaders }, 
-        body: formData, 
+        headers: { ...authedHeaders },
+        body: formData,
       });
 
-      if (!res.ok) throw new Error((await res.text()) || "Failed to create art");
+      if (!res.ok)
+        throw new Error((await res.text()) || "Failed to create art");
       const created = await res.json();
       alert("Art posted!");
       const newId = created?._id || created?.id;
       if (newId) navigate(`/art/${newId}`);
     } catch (err) {
-      alert(`Unable to post art: ${err?.message || "Unknown error"}`);
+      alert(`Server error. Unable to post art! `);
     } finally {
       setCreating(false);
     }
@@ -125,14 +157,14 @@ export default function PostArt({ token }) {
             </div>
 
             <div>
-              <label htmlFor="picture">Image File</label> 
+              <label htmlFor="picture">Image File</label>
               <input
                 id="picture"
                 name="picture"
-                type="file"           
-                accept="image/*"      
-                onChange={onFileChange} 
-                required              
+                type="file"
+                accept="image/*"
+                onChange={onFileChange}
+                required
               />
             </div>
 
@@ -206,8 +238,8 @@ export default function PostArt({ token }) {
               />
               {imgOk === false && (
                 <p>
-                  We could not load that image. It will still be saved, but please
-                  double-check the file or try another image.
+                  We could not load that image. It will still be saved, but
+                  please double-check the file or try another image.
                 </p>
               )}
             </section>

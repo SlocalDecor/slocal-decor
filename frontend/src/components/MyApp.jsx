@@ -68,10 +68,10 @@ function App() {
           token ? <NewArrivals token={token} /> : <Navigate to="/login" />
         }
       />
-     <Route 
-        path="/postart" 
-        element={<PostArt />} 
-       />
+      <Route
+        path="/postart"
+        element={token ? <PostArt token={token} /> : <Navigate to="/login" />}
+      />
 
       <Route
         path="/signup"
