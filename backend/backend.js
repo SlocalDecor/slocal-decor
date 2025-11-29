@@ -317,7 +317,7 @@ app.post("/api/logout", (req, res) => {
   return res.sendStatus(200);
 });
 
-//for saved art
+//for saved art!!
 app.post("/api/art/:id/save", authenticateUser, async (req, res) => {
   const artId = req.params.id;
   const userId = req.user.id; 
@@ -336,7 +336,7 @@ app.post("/api/art/:id/save", authenticateUser, async (req, res) => {
     if (!updatedUser) {
       return res.status(404).send("User not found");
     }
-    
+
     return res.status(200).send({ savedArt: updatedUser.savedArt });
   } catch (err) {
     console.error("Error saving art:", err);
