@@ -14,32 +14,35 @@ export default function UserLogin({ onLoginSuccess }) {
     e.preventDefault();
     console.log({ username, pwd });
   };
-  const submitLogIn = (e) => {
+  const submitLogIn = async (e) => {
     e.preventDefault();
-    console.log(import.meta.env.VITE_API_URL);
-    fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: username, password: pwd }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          setError(response.text());
-          return response.json().then((err) => {
-            throw new Error(err.error || "Username or password is invalid");
-          });
-        }
-        return response.json();
-      })
-      .then((res) => {
-        onLoginSuccess(res.token);
-        navigate("/", { replace: true });
-      })
-      .catch((err) => console.error(err.message));
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: username, password: pwd }),
+      });
 
-    return;
+      const contentType = response.headers.get("content-type");
+      const isJson = contentType && contentType.includes("application/json");
+      const body = isJson ? await response.json() : await response.text();
+
+      if (!response.ok) {
+        const message =
+          (typeof body === "object" && body?.error) ||
+          (typeof body === "string" && body) ||
+          "Username or password is invalid";
+        throw new Error(message);
+      }
+
+      onLoginSuccess(body.token);
+      navigate("/", { replace: true });
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+      console.error(err.message);
+    }
   };
   return (
     <div className="login-screen">

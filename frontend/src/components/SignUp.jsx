@@ -21,40 +21,39 @@ const navigate = useNavigate();
     });
   };
 
-  const submitSignUp = (e) => {
+  const submitSignUp = async (e) => {
     e.preventDefault();
     if (!termsCheckbox.checked) {
-      e.preventDefault();
       setError("You must agree to the Terms and Conditions to sign up.");
-    } else {
-      fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
+      return;
+    }
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            setError(response.text());
-            return response.json().then((err) => {
-              throw new Error(err.error || "Failed to create user");
-            });
-          }
-          console.log(response.json());
-        })
-        .then((data) => {
-          console.log("User created:", data);
-          setFormData({ name: "", phone: "", email: "", password: "" });
-          navigate("/login");
+      });
 
-        })
-        .catch((error) => {
-          console.error("Error:", error.message);
-        });
+      const contentType = response.headers.get("content-type");
+      const isJson = contentType && contentType.includes("application/json");
+      const body = isJson ? await response.json() : await response.text();
+
+      if (!response.ok) {
+        const message =
+          (typeof body === "object" && body?.error) ||
+          (typeof body === "string" && body) ||
+          "Failed to create user.";
+        throw new Error(message);
+      }
+
+      setFormData({ name: "", phone: "", email: "", password: "" });
+      navigate("/login");
+    } catch (error) {
+      setError(error.message || "Unable to create account right now.");
+      console.error("Error:", error.message);
     }
-
-    // add auth & route to home
   };
   return (
     <div className="signup-page">
