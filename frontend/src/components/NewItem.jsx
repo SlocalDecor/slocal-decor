@@ -65,6 +65,35 @@ export default function NewItem({ token }) {
     fetchOwner();
   }, [art, token]);
 
+  const handleSaveArt = async () => {
+  if (!token || !art?._id) return;
+
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/art/${art._id}/save`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Failed to save art:", text);
+      alert("Could not save art.");
+      return;
+    }
+
+    alert("Art added to your saved items!");
+  } catch (err) {
+    console.error("Error saving art:", err);
+    alert("Could not save art.");
+  }
+};
+
   const formatDims = (h, w, unit = "inches") => `${h} × ${w} ${unit}`;
   const formatDate = (d) =>
     d
@@ -136,7 +165,9 @@ export default function NewItem({ token }) {
           )}
 
           <div className="item-btns-large">
-            <button className="btn btn-pill">Add to Saved Art</button>
+            <button className="btn btn-pill" onClick={handleSaveArt}>
+            Add to Saved Art
+            </button>
             <button
               className="btn btn-pill"
               disabled={art.status === "claimed"}

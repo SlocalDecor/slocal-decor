@@ -11,7 +11,6 @@ export default function SavedItems({ token }) {
   const decoded = jwtDecode(token);
 
   const getArt = () => {
-    console.log(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`);
     fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`, {
       method: "GET",
       headers: {
@@ -20,60 +19,17 @@ export default function SavedItems({ token }) {
       },
     })
       .then((response) => {
-        console.log("made first request to get art");
-        console.log(response);
         if (!response.ok) {
           throw new Error("Failed to fetch art");
         }
         return response.json();
       })
       .then((data) => {
-        let artPieces = [];
-        for (let i = 0; i < data.art_list.length; i++) {
-          let art = data.art_list[i];
-          if (savedIds.includes(art._id)) {
-            if (!art.owner) {
-              artPieces.push({
-                ...art,
-                ownerName: "",
-              });
-              setArtItems(artPieces);
-              continue;
-            }
-
-            fetch(`${import.meta.env.VITE_API_URL}/api/users/${art.owner}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            })
-              .then((response) => {
-                console.log("getting owner for saved art");
-                if (!response.ok) {
-                  throw new Error("Failed to fetch owner");
-                }
-                return response.json();
-              })
-              .then((data) => {
-                console.log("retrieved owner data", data);
-                artPieces.push({
-                  ...art,
-                  ownerName: data[0]?.name || "",
-                });
-                setArtItems(artPieces);
-              })
-              .catch((err) => {
-                console.error(`Failed to fetch owner for art ${art._id}:`, err);
-                artPieces.push({
-                  ...art,
-                  ownerName: "",
-                });
-                setArtItems(artPieces);
-                console.log(artItems);
-              });
-          }
-        }
+        const savedSet = new Set(savedIds.map(String));
+        const filtered = data.art_list.filter((art) =>
+          savedSet.has(String(art._id))
+        );
+        setArtItems(filtered);
       })
       .catch((err) => {
         console.error("Error fetching art:", err);
@@ -81,7 +37,6 @@ export default function SavedItems({ token }) {
   };
 
   const getSaved = () => {
-    console.log(decoded.id);
     fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
       method: "GET",
       headers: {
@@ -90,15 +45,13 @@ export default function SavedItems({ token }) {
       },
     })
       .then((response) => {
-        console.log(response);
         if (!response.ok) {
           throw new Error("Failed to fetch art");
         }
         return response.json();
       })
       .then((data) => {
-        console.log("data", data[0]);
-        setSavedIds(data[0].savedArt);
+        setSavedIds(data[0].savedArt || []);
       })
       .catch((err) => {
         console.error("Error fetching art:", err);
@@ -111,7 +64,9 @@ export default function SavedItems({ token }) {
 
   useEffect(() => {
     if (savedIds && savedIds.length) {
-      getArt(savedIds);
+      getArt();
+    } else {
+      setArtItems([]);
     }
   }, [savedIds]);
 
@@ -135,7 +90,7 @@ export default function SavedItems({ token }) {
 
         <section className="na-gallery item-gallery">
           {items.map((it) => (
-            <article key={it.id} className="item na-item">
+            <article key={it._id || it.id} className="item na-item">
               <Link
                 to={`/item/${it._id || it.id}`}
                 style={{ textDecoration: "none", color: "inherit" }}

@@ -317,6 +317,33 @@ app.post("/api/logout", (req, res) => {
   return res.sendStatus(200);
 });
 
+//for saved art!!
+app.post("/api/art/:id/save", authenticateUser, async (req, res) => {
+  const artId = req.params.id;
+  const userId = req.user.id; 
+
+  if (!artId) {
+    return res.status(400).send("Missing art ID");
+  }
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { savedArt: artId } }, 
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
+    }
+
+    return res.status(200).send({ savedArt: updatedUser.savedArt });
+  } catch (err) {
+    console.error("Error saving art:", err);
+    return res.status(500).send("Failed to save art");
+  }
+});
+
 if (process.env.VERCEL_ENV === undefined) {
   const port = 8000;
   app.listen(port, () => {
