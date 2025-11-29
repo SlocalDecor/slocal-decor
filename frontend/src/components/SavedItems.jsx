@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
+import { apiUrl } from "../helpers/api";
 import "../style.css";
 import useOwners from "../helpers/useOwner";
 
@@ -11,8 +12,8 @@ export default function SavedItems({ token }) {
   const decoded = jwtDecode(token);
 
   const getArt = () => {
-    console.log(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`);
-    fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`, {
+    console.log(`${apiUrl("/api/art?userSpecific=false")}`);
+    fetch(apiUrl("/api/art?userSpecific=false"), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +42,7 @@ export default function SavedItems({ token }) {
               continue;
             }
 
-            fetch(`${import.meta.env.VITE_API_URL}/api/users/${art.owner}`, {
+            fetch(apiUrl(`/api/users/${art.owner}`), {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
@@ -82,7 +83,7 @@ export default function SavedItems({ token }) {
 
   const getSaved = () => {
     console.log(decoded.id);
-    fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
+    fetch(apiUrl(`/api/users/${decoded.id}`), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

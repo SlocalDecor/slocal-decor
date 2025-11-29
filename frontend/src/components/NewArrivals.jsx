@@ -1,13 +1,14 @@
 import React, { useMemo, useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
+import { apiUrl } from "../helpers/api";
 
 export default function NewArrivals({ token }) {
   const [artItems, setArtItems] = useState([]);
 
   const getArt = () => {
-    console.log(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`);
-    fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=false`, {
+    console.log(`${apiUrl("/api/art?userSpecific=false")}`);
+    fetch(apiUrl("/api/art?userSpecific=false"), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +35,7 @@ export default function NewArrivals({ token }) {
             continue;
           }
 
-          fetch(`${import.meta.env.VITE_API_URL}/api/users/${art.owner}`, {
+          fetch(apiUrl(`/api/users/${art.owner}`), {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

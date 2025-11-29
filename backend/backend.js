@@ -270,46 +270,95 @@ function isValidEmail(email) {
 }
 
 // for log in
-app.post("/api/signup", (req, res) => {
-  const userToAdd = req.body;
-  let newUser = {};
-  if (!userToAdd["name"] || userToAdd["name"] === "") {
-    console.log("Invalid or missing name");
-    return res.status(400).send("Invalid or missing name");
-  }
-  newUser["name"] = userToAdd["name"];
-  if (
-    !userToAdd["email"] ||
-    userToAdd["email"] === "" ||
-    !isValidEmail(userToAdd["email"])
-  ) {
-    console.log("Invalid or missing email");
-    return res.status(400).send("Invalid or missing email");
-  }
-  newUser["email"] = userToAdd["email"];
-  if (!userToAdd["phone"]) {
-    console.log("Missing phone number");
-    return res.status(400).send("Missing phone number");
-  }
-  newUser["phone"] = userToAdd["phone"];
-  if (!userToAdd["password"] || userToAdd["password"].length < 8) {
-    console.log("Missing password");
-    return res.status(400).send("Password should be at least 8 characters");
-  }
-  bcrypt
-    .genSalt(10)
-    .then((salt) => bcrypt.hash(userToAdd["password"], salt))
-    .then((hashedPassword) => {
-      newUser["passwordHash"] = hashedPassword;
-      console.log(newUser);
-      return userServices.addUser(newUser);
-    })
-    .then((result) => res.status(201).send(result))
-    .catch((error) => {
-      console.log(error);
-      res.status(500).end();
+app.post("/api/signup", async (req, res) => {
+  try {
+    const userToAdd = req.body;
+    const newUser = {};
+
+    // Name
+    if (!userToAdd.name || userToAdd.name.trim() === "") {
+      console.log("Invalid or missing name");
+      return res
+        .status(400)
+        .json({ error: "Name is required. Please enter your full name." });
+    }
+    newUser.name = userToAdd.name.trim();
+
+    // Email
+    if (
+      !userToAdd.email ||
+      userToAdd.email.trim() === "" ||
+      !isValidEmail(userToAdd.email)
+    ) {
+      console.log("Invalid or missing email");
+      return res.status(400).json({
+        error:
+          "Email is required and must be a valid email address (e.g., name@example.com).",
+      });
+    }
+    newUser.email = userToAdd.email.trim();
+
+    // Phone
+    if (!userToAdd.phone || userToAdd.phone.trim() === "") {
+      console.log("Missing phone number");
+      return res
+        .status(400)
+        .json({ error: "Phone number is required to create an account." });
+    }
+    newUser.phone = userToAdd.phone.trim();
+
+    // Password
+    if (!userToAdd.password || userToAdd.password.length < 8) {
+      console.log("Invalid password");
+      return res.status(400).json({
+        error: "Password should be at least 8 characters long.",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(userToAdd.password, salt);
+    newUser.passwordHash = hashedPassword;
+
+    console.log("Creating user:", newUser);
+
+    const result = await userServices.addUser(newUser);
+
+    // Strip passwordHash from response
+    const userObj = result.toObject ? result.toObject() : result;
+    const { passwordHash, ...safeUser } = userObj;
+
+    return res.status(201).json({
+      message: "User created successfully.",
+      user: safeUser,
     });
+  } catch (error) {
+    console.error("Signup error:", error);
+
+    // Duplicate email (Mongo/Mongoose unique constraint)
+    if (error.code === 11000 && error.keyPattern?.email) {
+      return res.status(409).json({
+        error: "An account with this email already exists. Try logging in instead.",
+      });
+    }
+
+    // Mongoose validation error
+    if (error.name === "ValidationError") {
+      const details = Object.values(error.errors)
+        .map((e) => e.message)
+        .join(" ");
+      return res
+        .status(400)
+        .json({ error: `Invalid user data. ${details}` });
+    }
+
+    // Generic fallback
+    return res.status(500).json({
+      error:
+        "Something went wrong while creating your account. Please try again.",
+    });
+  }
 });
+
 
 app.post("/api/login", loginUser);
 

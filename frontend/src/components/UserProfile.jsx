@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import NavBar from "./NavBar";
 import PostArt from "./PostArt.jsx";
+import { apiUrl } from "../helpers/api";
 import "../style.css";
 import useOwners from "../helpers/useOwner";
 
@@ -20,7 +21,7 @@ function UserProfile({ token }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
 
-    fetch(`${import.meta.env.VITE_API_URL}/api/logout`, {
+    fetch(apiUrl("/api/logout"), {
       method: "POST",
       credentials: "include",
     }).catch(() => {});
@@ -30,7 +31,7 @@ function UserProfile({ token }) {
   
 
   const fetchUser = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
+    fetch(apiUrl(`/api/users/${decoded.id}`), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +54,7 @@ function UserProfile({ token }) {
   };
 
   const fetchArt = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/art?userSpecific=true`, {
+    fetch(apiUrl("/api/art?userSpecific=true"), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

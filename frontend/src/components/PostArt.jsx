@@ -3,9 +3,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import { jwtDecode } from "jwt-decode";
+import { apiUrl } from "../helpers/api";
 import "../style.css";
-
-const API_BASE = import.meta?.env?.VITE_API_BASE || "http://localhost:8000";
 
 export default function PostArt({ token }) {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ export default function PostArt({ token }) {
   });
 
   const fetchUser = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`, {
+    fetch(apiUrl(`/api/users/${decoded.id}`), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -118,7 +117,7 @@ export default function PostArt({ token }) {
       formData.append("picture", imageFile);
       formData.append("owner", owner);
 
-      const res = await fetch(`${API_BASE}/api/art`, {
+      const res = await fetch(apiUrl("/api/art"), {
         method: "POST",
         headers: { ...authedHeaders },
         body: formData,

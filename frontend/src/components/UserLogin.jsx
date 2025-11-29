@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import ErrorPopup from "./ErrorPopup";
+import { apiUrl } from "../helpers/api";
 import "../style.css";
 
 export default function UserLogin({ onLoginSuccess }) {
@@ -16,20 +17,23 @@ export default function UserLogin({ onLoginSuccess }) {
   };
   const submitLogIn = (e) => {
     e.preventDefault();
-    console.log(import.meta.env.VITE_API_URL);
-    fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+    fetch(apiUrl("/api/login"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email: username, password: pwd }),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
-          setError(response.text());
-          return response.json().then((err) => {
-            throw new Error(err.error || "Username or password is invalid");
-          });
+          let message = "Username or password is invalid";
+          try {
+            const body = await response.json();
+            message = body.error || message;
+          } catch {
+            message = (await response.text()) || message;
+          }
+          throw new Error(message);
         }
         return response.json();
       })
@@ -37,7 +41,10 @@ export default function UserLogin({ onLoginSuccess }) {
         onLoginSuccess(res.token);
         navigate("/", { replace: true });
       })
-      .catch((err) => console.error(err.message));
+      .catch((err) => {
+        setError(err.message);
+        console.error(err.message);
+      });
 
     return;
   };

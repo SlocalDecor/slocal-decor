@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { apiUrl } from "./api";
 
 export default function useOwners(ownerIds = [], token) {
   const [owners, setOwners] = useState({});
@@ -18,12 +19,9 @@ export default function useOwners(ownerIds = [], token) {
       await Promise.all(
         ids.map(async (id) => {
           try {
-            const res = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/users/${id}`,
-              {
-                headers: token ? { Authorization: `Bearer ${token}` } : {},
-              }
-            );
+            const res = await fetch(apiUrl(`/api/users/${id}`), {
+              headers: token ? { Authorization: `Bearer ${token}` } : {},
+            });
             if (!res.ok) {
               map[id] = id;
               return;

@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "./NavBar";
 import { jwtDecode } from "jwt-decode";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "../helpers/api";
 
 export default function NewItem({ token }) {
   const { id } = useParams();
@@ -21,12 +22,9 @@ export default function NewItem({ token }) {
     async function fetchArt() {
       try {
         setLoading(true);
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/art/${id}`,
-          {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          }
-        );
+        const res = await fetch(apiUrl(`/api/art/${id}`), {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
         if (!res.ok) throw new Error("Failed to fetch art");
         const data = await res.json();
         setArt(data);
@@ -45,12 +43,9 @@ export default function NewItem({ token }) {
 
     async function fetchOwner() {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/users/${art.owner}`,
-          {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          }
-        );
+        const res = await fetch(apiUrl(`/api/users/${art.owner}`), {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
         if (!res.ok) throw new Error("Failed to fetch owner");
         const data = await res.json();
         const user = data && (Array.isArray(data) ? data[0] : data);
@@ -157,7 +152,9 @@ export default function NewItem({ token }) {
                   try {
                     // fetch the user by email
                     const userRes = await fetch(
-                      `${import.meta.env.VITE_API_URL}/api/users/email/${encodeURIComponent(newOwnerEmail)}`,
+                      apiUrl(
+                        `/api/users/email/${encodeURIComponent(newOwnerEmail)}`
+                      ),
                       {
                         headers: token
                           ? { Authorization: `Bearer ${token}` }
@@ -181,7 +178,7 @@ export default function NewItem({ token }) {
 
                     // Call the transfer endpoint
                     const res = await fetch(
-                      `${import.meta.env.VITE_API_URL}/api/art/${art._id}/transfer`,
+                      apiUrl(`/api/art/${art._id}/transfer`),
                       {
                         method: "PATCH",
                         headers: {
