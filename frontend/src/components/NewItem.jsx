@@ -131,9 +131,12 @@ export default function NewItem({ token }) {
             )}
           </div>
 
-          {art.description && (
-            <p className="item-description">{art.description}</p>
-          )}
+          <div className="item-description">
+            <strong>Description :</strong>{" "}
+            {art.description && art.description.trim().length > 0
+              ? art.description
+              : "No description provided."}
+          </div>
 
           <div className="item-btns-large">
             <button className="btn btn-pill">Add to Saved Art</button>
