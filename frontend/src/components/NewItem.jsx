@@ -11,6 +11,8 @@ export default function NewItem({ token }) {
   const [ownerEmail, setOwnerEmail] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const decoded = token ? jwtDecode(token) : null;
+  const isOwner =
+    decoded && art && String(art.owner) === String(decoded.id);
 
   React.useEffect(() => {
     if (!id) {
@@ -131,12 +133,17 @@ export default function NewItem({ token }) {
             )}
           </div>
 
-          {art.description && (
-            <p className="item-description">{art.description}</p>
-          )}
+          <div className="item-description">
+            <strong>Description :</strong>{" "}
+            {art.description && art.description.trim().length > 0
+              ? art.description
+              : "No description provided."}
+          </div>
 
           <div className="item-btns-large">
-            <button className="btn btn-pill">Add to Saved Art</button>
+            {!isOwner && (
+              <button className="btn btn-pill">Add to Saved Art</button>
+            )}
             <button
               className="btn btn-pill"
               disabled={art.status === "claimed"}
@@ -145,7 +152,7 @@ export default function NewItem({ token }) {
               Contact artist
             </button>
             {/* transfer ownership button - visible only to current owner */}
-            {decoded && art && String(art.owner) === String(decoded.id) && (
+            {isOwner && (
               <button
                 className="btn btn-pill"
                 onClick={async () => {
