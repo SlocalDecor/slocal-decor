@@ -4,7 +4,11 @@ CSC 307 final project
 
 ## Project Blurb
 
-Slocal Decor is a community art and decor exchange built for the SLO/Cal Poly crowd. Users can sign up, post new pieces with photos and dimensions, browse the latest arrivals, save favorites, and reach out to owners to claim or transfer items. The app pairs a React + Vite frontend with a Node/Express + MongoDB backend, giving students a simple way to circulate decor instead of letting it collect dust.
+Slocal Decor is a community art and decor exchange built for the SLO/Cal Poly crowd. Users can sign up, post new pieces with photos and dimensions, browse the latest arrivals, save favorites, and reach out to owners to claim or transfer items. On a technical note, the app pairs a React + Vite frontend with a Node/Express + MongoDB backend. 
+
+Join us in giving students a simple way to circulate beautiful art and decor instead of letting it collect dust!
+
+Fill your heart with slocal art :)
 
 ## Class Diagram
 
