@@ -277,6 +277,8 @@ html {
 }
 
 .hero {
+  position: relative;
+  overflow: hidden;
   background-image: url("/images/homepage.png");
   background-size: cover;
   background-position: center;
@@ -291,6 +293,20 @@ html {
   font-size: larger;
 
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 0;
+}
+
+.hero .main-text,
+.hero .sub-text {
+  position: relative;
+  z-index: 1;
+  color: #fff;
 }
 
 .profile-icon img {

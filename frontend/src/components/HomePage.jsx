@@ -7,7 +7,7 @@ function HomePage() {
     <div className="home">
       <NavBar />
       <div className="hero">
-        <div className="overlay" />
+        <div className="hero-overlay" />
         <h1 className="main-text">slocal decor</h1>
         <p className="sub-text">fill your heart with slocal art :)</p>
       </div>
