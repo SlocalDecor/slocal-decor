@@ -9,11 +9,8 @@ import useOwners from "../helpers/useOwner";
 
 function UserProfile({ token }) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("published");
   const decoded = jwtDecode(token);
   const [items, setItems] = useState([]);
-  const [publishedItems, setPublishedItems] = useState([]);
-  const [claimedItems, setClaimedItems] = useState([]);
   const [name, setName] = useState("Name not found");
   const [bio, setBio] = useState("");
 
@@ -70,12 +67,6 @@ function UserProfile({ token }) {
       .then((data) => {
         console.log(data);
         setItems(data.art_list);
-        setClaimedItems(
-          data.art_list.filter((art) => art.status === "claimed")
-        );
-        setPublishedItems(
-          data.art_list.filter((art) => art.status === "unclaimed")
-        );
       })
       .catch((err) => {
         console.error("Error fetching art:", err);
@@ -89,11 +80,8 @@ function UserProfile({ token }) {
     }
   }, [token]);
 
-  const displayedItems =
-    activeTab === "published" ? publishedItems : claimedItems;
-
   // resolve owner ids to display names for items
-  const ownerIds = displayedItems.map((it) => it.owner).filter(Boolean);
+  const ownerIds = items.map((it) => it.owner).filter(Boolean);
   const ownerNames = useOwners(ownerIds, token);
 
   return (
@@ -120,23 +108,10 @@ function UserProfile({ token }) {
         </div>
 
         <div className="main-content">
-          <div className="button-container">
-            <button
-              className={`btn ${activeTab === "published" ? "selected" : ""}`}
-              onClick={() => setActiveTab("published")}
-            >
-              Published by You
-            </button>
-            <button
-              className={`btn ${activeTab === "claimed" ? "selected" : ""}`}
-              onClick={() => setActiveTab("claimed")}
-            >
-              Claimed by You
-            </button>
-          </div>
+          <h3>Your Art</h3>
 
           <div className="item-gallery">
-            {displayedItems.map((item, index) => (
+            {items.map((item, index) => (
               <div key={index} className="item">
                 <Link
                   to={`/item/${item._id || item.id || item.artId || index}`}
