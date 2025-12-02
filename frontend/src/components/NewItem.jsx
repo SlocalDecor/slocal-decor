@@ -184,6 +184,16 @@ export default function NewItem({ token }) {
             >
               Contact artist
             </button>
+            <button className="btn btn-pill">Add to Saved Art</button>
+            {!isOwner && (
+              <button
+                className="btn btn-pill"
+                disabled={art.status === "claimed"}
+                onClick={() => setShowContact(true)}
+              >
+                Contact artist
+              </button>
+            )}
             {/* transfer ownership button - visible only to current owner */}
             {isOwner && (
               <button
