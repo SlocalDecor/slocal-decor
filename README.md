@@ -26,6 +26,9 @@ Fill your heart with slocal art :)
 2. Sprint 2
    - [Kanban Board](https://github.com/users/pihujha/projects/5)
    - [Presentation](https://www.canva.com/design/DAG4b47p1g8/N2UXPbpEnzFZXpmXhXPRsQ/view?utm_content=DAG4b47p1g8&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h601c39c4cb)
+3. Sprint 3
+ - [Kanban Board](https://github.com/orgs/SlocalDecor/projects/3)
+ - [Presentation](https://www.canva.com/design/DAG40DxEA0w/P9qUnYTh6kDf3WTTvBpLuQ/view?utm_content=DAG40DxEA0w&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hbaf2622e7e)
 
 ## Working UI
 
