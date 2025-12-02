@@ -141,16 +141,16 @@ export default function NewItem({ token }) {
           </div>
 
           <div className="item-btns-large">
+            <button className="btn btn-pill">Add to Saved Art</button>
             {!isOwner && (
-              <button className="btn btn-pill">Add to Saved Art</button>
+              <button
+                className="btn btn-pill"
+                disabled={art.status === "claimed"}
+                onClick={() => setShowContact(true)}
+              >
+                Contact artist
+              </button>
             )}
-            <button
-              className="btn btn-pill"
-              disabled={art.status === "claimed"}
-              onClick={() => setShowContact(true)}
-            >
-              Contact artist
-            </button>
             {/* transfer ownership button - visible only to current owner */}
             {isOwner && (
               <button
