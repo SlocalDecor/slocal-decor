@@ -108,7 +108,7 @@ function UserProfile({ token }) {
         </div>
 
         <div className="main-content">
-          <h3>Your Art</h3>
+          <h3 className="user-art-heading">Your Art</h3>
 
           <div className="item-gallery">
             {items.map((item, index) => (
