@@ -177,14 +177,6 @@ export default function NewItem({ token }) {
               </button>
           )}
           </div>
-            <button
-              className="btn btn-pill"
-              disabled={art.status === "claimed"}
-              onClick={() => setShowContact(true)}
-            >
-              Contact artist
-            </button>
-            <button className="btn btn-pill">Add to Saved Art</button>
             {!isOwner && (
               <button
                 className="btn btn-pill"
