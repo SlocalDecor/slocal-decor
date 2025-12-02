@@ -170,12 +170,13 @@ export default function NewItem({ token }) {
           </div>
 
           <div className="item-btns-large">
-            <button className="btn btn-pill" onClick={handleSaveArt}>
-            Add to Saved Art
-            </button>
-            {!isOwner && (
-              <button className="btn btn-pill">Add to Saved Art</button>
-            )}
+            <div className="item-btns-large">
+              {!isOwner && (
+              <button className="btn btn-pill" onClick={handleSaveArt}>
+                Add to Saved Art
+              </button>
+          )}
+          </div>
             <button
               className="btn btn-pill"
               disabled={art.status === "claimed"}
