@@ -54,7 +54,11 @@ function findArtById(id) {
 }
 
 function updateOwner(id, newOwner) {
-  return artModel.findByIdAndUpdate(id, { owner: newOwner }, { new: true });
+  return artModel.findByIdAndUpdate(
+    id,
+    { owner: newOwner, status: "claimed" },
+    { new: true }
+  );
 }
 
 function findArtByType(type) {
