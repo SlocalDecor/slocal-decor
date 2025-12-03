@@ -125,25 +125,32 @@ app.post("/api/art", upload.single("picture"), async (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
-app.delete("/api/art/:id", authenticateUser, (req, res) => {
+app.delete("/api/art/:id", authenticateUser, async (req, res) => {
   const artId = req.params.id;
   if (!artId) {
     console.log("Missing art ID");
     return res.status(400).send("Missing art ID");
   }
-  artServices
-    .deleteArt(artId)
-    .then((result) => {
-      if (!result) {
-        return res.status(404).send("Art not found");
-      }
-      console.log(`Deleted art with ID: ${artId}`);
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      console.error("Error deleting art:", err);
-      res.status(500).send(err);
-    });
+
+  try {
+    const art = await artServices.findArtById(artId);
+    if (!art) {
+      return res.status(404).send("Art not found");
+    }
+
+    if (String(art.owner) !== String(req.user.id)) {
+      console.log(`User ${req.user.id} is not the owner of art ${artId}`);
+      return res.status(403).send("Not authorized to delete this art");
+    }
+
+    const deletedArt = await artServices.deleteArt(artId);
+    await userServices.removeArtFromUser(art.owner, art._id);
+    console.log(`Deleted art with ID: ${artId}`);
+    return res.status(200).send(deletedArt);
+  } catch (err) {
+    console.error("Error deleting art:", err);
+    return res.status(500).send(err);
+  }
 });
 
 app.get("/api/users/email/:email", authenticateUser, async (req, res) => {

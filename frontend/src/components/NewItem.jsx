@@ -1,15 +1,17 @@
 import React from "react";
 import NavBar from "./NavBar";
 import { jwtDecode } from "jwt-decode";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function NewItem({ token }) {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [art, setArt] = React.useState(null);
   const [ownerName, setOwnerName] = React.useState("");
   const [showContact, setShowContact] = React.useState(false);
   const [ownerEmail, setOwnerEmail] = React.useState("");
   const [loading, setLoading] = React.useState(true);
+  const [isDeleting, setIsDeleting] = React.useState(false);
   const decoded = token ? jwtDecode(token) : null;
   const isOwner =
     decoded && art && String(art.owner) === String(decoded.id);
@@ -68,33 +70,71 @@ export default function NewItem({ token }) {
   }, [art, token]);
 
   const handleSaveArt = async () => {
-  if (!token || !art?._id) return;
+    if (!token || !art?._id) return;
 
-  try {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/art/${art._id}/save`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/art/${art._id}/save`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Failed to save art:", text);
+        alert("Could not save art.");
+        return;
       }
-    );
 
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("Failed to save art:", text);
+      alert("Art added to your saved items!");
+    } catch (err) {
+      console.error("Error saving art:", err);
       alert("Could not save art.");
+    }
+  };
+
+  const handleDeleteArt = async () => {
+    if (!art?._id || !token) return;
+    if (
+      !window.confirm(
+        "Delete this art permanently? This action cannot be undone."
+      )
+    ) {
       return;
     }
 
-    alert("Art added to your saved items!");
-  } catch (err) {
-    console.error("Error saving art:", err);
-    alert("Could not save art.");
-  }
-};
+    setIsDeleting(true);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/art/${art._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Failed to delete art");
+      }
+
+      alert("Art deleted successfully");
+      navigate("/new_arrivals");
+    } catch (err) {
+      console.error("Error deleting art:", err);
+      alert("Unable to delete art: " + err.message);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const formatDims = (h, w, unit = "inches") => `${h} × ${w} ${unit}`;
   const formatDate = (d) =>
@@ -170,88 +210,95 @@ export default function NewItem({ token }) {
           </div>
 
           <div className="item-btns-large">
-            <div className="item-btns-large">
-              {!isOwner && (
-              <button className="btn btn-pill" onClick={handleSaveArt}>
-                Add to Saved Art
-              </button>
-          )}
-          </div>
             {!isOwner && (
-              <button
-                className="btn btn-pill"
-                disabled={art.status === "claimed"}
-                onClick={() => setShowContact(true)}
-              >
-                Contact artist
-              </button>
+              <>
+                <button className="btn btn-pill" onClick={handleSaveArt}>
+                  Add to Saved Art
+                </button>
+                <button
+                  className="btn btn-pill"
+                  disabled={art.status === "claimed"}
+                  onClick={() => setShowContact(true)}
+                >
+                  Contact artist
+                </button>
+              </>
             )}
-            {/* transfer ownership button - visible only to current owner */}
+
             {isOwner && (
-              <button
-                className="btn btn-pill"
-                onClick={async () => {
-                  const newOwnerEmail = window.prompt(
-                    "Enter the email of the new owner:"
-                  );
-                  if (!newOwnerEmail) return;
-
-                  try {
-                    // fetch the user by email
-                    const userRes = await fetch(
-                      `${import.meta.env.VITE_API_URL}/api/users/email/${encodeURIComponent(newOwnerEmail)}`,
-                      {
-                        headers: token
-                          ? { Authorization: `Bearer ${token}` }
-                          : {},
-                      }
+              <>
+                <button
+                  className="btn btn-pill"
+                  onClick={async () => {
+                    const newOwnerEmail = window.prompt(
+                      "Enter the email of the new owner:"
                     );
-                    if (!userRes.ok) {
-                      throw new Error("User not found with that email");
-                    }
+                    if (!newOwnerEmail) return;
 
-                    const userData = await userRes.json();
-                    const newOwnerId =
-                      userData?.id ||
-                      userData?._id ||
-                      (Array.isArray(userData) && userData[0]?._id);
-
-                    if (!newOwnerId) {
-                      alert("Invalid user information");
-                      return;
-                    }
-
-                    // Call the transfer endpoint
-                    const res = await fetch(
-                      `${import.meta.env.VITE_API_URL}/api/art/${art._id}/transfer`,
-                      {
-                        method: "PATCH",
-                        headers: {
-                          "Content-Type": "application/json",
-                          ...(token
+                    try {
+                      // fetch the user by email
+                      const userRes = await fetch(
+                        `${import.meta.env.VITE_API_URL}/api/users/email/${encodeURIComponent(newOwnerEmail)}`,
+                        {
+                          headers: token
                             ? { Authorization: `Bearer ${token}` }
-                            : {}),
-                        },
-                        body: JSON.stringify({ newOwner: newOwnerId }),
+                            : {},
+                        }
+                      );
+                      if (!userRes.ok) {
+                        throw new Error("User not found with that email");
                       }
-                    );
 
-                    if (!res.ok) {
-                      const text = await res.text();
-                      throw new Error(text || "Failed to transfer owner");
+                      const userData = await userRes.json();
+                      const newOwnerId =
+                        userData?.id ||
+                        userData?._id ||
+                        (Array.isArray(userData) && userData[0]?._id);
+
+                      if (!newOwnerId) {
+                        alert("Invalid user information");
+                        return;
+                      }
+
+                      // Call the transfer endpoint
+                      const res = await fetch(
+                        `${import.meta.env.VITE_API_URL}/api/art/${art._id}/transfer`,
+                        {
+                          method: "PATCH",
+                          headers: {
+                            "Content-Type": "application/json",
+                            ...(token
+                              ? { Authorization: `Bearer ${token}` }
+                              : {}),
+                          },
+                          body: JSON.stringify({ newOwner: newOwnerId }),
+                        }
+                      );
+
+                      if (!res.ok) {
+                        const text = await res.text();
+                        throw new Error(text || "Failed to transfer owner");
+                      }
+
+                      const updated = await res.json();
+                      setArt(updated);
+                      alert("Ownership transferred successfully");
+                    } catch (err) {
+                      console.error(err);
+                      alert("Unable to transfer ownership: " + err.message);
                     }
-
-                    const updated = await res.json();
-                    setArt(updated);
-                    alert("Ownership transferred successfully");
-                  } catch (err) {
-                    console.error(err);
-                    alert("Unable to transfer ownership: " + err.message);
-                  }
-                }}
-              >
-                Transfer ownership
-              </button>
+                  }}
+                >
+                  Transfer ownership
+                </button>
+                <button
+                  className="btn btn-pill btn-danger"
+                  disabled={isDeleting}
+                  onClick={handleDeleteArt}
+                >
+                  {isDeleting ? "Deleting…" : "Delete art"}
+                </button>
+              </>
             )}
           </div>
         </div>
