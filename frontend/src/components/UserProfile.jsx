@@ -98,7 +98,7 @@ function UserProfile({ token }) {
 
   return (
     <div className="user-page">
-      <NavBar token={token} />
+      <NavBar />
 
       <div className="content">
         <div className="sidebar">

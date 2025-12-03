@@ -85,7 +85,7 @@ export default function SavedItems({ token }) {
   return (
     <div>
       <div className="na-page">
-        <NavBar token={token} />
+        <NavBar />
         <h1 className="na-title">Saved Items</h1>
 
         <section className="na-gallery item-gallery">

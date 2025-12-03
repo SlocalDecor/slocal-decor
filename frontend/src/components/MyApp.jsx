@@ -53,19 +53,13 @@ function App() {
     <Routes>
       <Route
         path="/"
-        element={
-          token ? <HomePage token={token} /> : <Navigate to="/login" replace />
-        }
+        element={token ? <HomePage /> : <Navigate to="/login" replace />}
       />
 
       <Route
         path="/login"
         element={
-          token ? (
-            <HomePage token={token} />
-          ) : (
-            <UserLogin onLoginSuccess={setToken} />
-          )
+          token ? <HomePage /> : <UserLogin onLoginSuccess={setToken} />
         }
       />
 
