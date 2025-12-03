@@ -21,7 +21,7 @@ function NavBar() {
           <a href="/profile">
             <div className="profile-icon">
               <div className="profile-icon">
-                <img src="/images/defaultprofile.png" alt="Profile" />
+                <img src="/images/userpfp.jpg" alt="Profile" />
               </div>
             </div>
           </a>
