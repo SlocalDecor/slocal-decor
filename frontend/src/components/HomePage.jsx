@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import NavBar from "./NavBar";
 import "../style.css";
 
-function HomePage() {
+function HomePage({ token }) {
   return (
     <div className="home">
-      <NavBar />
+      <NavBar token={token} />
       <div className="hero">
         <div className="hero-overlay" />
         <h1 className="main-text">slocal decor</h1>

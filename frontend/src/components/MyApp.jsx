@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import UserLogin from "./UserLogin";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./HomePage";
-import NavBar from "./NavBar";
 import NewArrivals from "./NewArrivals";
 import UserProfile from "./UserProfile";
 import SavedItems from "./SavedItems";
@@ -54,12 +53,20 @@ function App() {
     <Routes>
       <Route
         path="/"
-        element={token ? <HomePage /> : <Navigate to="/login" replace />}
+        element={
+          token ? <HomePage token={token} /> : <Navigate to="/login" replace />
+        }
       />
 
       <Route
         path="/login"
-        element={token ? <HomePage /> : <UserLogin onLoginSuccess={setToken} />}
+        element={
+          token ? (
+            <HomePage token={token} />
+          ) : (
+            <UserLogin onLoginSuccess={setToken} />
+          )
+        }
       />
 
       <Route

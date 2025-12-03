@@ -109,7 +109,7 @@ export default function NewItem({ token }) {
   if (loading) {
     return (
       <div className="na-page">
-        <NavBar />
+        <NavBar token={token} />
         <div style={{ padding: 40, color: "#fff" }}>Loading item…</div>
       </div>
     );
@@ -118,7 +118,7 @@ export default function NewItem({ token }) {
   if (!art) {
     return (
       <div className="na-page">
-        <NavBar />
+        <NavBar token={token} />
         <div style={{ padding: 40, color: "#fff" }}>Item not found.</div>
       </div>
     );
@@ -126,7 +126,7 @@ export default function NewItem({ token }) {
 
   return (
     <div className="na-page">
-      <NavBar />
+      <NavBar token={token} />
       <section className="item-section">
         <div className="item-left">
           <div className="item-frame">

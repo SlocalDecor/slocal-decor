@@ -139,7 +139,7 @@ export default function PostArt({ token }) {
 
   return (
     <div className="post-art-page">
-      <NavBar />
+      <NavBar token={token} />
       <main className="post-art-main">
         <div className="post-art-container">
           <h1 className="post-art-title">Post New Art</h1>

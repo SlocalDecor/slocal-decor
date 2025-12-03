@@ -99,7 +99,7 @@ export default function NewArrivals({ token }) {
 
   return (
     <div className="na-page">
-      <NavBar />
+      <NavBar token={token} />
 
       <h1 className="na-title">New Arrivals</h1>
 
