@@ -33,10 +33,22 @@ function getUsers() {
   return promise;
 }
 
+function removeArtFromUser(userId, artId) {
+  if (!userId || !artId) {
+    throw new Error("userId and artId are required");
+  }
+  return userModel.findByIdAndUpdate(
+    userId,
+    { $pull: { postedArt: artId } },
+    { new: true }
+  );
+}
+
 export default {
   addUser,
   deleteUser,
   findUserById,
   findUserForLogin,
   getUsers,
+  removeArtFromUser,
 };

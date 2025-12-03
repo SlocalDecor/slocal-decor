@@ -144,7 +144,7 @@ app.delete("/api/art/:id", authenticateUser, async (req, res) => {
     }
 
     const deletedArt = await artServices.deleteArt(artId);
-    await User.findByIdAndUpdate(art.owner, { $pull: { postedArt: art._id } });
+    await userServices.removeArtFromUser(art.owner, art._id);
     console.log(`Deleted art with ID: ${artId}`);
     return res.status(200).send(deletedArt);
   } catch (err) {
