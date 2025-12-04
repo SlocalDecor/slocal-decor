@@ -5,7 +5,7 @@ import NavBar from "./NavBar";
 import { jwtDecode } from "jwt-decode";
 import "../style.css";
 
-const API_BASE = import.meta?.env?.VITE_API_BASE || "http://localhost:8000";
+const API_BASE = import.meta?.env?.VITE_API_URL || "http://localhost:8000";
 
 export default function PostArt({ token }) {
   const navigate = useNavigate();
