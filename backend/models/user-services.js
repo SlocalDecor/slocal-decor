@@ -44,6 +44,17 @@ function removeArtFromUser(userId, artId) {
   );
 }
 
+function unsaveArt(userId, artId) {
+  if (!userId || !artId) {
+    throw new Error("userId and artId are required");
+  }
+  return userModel.findByIdAndUpdate(
+    userId,
+    { $pull: { savedArt: artId } },
+    { new: true }
+  );
+}
+
 export default {
   addUser,
   deleteUser,
@@ -51,4 +62,5 @@ export default {
   findUserForLogin,
   getUsers,
   removeArtFromUser,
+  unsaveArt,
 };

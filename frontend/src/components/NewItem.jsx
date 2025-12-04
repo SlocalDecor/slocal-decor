@@ -12,9 +12,10 @@ export default function NewItem({ token }) {
   const [ownerEmail, setOwnerEmail] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const [isDeleting, setIsDeleting] = React.useState(false);
+  const [savedItems, setSavedItems] = React.useState([]);
+  const isSaved = savedItems.includes(id);
   const decoded = token ? jwtDecode(token) : null;
-  const isOwner =
-    decoded && art && String(art.owner) === String(decoded.id);
+  const isOwner = decoded && art && String(art.owner) === String(decoded.id);
 
   React.useEffect(() => {
     if (!id) {
@@ -41,7 +42,30 @@ export default function NewItem({ token }) {
       }
     }
 
+    async function fetchUser() {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/users/${decoded.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+        const data = await response.json();
+        setSavedItems(data[0].savedArt);
+      } catch (err) {
+        console.error("Error fetching user:", err);
+      }
+    }
+
     fetchArt();
+    fetchUser();
   }, [id, token]);
 
   React.useEffect(() => {
@@ -90,11 +114,39 @@ export default function NewItem({ token }) {
         alert("Could not save art.");
         return;
       }
-
       alert("Art added to your saved items!");
     } catch (err) {
       console.error("Error saving art:", err);
       alert("Could not save art.");
+    }
+  };
+
+  const handleUnsaveArt = async () => {
+    if (!token || !art?._id) return;
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/art/${art._id}/unsave`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Failed to unsave art:", text);
+        alert("Could not unsave art.");
+        return;
+      }
+
+      alert("Art removed from saved items!");
+    } catch (err) {
+      console.error("Error unsaving art:", err);
+      alert("Could not unsave art.");
     }
   };
 
@@ -212,9 +264,15 @@ export default function NewItem({ token }) {
           <div className="item-btns-large">
             {!isOwner && (
               <>
-                <button className="btn btn-pill" onClick={handleSaveArt}>
-                  Add to Saved Art
-                </button>
+                {!isSaved ? (
+                  <button className="btn btn-pill" onClick={handleSaveArt}>
+                    Add to Saved Art
+                  </button>
+                ) : (
+                  <button className="btn btn-pill" onClick={handleUnsaveArt}>
+                    Unsave Art
+                  </button>
+                )}
                 <button
                   className="btn btn-pill"
                   disabled={art.status === "claimed"}

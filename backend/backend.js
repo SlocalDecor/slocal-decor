@@ -272,6 +272,29 @@ app.patch("/api/art/:id/transfer", authenticateUser, async (req, res) => {
   }
 });
 
+// unsaving art
+app.patch("/api/art/:id/unsave", authenticateUser, (req, res) => {
+  const artId = req.params.id;
+  const userId = req.user.id;
+
+  if (!artId) {
+    return res.status(400).send("Missing art ID");
+  }
+
+  userServices
+    .unsaveArt(userId, artId)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).send("Unable to unsave art");
+      }
+      res.status(200).send("Unsaved art");
+    })
+    .catch((err) => {
+      console.error("Error in unsaving art:", err);
+      res.status(500).send(err);
+    });
+});
+
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -327,7 +350,7 @@ app.post("/api/logout", (req, res) => {
 //for saved art!!
 app.post("/api/art/:id/save", authenticateUser, async (req, res) => {
   const artId = req.params.id;
-  const userId = req.user.id; 
+  const userId = req.user.id;
 
   if (!artId) {
     return res.status(400).send("Missing art ID");
@@ -336,7 +359,7 @@ app.post("/api/art/:id/save", authenticateUser, async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { $addToSet: { savedArt: artId } }, 
+      { $addToSet: { savedArt: artId } },
       { new: true }
     );
 
