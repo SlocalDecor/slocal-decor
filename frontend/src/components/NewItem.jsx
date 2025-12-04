@@ -114,6 +114,7 @@ export default function NewItem({ token }) {
         alert("Could not save art.");
         return;
       }
+      setSavedItems((prev) => [...prev, id]);
       alert("Art added to your saved items!");
     } catch (err) {
       console.error("Error saving art:", err);
@@ -142,7 +143,7 @@ export default function NewItem({ token }) {
         alert("Could not unsave art.");
         return;
       }
-
+      setSavedItems((prev) => prev.filter((id) => id !== art._id));
       alert("Art removed from saved items!");
     } catch (err) {
       console.error("Error unsaving art:", err);
