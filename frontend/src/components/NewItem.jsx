@@ -270,7 +270,7 @@ export default function NewItem({ token }) {
                   </button>
                 ) : (
                   <button className="btn btn-pill" onClick={handleUnsaveArt}>
-                    UnSave Art
+                    Unsave Art
                   </button>
                 )}
                 <button
