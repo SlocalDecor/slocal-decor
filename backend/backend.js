@@ -15,16 +15,16 @@ await connectDB();
 
 const app = express();
 
-// const corsOptions = {
-//   origin: process.env.FRONTEND_URL,
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-// };
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
 // // Use CORS middleware
-// app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
+// app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -113,13 +113,7 @@ app.post("/api/art", upload.single("picture"), async (req, res) => {
   artServices
     .addArt(artToAdd)
     .then((result) => {
-      const newArtId = result._id;
-      console.log(newArtId);
-      return User.findByIdAndUpdate(
-        owner,
-        { $push: { postedArt: newArtId } },
-        { new: true }
-      );
+      return userServices.updateUserArt(result._id, owner);
     })
     .then((updatedUser) => res.status(201).send(updatedUser))
     .catch((err) => res.status(500).send(err));
@@ -155,7 +149,7 @@ app.delete("/api/art/:id", authenticateUser, async (req, res) => {
 
 app.get("/api/users/email/:email", authenticateUser, async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.params.email });
+    const user = await userServices.findUserByEmail(req.params.email);
     if (!user) {
       return res.status(404).send({ error: "User not found" });
     }
@@ -221,55 +215,66 @@ app.get("/api/users/:id", authenticateUser, (req, res) => {
 });
 
 // transfer ownership of an art piece to another user
-app.patch("/api/art/:id/transfer", authenticateUser, async (req, res) => {
-  const artId = req.params.id;
+app.patch("/api/art/:id/transfer", authenticateUser, (req, res) => {
+  const artId = req.params["id"];
   const { newOwner } = req.body;
 
   if (!artId) return res.status(400).send("Missing art ID");
   if (!newOwner) return res.status(400).send("Missing newOwner in body");
 
-  try {
-    const art = await artServices.findArtById(artId);
-    if (!art) return res.status(404).send("Art not found");
+  artServices
+    .findArtById(artId)
+    .then((art) => {
+      if (!art) return res.status(404).send("Art not found");
 
-    // ensure only current owner can transfer
-    const currentOwnerId = art.owner && art.owner.toString();
-    if (currentOwnerId !== req.user.id) {
-      return res
-        .status(403)
-        .send("Only the current owner can transfer ownership");
-    }
-
-    // resolve newOwner: accept ObjectId string, email, or display name
-    let newOwnerId = newOwner;
-    // if not a 24-hex ObjectId, try to resolve by email, then by name
-    if (!/^[0-9a-fA-F]{24}$/.test(String(newOwner))) {
-      let userDoc = await User.findOne({ email: String(newOwner) });
-      if (!userDoc) {
-        userDoc = await User.findOne({ name: String(newOwner) });
-      }
-      if (!userDoc) {
+      const currentOwnerId = art.owner && art.owner.toString();
+      if (currentOwnerId !== req.user.id) {
         return res
-          .status(404)
-          .send("New owner not found by id, email, or name");
+          .status(403)
+          .send("Only the current owner can transfer ownership");
       }
-      newOwnerId = userDoc._id.toString();
-    }
 
-    // update art owner
-    const updatedArt = await artServices.updateOwner(artId, newOwnerId);
+      let newOwnerId = newOwner;
 
-    // remove art from previous owner's postedArt and add to new owner's postedArt
-    await User.findByIdAndUpdate(currentOwnerId, {
-      $pull: { postedArt: artId },
+      // If newOwner is not a valid ObjectId, try to resolve by email, then name
+      if (!/^[0-9a-fA-F]{24}$/.test(String(newOwner))) {
+        return userServices
+          .findUserByEmail(String(newOwner))
+          .then(([userDoc]) => {
+            if (!userDoc) return userServices.findUserByName(String(newOwner));
+            return [userDoc];
+          })
+          .then(([userDoc]) => {
+            if (!userDoc) {
+              return res
+                .status(404)
+                .send("New owner not found by id, email, or name");
+            }
+            newOwnerId = userDoc._id.toString();
+            return artServices.updateOwner(artId, newOwnerId);
+          });
+      } else {
+        return artServices.updateOwner(artId, newOwnerId);
+      }
+    })
+    .then((updatedArt) => {
+      if (!updatedArt) return; // already handled 404 above
+      const previousOwnerId = updatedArt.owner && updatedArt.owner.toString();
+
+      // Update postedArt arrays for both users
+      return Promise.all([
+        userServices.updateUserById(previousOwnerId, {
+          $pull: { postedArt: artId },
+        }),
+        userServices.updateUserById(newOwner, { $push: { postedArt: artId } }),
+      ]).then(() => {
+        res.status(200).send(updatedArt);
+      });
+    })
+    .catch((err) => {
+      console.error("Error transferring ownership:", err);
+      res.status(500).send(err);
     });
-    await User.findByIdAndUpdate(newOwnerId, { $push: { postedArt: artId } });
-
-    res.status(200).send(updatedArt);
-  } catch (err) {
-    console.error("Error transferring ownership:", err);
-    res.status(500).send(err);
-  }
 });
 
 // unsaving art

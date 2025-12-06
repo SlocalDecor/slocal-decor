@@ -19,6 +19,8 @@ jest.unstable_mockModule("./art.js", () => {
   });
   mArt.findByIdAndDelete = jest.fn().mockResolvedValue({ success: true });
 
+  mArt.findByIdAndUpdate = jest.fn().mockResolvedValue({ success: true });
+
   return {
     __esModule: true,
     default: mArt,
@@ -28,6 +30,7 @@ let addArt;
 let getArt;
 let deleteArt;
 let findArtById;
+let updateOwner;
 
 beforeAll(async () => {
   const artServices = await import("./art-services.js");
@@ -35,6 +38,7 @@ beforeAll(async () => {
   getArt = artServices.default.getArt;
   deleteArt = artServices.default.deleteArt;
   findArtById = artServices.default.findArtById;
+  updateOwner = artServices.default.updateOwner;
 });
 
 describe("artService tests", () => {
@@ -135,6 +139,26 @@ describe("artService tests", () => {
     test("deletingArt call goes through with  id", async () => {
       let id = "tester";
       await expect(deleteArt(id)).resolves.toBeDefined();
+    });
+  });
+
+  describe("updateOwner tests", () => {
+    test("updateOwner call goes through with empty id", async () => {
+      let id;
+      let owner = "test owner";
+      await expect(updateOwner(id, owner)).resolves.toBeDefined();
+    });
+
+    test("updateOwner goes through with empty owner", async () => {
+      let id = "tester";
+      let owner;
+      await expect(updateOwner(id, owner)).resolves.toBeDefined();
+    });
+
+    test("updateOwner call goes through with id and owner", async () => {
+      let id = "tester";
+      let owner = "test owner";
+      await expect(updateOwner(id, owner)).resolves.toBeDefined();
     });
   });
 

@@ -89,11 +89,13 @@ export default function NewArrivals({ token }) {
   }, [token]);
 
   const items = useMemo(
-    () =>
-      [...artItems].sort(
-        (a, b) =>
-          new Date(b.postedTime).getTime() - new Date(a.postedTime).getTime()
-      ),
+    (item) =>
+      [...artItems]
+        .filter((item) => item.status === "unclaimed")
+        .sort(
+          (a, b) =>
+            new Date(b.postedTime).getTime() - new Date(a.postedTime).getTime()
+        ),
     [artItems]
   );
 
