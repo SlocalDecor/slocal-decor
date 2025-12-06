@@ -69,3 +69,7 @@ We follow the [Airbnb React/JavaScript Style Guide](https://airbnb.io/javascript
    npm run lint
    npm run format
    ```
+
+
+### Coverage
+Coverage results can be viewed by opening [coverage/lcov-report/index.html](./coverage/lcov-report/index.html)

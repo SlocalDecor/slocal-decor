@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1764995005238" clover="3.2.0">
+  <project timestamp="1764995005238" name="All files">
+    <metrics statements="80" coveredstatements="80" conditionals="51" coveredconditionals="51" methods="18" coveredmethods="18" elements="149" coveredelements="149" complexity="0" loc="80" ncloc="80" packages="1" files="4" classes="4"/>
+    <file name="art-services.js" path="/Users/User/projects/slocal-decor/backend/models/art-services.js">
+      <metrics statements="30" coveredstatements="30" conditionals="29" coveredconditionals="29" methods="7" coveredmethods="7"/>
+      <line num="6" count="5" type="cond" truecount="4" falsecount="0"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="9" count="4" type="cond" truecount="4" falsecount="0"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="13" count="3" type="stmt"/>
+      <line num="14" count="3" type="cond" truecount="4" falsecount="0"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="17" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="24" count="1" type="stmt"/>
+      <line num="25" count="1" type="stmt"/>
+      <line num="26" count="1" type="stmt"/>
+      <line num="29" count="2" type="stmt"/>
+      <line num="30" count="2" type="stmt"/>
+      <line num="35" count="7" type="cond" truecount="4" falsecount="0"/>
+      <line num="36" count="1" type="stmt"/>
+      <line num="37" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="38" count="2" type="stmt"/>
+      <line num="40" count="4" type="stmt"/>
+      <line num="42" count="4" type="stmt"/>
+      <line num="46" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="47" count="1" type="stmt"/>
+      <line num="49" count="1" type="stmt"/>
+      <line num="53" count="2" type="stmt"/>
+      <line num="57" count="3" type="stmt"/>
+      <line num="65" count="4" type="stmt"/>
+      <line num="73" count="4" type="cond" truecount="4" falsecount="0"/>
+      <line num="74" count="2" type="stmt"/>
+      <line num="76" count="2" type="stmt"/>
+    </file>
+    <file name="art.js" path="/Users/User/projects/slocal-decor/backend/models/art.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <line num="3" count="2" type="stmt"/>
+      <line num="53" count="2" type="stmt"/>
+    </file>
+    <file name="user-services.js" path="/Users/User/projects/slocal-decor/backend/models/user-services.js">
+      <metrics statements="46" coveredstatements="46" conditionals="22" coveredconditionals="22" methods="11" coveredmethods="11"/>
+      <line num="6" count="5" type="cond" truecount="4" falsecount="0"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="9" count="4" type="cond" truecount="4" falsecount="0"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="12" count="3" type="cond" truecount="4" falsecount="0"/>
+      <line num="13" count="1" type="stmt"/>
+      <line num="15" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="16" count="1" type="stmt"/>
+      <line num="18" count="1" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="20" count="1" type="stmt"/>
+      <line num="24" count="2" type="stmt"/>
+      <line num="25" count="2" type="stmt"/>
+      <line num="26" count="2" type="stmt"/>
+      <line num="27" count="2" type="stmt"/>
+      <line num="31" count="2" type="stmt"/>
+      <line num="32" count="2" type="stmt"/>
+      <line num="33" count="2" type="stmt"/>
+      <line num="37" count="2" type="stmt"/>
+      <line num="38" count="2" type="stmt"/>
+      <line num="39" count="2" type="stmt"/>
+      <line num="43" count="2" type="stmt"/>
+      <line num="44" count="2" type="stmt"/>
+      <line num="45" count="2" type="stmt"/>
+      <line num="49" count="2" type="stmt"/>
+      <line num="50" count="2" type="stmt"/>
+      <line num="51" count="2" type="stmt"/>
+      <line num="55" count="3" type="stmt"/>
+      <line num="58" count="3" type="stmt"/>
+      <line num="59" count="3" type="stmt"/>
+      <line num="63" count="3" type="stmt"/>
+      <line num="68" count="3" type="stmt"/>
+      <line num="69" count="3" type="stmt"/>
+      <line num="73" count="2" type="stmt"/>
+      <line num="74" count="2" type="stmt"/>
+      <line num="75" count="2" type="stmt"/>
+      <line num="79" count="4" type="cond" truecount="4" falsecount="0"/>
+      <line num="80" count="3" type="stmt"/>
+      <line num="82" count="1" type="stmt"/>
+      <line num="87" count="1" type="stmt"/>
+      <line num="88" count="1" type="stmt"/>
+      <line num="92" count="4" type="cond" truecount="4" falsecount="0"/>
+      <line num="93" count="3" type="stmt"/>
+      <line num="95" count="1" type="stmt"/>
+      <line num="100" count="1" type="stmt"/>
+      <line num="101" count="1" type="stmt"/>
+    </file>
+    <file name="user.js" path="/Users/User/projects/slocal-decor/backend/models/user.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="53" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
