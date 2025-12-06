@@ -21,7 +21,7 @@ export default function PostArt({ token }) {
     title: "",
     description: "",
     picture: "",
-    artType: "",
+    artType: "other",
     height: "",
     width: "",
   });
