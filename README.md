@@ -13,11 +13,11 @@ Fill your heart with slocal art :)
 ## Class Diagram
 
 [Find here](https://drive.google.com/file/d/1APZ2Zl_hfeeHJQMYh9hpgpd3iSv8Gs61/view?usp=sharing)
-
+Updated Oct 31, 2025
 ## Access Control Diagram
 
 [Find here](https://drive.google.com/file/d/1yIBoLST5h3lNR25slULfy3L7wyctEjFv/view?usp=sharing)
-
+Updated Nov 12, 2025
 ## Sprints
 
 1. Sprint 1
